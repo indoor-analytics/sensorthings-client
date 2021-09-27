@@ -1,14 +1,10 @@
 import {Entity} from "../model/Entity";
-import axios, {AxiosInstance} from "axios";
+import axios from "axios";
 
 export class SensorThingsService {
     private readonly _endpoint: URL;
-    public httpClient: AxiosInstance;
     constructor (endpoint: URL) {
         this._endpoint = endpoint;
-        this.httpClient = axios.create({
-            baseURL: this._endpoint.toString()
-        });
     }
     get endpoint (): URL {
         return this._endpoint;
