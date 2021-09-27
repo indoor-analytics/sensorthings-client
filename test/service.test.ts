@@ -10,4 +10,10 @@ describe('SensorThingsService', () => {
         const build = () => new SensorThingsService(new URL('this_is_my_endpoint'));
         expect(build).toThrowError(/Invalid URL:/);
     });
+
+    it ('should return endpoint', () => {
+        const endpoint = 'https://example.org/';
+        const service = new SensorThingsService(new URL(endpoint));
+        expect(service.endpoint.toString()).toEqual(endpoint);
+    });
 });
