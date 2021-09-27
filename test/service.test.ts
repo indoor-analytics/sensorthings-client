@@ -30,7 +30,7 @@ describe('SensorThingsService', () => {
 
             service.create(payload);
 
-            expect(mockedAxios.post).toHaveBeenCalledWith('https://example.org/MockEntity');
+            expect(mockedAxios.post).toHaveBeenCalledWith('https://example.org/MockEntity', payload.toString());
         });
     });
 });

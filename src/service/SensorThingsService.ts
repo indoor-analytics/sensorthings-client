@@ -11,7 +11,10 @@ export class SensorThingsService {
     }
 
     public create (entity: Entity): void {
-        axios.post([this._endpoint.protocol + '//' + this._endpoint.host, entity.getURLSuffix()].join('/'));
+        axios.post(
+            [this._endpoint.protocol + '//' + this._endpoint.host, entity.getURLSuffix()].join('/'),
+            entity.toString()
+        );
     }
 
     public update (entity: Entity): void {
