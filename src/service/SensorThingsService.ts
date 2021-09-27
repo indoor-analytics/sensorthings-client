@@ -3,23 +3,19 @@ import axios, {AxiosInstance} from "axios";
 
 export class SensorThingsService {
     private readonly _endpoint: URL;
-    private _httpClient: AxiosInstance;
+    public httpClient: AxiosInstance;
     constructor (endpoint: URL) {
         this._endpoint = endpoint;
-        this._httpClient = axios.create({
+        this.httpClient = axios.create({
             baseURL: this._endpoint.toString()
         });
     }
     get endpoint (): URL {
         return this._endpoint;
     }
-    set httpClient (client: AxiosInstance) {
-        this._httpClient = client;
-    }
 
     public create (entity: Entity): void {
-        this._httpClient.post("");
-        throw Error(`Not implemented: ${entity}`);
+        axios.post([this._endpoint.protocol + '//' + this._endpoint.host, entity.getURLSuffix()].join('/'));
     }
 
     public update (entity: Entity): void {
