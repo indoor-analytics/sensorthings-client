@@ -4,7 +4,7 @@ import {SensorThingsService} from "../service/SensorThingsService";
 export abstract class BaseDao<T extends Entity> {
     private _service: SensorThingsService;
 
-    protected constructor(service: SensorThingsService) {
+    constructor(service: SensorThingsService) {
         this._service = service;
     }
 

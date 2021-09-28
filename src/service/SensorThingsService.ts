@@ -1,5 +1,6 @@
 import { Entity } from '../model/Entity';
 import axios, { AxiosResponse } from 'axios';
+import {ThingDao} from "../dao/ThingDao";
 
 export class SensorThingsService {
     private readonly _endpoint: URL;
@@ -32,5 +33,9 @@ export class SensorThingsService {
         await axios.delete(
             [this._endpoint.origin, entity.entityResourcePathname].join('/')
         );
+    }
+
+    public get things(): ThingDao {
+        return new ThingDao(this);
     }
 }
