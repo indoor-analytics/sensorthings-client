@@ -1,9 +1,7 @@
 // @ts-ignore
 import { MockEntity } from './utils/MockEntity';
 import { SensorThingsService } from '../src';
-import axios from 'axios';
-jest.mock('axios');
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+import { AxiosRequestConfig } from 'axios';
 
 describe('Entity', () => {
     it("shouldn't return id when not created", () => {
@@ -25,20 +23,22 @@ describe('Entity', () => {
     it('should return id when created', async () => {
         const payload = new MockEntity('name', 'description');
         const service = new SensorThingsService('https://example.org');
+        service.httpClient.post = async (url: string, _data?: any, _config?: AxiosRequestConfig): Promise<any> => {
+            if (url === 'https://example.org/MockEntities') {
+                return JSON.parse(`{
+                    "data": {
+                        "@iot.id": ${createdId},
+                        "@iot.selfLink": "https://example.org/Things(${createdId})",
+                        "description": "${payload.description}",
+                        "name": "${payload.name}",
+                        "Datastreams@iot.navigationLink": "https://example.org/Things(${createdId})/Datastreams",
+                        "HistoricalLocations@iot.navigationLink": "https://example.org/Things(${createdId})/HistoricalLocations",
+                        "Locations@iot.navigationLink": "https://example.org/Things(${createdId})/Locations"
+                    }
+                }`);
+            }
+        };
         const createdId = Math.ceil(Math.random() * 3000000);
-        mockedAxios.post.mockResolvedValueOnce(
-            JSON.parse(`{
-                "data": {
-                    "@iot.id": ${createdId},
-                    "@iot.selfLink": "https://example.org/Things(${createdId})",
-                    "description": "${payload.description}",
-                    "name": "${payload.name}",
-                    "Datastreams@iot.navigationLink": "https://example.org/Things(${createdId})/Datastreams",
-                    "HistoricalLocations@iot.navigationLink": "https://example.org/Things(${createdId})/HistoricalLocations",
-                    "Locations@iot.navigationLink": "https://example.org/Things(${createdId})/Locations"
-                }
-            }`)
-        );
 
         await service.create(payload);
 
