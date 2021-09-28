@@ -17,4 +17,7 @@ export class MockEntity extends Entity {
             description: this.description,
         });
     }
+    getId(): number {
+        return 42;
+    }
 }

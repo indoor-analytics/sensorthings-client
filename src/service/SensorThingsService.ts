@@ -32,7 +32,7 @@ export class SensorThingsService {
         axios.delete(
             [
                 this._endpoint.protocol + '//' + this._endpoint.host,
-                entity.getURLSuffix(),
+                entity.getURLSuffix() + `(${entity.getId()})`,
             ].join('/')
         );
     }
