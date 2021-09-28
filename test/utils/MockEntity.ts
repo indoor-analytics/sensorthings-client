@@ -8,7 +8,6 @@ export class MockEntity extends Entity {
         super();
         this.name = name;
         this.description = description;
-        this._id = 0;
     }
     getURLSuffix(): string {
         return 'MockEntity';
@@ -22,7 +21,7 @@ export class MockEntity extends Entity {
 
     get id(): number {
         if (this._id === undefined)
-            throw new Error();
+            throw new RangeError('Entity hasn\'t been created on a service yet.');
         return this._id;
     }
     set id (value: number) {
