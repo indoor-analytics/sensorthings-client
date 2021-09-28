@@ -67,7 +67,6 @@ describe('SensorThingsService', () => {
 
             expect(mockedAxios.delete).toHaveBeenCalledWith(
                 'https://example.org/MockEntity', // TODO specify entity id
-                payload.toString()
             );
         });
     });
