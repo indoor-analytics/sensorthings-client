@@ -29,6 +29,11 @@ export class SensorThingsService {
     }
 
     public delete(entity: Entity): void {
-        throw Error(`Not implemented: ${entity}`);
+        axios.delete(
+            [
+                this._endpoint.protocol + '//' + this._endpoint.host,
+                entity.getURLSuffix(),
+            ].join('/')
+        );
     }
 }
