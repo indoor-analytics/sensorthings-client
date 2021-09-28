@@ -27,7 +27,15 @@ describe('SensorThingsService', () => {
             const endpoint = 'https://example.org';
             const service = new SensorThingsService(new URL(endpoint));
             const payload = new MockEntity('Hello there', 'This is a test entity.');
-            mockedAxios.post.mockResolvedValueOnce('ok');
+            mockedAxios.post.mockResolvedValueOnce(`{
+                "@iot.id": 2708592,
+                "@iot.selfLink": "https://example.org/Things(2708592)",
+                "description": "This is a test entity.",
+                "name": "Hello there",
+                "Datastreams@iot.navigationLink": "https://example.org/Things(2708592)/Datastreams",
+                "HistoricalLocations@iot.navigationLink": "https://example.org/Things(2708592)/HistoricalLocations",
+                "Locations@iot.navigationLink": "https://example.org/Things(2708592)/Locations"
+                }`);
 
             service.create(payload);
 
