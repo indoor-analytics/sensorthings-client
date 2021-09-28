@@ -1,5 +1,5 @@
 import { Entity } from '../model/Entity';
-import axios, {AxiosResponse} from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 export class SensorThingsService {
     private readonly _endpoint: URL;

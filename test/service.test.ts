@@ -31,7 +31,8 @@ describe('SensorThingsService', () => {
                 'Hello there',
                 'This is a test entity.'
             );
-            mockedAxios.post.mockResolvedValueOnce(JSON.parse(`{
+            mockedAxios.post.mockResolvedValueOnce(
+                JSON.parse(`{
                 "data": {
                     "@iot.id": 2708592,
                     "@iot.selfLink": "https://example.org/Things(2708592)",
@@ -41,7 +42,8 @@ describe('SensorThingsService', () => {
                     "HistoricalLocations@iot.navigationLink": "https://example.org/Things(2708592)/HistoricalLocations",
                     "Locations@iot.navigationLink": "https://example.org/Things(2708592)/Locations"
                 }
-            }`));
+            }`)
+            );
 
             service.create(payload);
 
@@ -59,23 +61,25 @@ describe('SensorThingsService', () => {
                 'This is a test entity.'
             );
             payload.id = 42;
-            mockedAxios.delete.mockResolvedValueOnce(JSON.parse(`{
+            mockedAxios.delete.mockResolvedValueOnce(
+                JSON.parse(`{
                 "data": {
                     "readyState": 4,
                     "responseText": "",
                     "status": 200,
                     "statusText": "OK"
                 }
-            }`));
+            }`)
+            );
 
             service.delete(payload);
 
             expect(mockedAxios.delete).toHaveBeenCalledWith(
-                'https://example.org/MockEntity(42)',
+                'https://example.org/MockEntity(42)'
             );
         });
 
-        it ('should assign an id to the entity on creation', async () => {
+        it('should assign an id to the entity on creation', async () => {
             const endpoint = 'https://example.org';
             const service = new SensorThingsService(new URL(endpoint));
             const payload = new MockEntity(
@@ -83,7 +87,8 @@ describe('SensorThingsService', () => {
                 'This is a test entity.'
             );
             const createdId: number = Math.ceil(Math.random() * 3000000);
-            mockedAxios.post.mockResolvedValueOnce(JSON.parse(`{
+            mockedAxios.post.mockResolvedValueOnce(
+                JSON.parse(`{
                 "data": {
                     "@iot.id": ${createdId},
                     "@iot.selfLink": "https://example.org/Things(${createdId})",
@@ -93,7 +98,8 @@ describe('SensorThingsService', () => {
                     "HistoricalLocations@iot.navigationLink": "https://example.org/Things(${createdId})/HistoricalLocations",
                     "Locations@iot.navigationLink": "https://example.org/Things(${createdId})/Locations"
                 }
-            }`));
+            }`)
+            );
 
             await service.create(payload);
 
