@@ -1,4 +1,4 @@
-import { SensorThingsService } from '../src/service/SensorThingsService';
+import { SensorThingsService } from '../src';
 // @ts-ignore
 import { MockEntity } from './utils/MockEntity';
 import axios from 'axios';
@@ -56,7 +56,7 @@ describe('SensorThingsService', () => {
             service.create(payload);
 
             expect(mockedAxios.post).toHaveBeenCalledWith(
-                'https://example.org/MockEntity',
+                'https://example.org/MockEntities',
                 payload
             );
         });
@@ -83,7 +83,7 @@ describe('SensorThingsService', () => {
             await service.delete(payload);
 
             expect(mockedAxios.delete).toHaveBeenCalledWith(
-                'https://example.org/MockEntity(42)'
+                'https://example.org/MockEntities(42)'
             );
         });
 
@@ -147,7 +147,7 @@ describe('SensorThingsService', () => {
             await service.update(payload);
 
             expect(mockedAxios.patch).toHaveBeenCalledWith(
-                'https://example.org/MockEntity(42)',
+                'https://example.org/MockEntities(42)',
                 expect.objectContaining(newInfo)
             );
         });

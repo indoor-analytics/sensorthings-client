@@ -1,4 +1,7 @@
 import {Entity} from "./Entity";
+import {BaseDao} from "../dao/BaseDao";
+import {ThingDao} from "../dao/ThingDao";
+import {SensorThingsService} from "../service/SensorThingsService";
 
 export class Thing extends Entity {
     public name: string;
@@ -9,7 +12,8 @@ export class Thing extends Entity {
         this.name = name;
         this.description = description;
     }
-    getURLSuffix(): string {
-        return "Things";
+
+    getDao(service: SensorThingsService): BaseDao<Thing> {
+        return new ThingDao(service);
     }
 }

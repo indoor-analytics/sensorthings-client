@@ -1,3 +1,6 @@
+import {BaseDao} from "../dao/BaseDao";
+import {SensorThingsService} from "../service/SensorThingsService";
+
 export abstract class Entity {
     private _id: number | undefined;
     get id(): number {
@@ -11,9 +14,9 @@ export abstract class Entity {
         this._id = value;
     }
 
-    abstract getURLSuffix(): string;
-    get entityResourcePathname(): string {
-        return `${this.getURLSuffix()}(${this.id})`;
+    abstract getDao(service: SensorThingsService): BaseDao<Entity>;
+    public entityResourcePathname(service: SensorThingsService): string {
+        return `${this.getDao(service).getEntityPathname()}(${this.id})`;
     }
 
     public toNetworkObject(): Object {

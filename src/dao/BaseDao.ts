@@ -20,4 +20,7 @@ export abstract class BaseDao<T extends Entity> {
     public async delete (entity: T): Promise<void> {
         return this._service.delete(entity);
     }
+
+
+    abstract getEntityPathname (): string;
 }

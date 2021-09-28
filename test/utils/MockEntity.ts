@@ -1,4 +1,12 @@
 import { Entity } from '../../src/model/Entity';
+import {SensorThingsService} from "../../src";
+import {BaseDao} from "../../src/dao/BaseDao";
+
+class MockEntityDao extends BaseDao<MockEntity> {
+    getEntityPathname(): string {
+        return "MockEntities";
+    }
+}
 
 export class MockEntity extends Entity {
     public name: string;
@@ -9,7 +17,8 @@ export class MockEntity extends Entity {
         this.name = name;
         this.description = description;
     }
-    getURLSuffix(): string {
-        return 'MockEntity';
+
+    getDao(service: SensorThingsService): BaseDao<Entity> {
+        return new MockEntityDao(service);
     }
 }

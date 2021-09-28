@@ -1,6 +1,6 @@
 // @ts-ignore
 import { MockEntity } from './utils/MockEntity';
-import { SensorThingsService } from '../src/service/SensorThingsService';
+import { SensorThingsService } from '../src';
 import axios from 'axios';
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -16,7 +16,7 @@ describe('Entity', () => {
 
     it('should not return pathname when not created', () => {
         const payload = new MockEntity('name', 'description');
-        const getLink = () => payload.entityResourcePathname;
+        const getLink = () => payload.entityResourcePathname(new SensorThingsService('https://example.org'));
         expect(getLink).toThrowError(
             new RangeError("Entity hasn't been created on a service yet.")
         );
@@ -43,8 +43,8 @@ describe('Entity', () => {
         await service.create(payload);
 
         expect(payload.id).toEqual(createdId);
-        expect(payload.entityResourcePathname).toEqual(
-            `MockEntity(${createdId})`
+        expect(payload.entityResourcePathname(new SensorThingsService('https://example.org'))).toEqual(
+            `MockEntities(${createdId})`
         );
     });
 });
