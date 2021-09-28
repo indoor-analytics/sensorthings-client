@@ -1,17 +1,17 @@
-import {Entity} from "../../src/model/Entity";
+import { Entity } from '../../src/model/Entity';
 
 export class MockEntity extends Entity {
     public name: string;
-    constructor (name: string) {
+    constructor(name: string) {
         super();
         this.name = name;
     }
     getURLSuffix(): string {
-        return "MockEntity";
+        return 'MockEntity';
     }
     toString(): string {
         return JSON.stringify({
-            name: this.name
+            name: this.name,
         });
     }
 }

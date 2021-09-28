@@ -1,4 +1,4 @@
 export abstract class Entity {
-    abstract getURLSuffix (): string;
-    abstract toString (): string;
+    abstract getURLSuffix(): string;
+    abstract toString(): string;
 }
