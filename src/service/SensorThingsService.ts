@@ -1,5 +1,5 @@
 import { Entity } from '../model/Entity';
-import axios from 'axios';
+import axios, {AxiosResponse} from 'axios';
 
 export class SensorThingsService {
     private readonly _endpoint: URL;
@@ -17,7 +17,9 @@ export class SensorThingsService {
                 entity.getURLSuffix(),
             ].join('/'),
             entity.toString()
-        );
+        ).then((result: AxiosResponse['data']) => {
+            entity.id = result['@iot.id'];
+        });
     }
 
     public update(entity: Entity): void {
@@ -32,7 +34,7 @@ export class SensorThingsService {
         axios.delete(
             [
                 this._endpoint.protocol + '//' + this._endpoint.host,
-                entity.getURLSuffix() + `(${entity.getId()})`,
+                entity.getURLSuffix() + `(${entity.id})`,
             ].join('/')
         );
     }

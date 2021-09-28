@@ -56,6 +56,7 @@ describe('SensorThingsService', () => {
                 'Hello there',
                 'This is a test entity.'
             );
+            payload.id = 42;
             mockedAxios.delete.mockResolvedValueOnce(`{
                 "readyState": 4,
                 "responseText": "",
@@ -90,7 +91,7 @@ describe('SensorThingsService', () => {
 
             service.create(payload);
 
-            expect(payload.getId()).toEqual(createdId);
+            expect(payload.id).toEqual(createdId);
         });
     });
 });
