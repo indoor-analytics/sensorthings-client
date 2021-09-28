@@ -1,6 +1,10 @@
 import { SensorThingsService } from "../../src";
 import { AxiosRequestConfig } from 'axios';
 
+
+/**
+ * Injects dependencies in service HTTP client.
+ */
 export class HttpClientMock {
     private _calledUrls: {[url: string]: number};
 
@@ -47,6 +51,9 @@ export class HttpClientMock {
         }
     }
 
+    /**
+     * Checks if a given URL has been invoked.
+     */
     public urlHasBeenCalled(url: string): boolean {
         return this._calledUrls[url] !== undefined && this._calledUrls[url] > 0;
     }
