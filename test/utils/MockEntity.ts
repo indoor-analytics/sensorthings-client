@@ -2,9 +2,11 @@ import { Entity } from '../../src/model/Entity';
 
 export class MockEntity extends Entity {
     public name: string;
-    constructor(name: string) {
+    public description: string;
+    constructor(name: string, description: string) {
         super();
         this.name = name;
+        this.description = description;
     }
     getURLSuffix(): string {
         return 'MockEntity';
@@ -12,6 +14,7 @@ export class MockEntity extends Entity {
     toString(): string {
         return JSON.stringify({
             name: this.name,
+            description: this.description
         });
     }
 }
