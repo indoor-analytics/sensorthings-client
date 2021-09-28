@@ -16,7 +16,7 @@ export class SensorThingsService {
                 this._endpoint.origin,
                 entity.getURLSuffix(),
             ].join('/'),
-            entity
+            entity.toNetworkObject()
         );
         entity.id = response.data['@iot.id'];
         return;
@@ -28,7 +28,7 @@ export class SensorThingsService {
                 this._endpoint.origin,
                 entity.entityResourcePathname
             ].join('/'),
-            entity
+            entity.toNetworkObject()
         );
         return;
     }
