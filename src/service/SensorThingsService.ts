@@ -4,7 +4,8 @@ import axios, { AxiosResponse } from 'axios';
 export class SensorThingsService {
     private readonly _endpoint: URL;
     constructor(endpoint: URL | string) {
-        this._endpoint = typeof endpoint === "string" ? new URL(endpoint) : endpoint;
+        this._endpoint =
+            typeof endpoint === 'string' ? new URL(endpoint) : endpoint;
     }
     get endpoint(): URL {
         return this._endpoint;
@@ -12,10 +13,7 @@ export class SensorThingsService {
 
     public async create(entity: Entity): Promise<void> {
         const response: AxiosResponse = await axios.post(
-            [
-                this._endpoint.origin,
-                entity.getURLSuffix(),
-            ].join('/'),
+            [this._endpoint.origin, entity.getURLSuffix()].join('/'),
             entity.toNetworkObject()
         );
         entity.id = response.data['@iot.id'];
@@ -24,10 +22,7 @@ export class SensorThingsService {
 
     public async update(entity: Entity): Promise<void> {
         await axios.patch(
-            [
-                this._endpoint.origin,
-                entity.entityResourcePathname
-            ].join('/'),
+            [this._endpoint.origin, entity.entityResourcePathname].join('/'),
             entity.toNetworkObject()
         );
         return;
@@ -35,10 +30,7 @@ export class SensorThingsService {
 
     public async delete(entity: Entity): Promise<void> {
         await axios.delete(
-            [
-                this._endpoint.origin,
-                entity.entityResourcePathname,
-            ].join('/')
+            [this._endpoint.origin, entity.entityResourcePathname].join('/')
         );
     }
 }
