@@ -10,16 +10,16 @@ export class SensorThingsService {
         return this._endpoint;
     }
 
-    public create(entity: Entity): void {
-        axios.post(
+    public async create(entity: Entity): Promise<void> {
+        const response: AxiosResponse = await axios.post(
             [
                 this._endpoint.protocol + '//' + this._endpoint.host,
                 entity.getURLSuffix(),
             ].join('/'),
             entity.toString()
-        ).then((result: AxiosResponse['data']) => {
-            entity.id = result['@iot.id'];
-        });
+        );
+        entity.id = response.data['@iot.id'];
+        return;
     }
 
     public update(entity: Entity): void {
