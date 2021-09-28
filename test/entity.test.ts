@@ -1,6 +1,6 @@
 // @ts-ignore
 import { MockEntity } from './utils/MockEntity';
-import {SensorThingsService} from "../src/service/SensorThingsService";
+import { SensorThingsService } from '../src/service/SensorThingsService';
 import axios from 'axios';
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -14,7 +14,7 @@ describe('Entity', () => {
         );
     });
 
-    it ('should not return pathname when not created', () => {
+    it('should not return pathname when not created', () => {
         const payload = new MockEntity('name', 'description');
         const getLink = () => payload.entityResourcePathname;
         expect(getLink).toThrowError(
@@ -22,10 +22,10 @@ describe('Entity', () => {
         );
     });
 
-    it ('should return id when created', async () => {
+    it('should return id when created', async () => {
         const payload = new MockEntity('name', 'description');
         const service = new SensorThingsService('https://example.org');
-        const createdId = Math.ceil(Math.random()*3000000);
+        const createdId = Math.ceil(Math.random() * 3000000);
         mockedAxios.post.mockResolvedValueOnce(
             JSON.parse(`{
                 "data": {
@@ -43,6 +43,8 @@ describe('Entity', () => {
         await service.create(payload);
 
         expect(payload.id).toEqual(createdId);
-        expect(payload.entityResourcePathname).toEqual(`MockEntity(${createdId})`);
+        expect(payload.entityResourcePathname).toEqual(
+            `MockEntity(${createdId})`
+        );
     });
 });

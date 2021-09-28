@@ -11,8 +11,10 @@ describe('SensorThingsService', () => {
         expect(build).toThrowError(new TypeError('Invalid URL: '));
     });
 
-    it ('should accept string constructor', () => {
-        const service1 = new SensorThingsService(new URL('https://example.org/'));
+    it('should accept string constructor', () => {
+        const service1 = new SensorThingsService(
+            new URL('https://example.org/')
+        );
         const service2 = new SensorThingsService('https://example.org/');
         expect(service1.endpoint).toEqual(service2.endpoint);
     });
@@ -112,7 +114,7 @@ describe('SensorThingsService', () => {
             expect(payload.id).toEqual(createdId);
         });
 
-        it ('should do a PATCH call on entity update', async () => {
+        it('should do a PATCH call on entity update', async () => {
             const endpoint = 'https://example.org';
             const service = new SensorThingsService(new URL(endpoint));
             const payload = new MockEntity(
@@ -123,7 +125,7 @@ describe('SensorThingsService', () => {
 
             const newInfo = {
                 name: 'New name',
-                description: 'New description'
+                description: 'New description',
             };
             payload.name = newInfo.name;
             payload.description = newInfo.description;
