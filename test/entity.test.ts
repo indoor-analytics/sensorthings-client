@@ -14,7 +14,10 @@ describe('Entity', () => {
 
     it('should not return pathname when not created', () => {
         const payload = new MockEntity('name', 'description');
-        const getLink = () => payload.entityResourcePathname(new SensorThingsService('https://example.org'));
+        const getLink = () =>
+            payload.entityResourcePathname(
+                new SensorThingsService('https://example.org')
+            );
         expect(getLink).toThrowError(
             new RangeError("Entity hasn't been created on a service yet.")
         );
@@ -25,8 +28,12 @@ describe('Entity', () => {
         const service = new SensorThingsService('https://example.org');
         const mockInjector = new HttpClientMock();
         const createdId = Math.ceil(Math.random() * 3000000);
-        mockInjector.injectMockCall(service, 'https://example.org/MockEntities', 'post', () => {
-            return JSON.parse(`{
+        mockInjector.injectMockCall(
+            service,
+            'https://example.org/MockEntities',
+            'post',
+            () => {
+                return JSON.parse(`{
                 "data": {
                     "@iot.id": ${createdId},
                     "@iot.selfLink": "https://example.org/Things(${createdId})",
@@ -37,13 +44,16 @@ describe('Entity', () => {
                     "Locations@iot.navigationLink": "https://example.org/Things(${createdId})/Locations"
                 }
             }`);
-        });
+            }
+        );
 
         await service.create(payload);
 
         expect(payload.id).toEqual(createdId);
-        expect(payload.entityResourcePathname(new SensorThingsService('https://example.org'))).toEqual(
-            `MockEntities(${createdId})`
-        );
+        expect(
+            payload.entityResourcePathname(
+                new SensorThingsService('https://example.org')
+            )
+        ).toEqual(`MockEntities(${createdId})`);
     });
 });

@@ -1,6 +1,5 @@
-import {Entity} from "../model/Entity";
-import {SensorThingsService} from "../service/SensorThingsService";
-
+import { Entity } from '../model/Entity';
+import { SensorThingsService } from '../service/SensorThingsService';
 
 /**
  * Entity independant implementation of a data access object.
@@ -13,7 +12,7 @@ export abstract class BaseDao<T extends Entity> {
         this._service = service;
     }
 
-    public async create (entity: T): Promise<void> {
+    public async create(entity: T): Promise<void> {
         const response = await this._service.httpClient.post(
             [this._service.endpoint.origin, this.getEntityPathname()].join('/'),
             entity.toNetworkObject()
@@ -22,19 +21,24 @@ export abstract class BaseDao<T extends Entity> {
         return;
     }
 
-    public async update (entity: T): Promise<void> {
+    public async update(entity: T): Promise<void> {
         return this._service.httpClient.patch(
-            [this._service.endpoint.origin, entity.entityResourcePathname(this._service)].join('/'),
+            [
+                this._service.endpoint.origin,
+                entity.entityResourcePathname(this._service),
+            ].join('/'),
             entity.toNetworkObject()
         );
     }
 
-    public async delete (entity: T): Promise<void> {
+    public async delete(entity: T): Promise<void> {
         return this._service.httpClient.delete(
-            [this._service.endpoint.origin, entity.entityResourcePathname(this._service)].join('/')
+            [
+                this._service.endpoint.origin,
+                entity.entityResourcePathname(this._service),
+            ].join('/')
         );
     }
 
-
-    abstract getEntityPathname (): string;
+    abstract getEntityPathname(): string;
 }

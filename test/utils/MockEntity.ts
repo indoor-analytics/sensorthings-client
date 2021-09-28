@@ -1,10 +1,10 @@
 import { Entity } from '../../src/model/Entity';
-import {SensorThingsService} from "../../src";
-import {BaseDao} from "../../src/dao/BaseDao";
+import { SensorThingsService } from '../../src';
+import { BaseDao } from '../../src/dao/BaseDao';
 
 class MockEntityDao extends BaseDao<MockEntity> {
     getEntityPathname(): string {
-        return "MockEntities";
+        return 'MockEntities';
     }
 }
 

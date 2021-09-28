@@ -3,12 +3,10 @@ import { SensorThingsService } from '../src';
 import { MockEntity } from './utils/MockEntity';
 import { HttpClientMock } from './utils/HttpClientMock';
 
-
 let mockInjector: HttpClientMock;
 beforeEach(() => {
     mockInjector = new HttpClientMock();
 });
-
 
 describe('SensorThingsService', () => {
     it('should not accept empty constructor', () => {
@@ -40,9 +38,13 @@ describe('SensorThingsService', () => {
         it('should do a POST call on entity creation', () => {
             const endpoint = 'https://example.org';
             const service = new SensorThingsService(new URL(endpoint));
-            mockInjector.injectMockCall(service, 'https://example.org/MockEntities', 'post', (_data: any) => {
-                expect(_data).toEqual(payload);
-                return JSON.parse(`{
+            mockInjector.injectMockCall(
+                service,
+                'https://example.org/MockEntities',
+                'post',
+                (_data: any) => {
+                    expect(_data).toEqual(payload);
+                    return JSON.parse(`{
                     "data": {
                         "@iot.id": 2708592,
                         "@iot.selfLink": "https://example.org/Things(2708592)",
@@ -52,9 +54,10 @@ describe('SensorThingsService', () => {
                         "HistoricalLocations@iot.navigationLink": "https://example.org/Things(2708592)/HistoricalLocations",
                         "Locations@iot.navigationLink": "https://example.org/Things(2708592)/Locations"
                     }
-                }`)
-            });
-            
+                }`);
+                }
+            );
+
             const payload = new MockEntity(
                 'Hello there',
                 'This is a test entity.'
@@ -62,7 +65,11 @@ describe('SensorThingsService', () => {
 
             service.create(payload);
 
-            expect(mockInjector.urlHasBeenCalled('https://example.org/MockEntities')).toBeTruthy();
+            expect(
+                mockInjector.urlHasBeenCalled(
+                    'https://example.org/MockEntities'
+                )
+            ).toBeTruthy();
         });
 
         it('should do a DELETE call on entity removal', async () => {
@@ -77,7 +84,7 @@ describe('SensorThingsService', () => {
                         "status": 200,
                         "statusText": "OK"
                     }
-                }`)
+                }`);
             });
             const payload = new MockEntity(
                 'Hello there',
@@ -94,8 +101,12 @@ describe('SensorThingsService', () => {
             const endpoint = 'https://example.org';
             const service = new SensorThingsService(new URL(endpoint));
             const createdId: number = Math.ceil(Math.random() * 3000000);
-            mockInjector.injectMockCall(service, 'https://example.org/MockEntities', 'post', () => {
-                return JSON.parse(`{
+            mockInjector.injectMockCall(
+                service,
+                'https://example.org/MockEntities',
+                'post',
+                () => {
+                    return JSON.parse(`{
                     "data": {
                         "@iot.id": ${createdId},
                         "@iot.selfLink": "https://example.org/Things(${createdId})",
@@ -106,7 +117,8 @@ describe('SensorThingsService', () => {
                         "Locations@iot.navigationLink": "https://example.org/Things(${createdId})/Locations"
                     }
                 }`);
-            });
+                }
+            );
             const payload = new MockEntity(
                 'Hello there',
                 'This is a test entity.'
@@ -121,9 +133,13 @@ describe('SensorThingsService', () => {
             const endpoint = 'https://example.org';
             const service = new SensorThingsService(new URL(endpoint));
             const patchUrl = 'https://example.org/MockEntities(42)';
-            mockInjector.injectMockCall(service, patchUrl, 'patch', (_data: any) => {
-                expect(_data).toEqual(expect.objectContaining(newInfo));
-                return JSON.parse(`{
+            mockInjector.injectMockCall(
+                service,
+                patchUrl,
+                'patch',
+                (_data: any) => {
+                    expect(_data).toEqual(expect.objectContaining(newInfo));
+                    return JSON.parse(`{
                     "data": {
                         "@iot.id": 42,
                         "@iot.selfLink": "https://example.org/Things(42)",
@@ -133,8 +149,9 @@ describe('SensorThingsService', () => {
                         "HistoricalLocations@iot.navigationLink": "https://example.org/Things(42)/HistoricalLocations",
                         "Locations@iot.navigationLink": "https://example.org/Things(42)/Locations"
                     }
-                }`)
-            });
+                }`);
+                }
+            );
             const payload = new MockEntity(
                 'Hello there',
                 'This is a test entity.'

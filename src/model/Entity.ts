@@ -1,5 +1,5 @@
-import {BaseDao} from "../dao/BaseDao";
-import {SensorThingsService} from "../service/SensorThingsService";
+import { BaseDao } from '../dao/BaseDao';
+import { SensorThingsService } from '../service/SensorThingsService';
 
 export abstract class Entity {
     private _id: number | undefined;

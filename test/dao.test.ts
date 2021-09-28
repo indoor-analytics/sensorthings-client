@@ -1,5 +1,5 @@
-import {ThingDao} from "../src/dao/ThingDao";
-import {SensorThingsService} from "../src";
+import { ThingDao } from '../src/dao/ThingDao';
+import { SensorThingsService } from '../src';
 
 describe('DAO', () => {
     describe('Entity path names', () => {
@@ -9,5 +9,5 @@ describe('DAO', () => {
             const urlPrefix = new ThingDao(service).getEntityPathname();
             expect(urlPrefix).toEqual('Things');
         });
-    })
+    });
 });

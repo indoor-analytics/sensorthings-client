@@ -1,6 +1,6 @@
 import { Entity } from '../model/Entity';
-import axios, {AxiosInstance} from 'axios';
-import {ThingDao} from "../dao/ThingDao";
+import axios, { AxiosInstance } from 'axios';
+import { ThingDao } from '../dao/ThingDao';
 
 export class SensorThingsService {
     private readonly _endpoint: URL;
@@ -9,7 +9,7 @@ export class SensorThingsService {
         this._endpoint =
             typeof endpoint === 'string' ? new URL(endpoint) : endpoint;
         this.httpClient = axios.create({
-            url: typeof endpoint === 'string' ? endpoint : endpoint.href
+            url: typeof endpoint === 'string' ? endpoint : endpoint.href,
         });
     }
     get endpoint(): URL {
