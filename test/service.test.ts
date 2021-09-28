@@ -80,12 +80,12 @@ describe('SensorThingsService', () => {
             const createdId: number = Math.ceil(Math.random() * 3000000);
             mockedAxios.post.mockResolvedValueOnce(`{
                 "@iot.id": ${createdId},
-                "@iot.selfLink": "https://example.org/Things(2708592)",
+                "@iot.selfLink": "https://example.org/Things(${createdId})",
                 "description": "This is a test entity.",
                 "name": "Hello there",
-                "Datastreams@iot.navigationLink": "https://example.org/Things(2708592)/Datastreams",
-                "HistoricalLocations@iot.navigationLink": "https://example.org/Things(2708592)/HistoricalLocations",
-                "Locations@iot.navigationLink": "https://example.org/Things(2708592)/Locations"
+                "Datastreams@iot.navigationLink": "https://example.org/Things(${createdId})/Datastreams",
+                "HistoricalLocations@iot.navigationLink": "https://example.org/Things(${createdId})/HistoricalLocations",
+                "Locations@iot.navigationLink": "https://example.org/Things(${createdId})/Locations"
                 }`);
 
             service.create(payload);
