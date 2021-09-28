@@ -111,5 +111,43 @@ describe('SensorThingsService', () => {
 
             expect(payload.id).toEqual(createdId);
         });
+
+        it ('should do a PATCH call on entity update', async () => {
+            const endpoint = 'https://example.org';
+            const service = new SensorThingsService(new URL(endpoint));
+            const payload = new MockEntity(
+                'Hello there',
+                'This is a test entity.'
+            );
+            payload.id = 42;
+
+            const newInfo = {
+                name: 'New name',
+                description: 'New description'
+            };
+            payload.name = newInfo.name;
+            payload.description = newInfo.description;
+
+            mockedAxios.patch.mockResolvedValueOnce(
+                JSON.parse(`{
+                "data": {
+                    "@iot.id": 42,
+                    "@iot.selfLink": "https://example.org/Things(42)",
+                    "description": "${newInfo.description}",
+                    "name": "${newInfo.name}",
+                    "Datastreams@iot.navigationLink": "https://example.org/Things(42)/Datastreams",
+                    "HistoricalLocations@iot.navigationLink": "https://example.org/Things(42)/HistoricalLocations",
+                    "Locations@iot.navigationLink": "https://example.org/Things(42)/Locations"
+                }
+            }`)
+            );
+
+            await service.update(payload);
+
+            expect(mockedAxios.patch).toHaveBeenCalledWith(
+                'https://example.org/MockEntity(42)',
+                newInfo
+            );
+        });
     });
 });
