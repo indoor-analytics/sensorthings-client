@@ -30,8 +30,8 @@ export class SensorThingsService {
         throw Error(`Not implemented: ${entity}`);
     }
 
-    public delete(entity: Entity): void {
-        axios.delete(
+    public async delete(entity: Entity): Promise<void> {
+        await axios.delete(
             [
                 this._endpoint.protocol + '//' + this._endpoint.host,
                 entity.getURLSuffix() + `(${entity.id})`,

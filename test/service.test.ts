@@ -59,7 +59,7 @@ describe('SensorThingsService', () => {
             );
         });
 
-        it('should do a DELETE call on entity removal', () => {
+        it('should do a DELETE call on entity removal', async () => {
             const endpoint = 'https://example.org';
             const service = new SensorThingsService(new URL(endpoint));
             const payload = new MockEntity(
@@ -78,7 +78,7 @@ describe('SensorThingsService', () => {
             }`)
             );
 
-            service.delete(payload);
+            await service.delete(payload);
 
             expect(mockedAxios.delete).toHaveBeenCalledWith(
                 'https://example.org/MockEntity(42)'
