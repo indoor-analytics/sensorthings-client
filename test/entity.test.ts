@@ -1,5 +1,9 @@
 // @ts-ignore
 import { MockEntity } from './utils/MockEntity';
+import {SensorThingsService} from "../src/service/SensorThingsService";
+import axios from 'axios';
+jest.mock('axios');
+const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe('Entity', () => {
     it("shouldn't return id when not created", () => {
@@ -16,5 +20,29 @@ describe('Entity', () => {
         expect(getLink).toThrowError(
             new RangeError("Entity hasn't been created on a service yet.")
         );
+    });
+
+    it ('should return id when created', async () => {
+        const payload = new MockEntity('name', 'description');
+        const service = new SensorThingsService('https://example.org');
+        const createdId = Math.ceil(Math.random()*3000000);
+        mockedAxios.post.mockResolvedValueOnce(
+            JSON.parse(`{
+                "data": {
+                    "@iot.id": ${createdId},
+                    "@iot.selfLink": "https://example.org/Things(${createdId})",
+                    "description": "${payload.description}",
+                    "name": "${payload.name}",
+                    "Datastreams@iot.navigationLink": "https://example.org/Things(${createdId})/Datastreams",
+                    "HistoricalLocations@iot.navigationLink": "https://example.org/Things(${createdId})/HistoricalLocations",
+                    "Locations@iot.navigationLink": "https://example.org/Things(${createdId})/Locations"
+                }
+            }`)
+        );
+
+        await service.create(payload);
+
+        expect(payload.id).toEqual(createdId);
+        expect(payload.entityResourcePathname).toEqual(`MockEntity(${createdId})`);
     });
 });
