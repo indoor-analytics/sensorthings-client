@@ -3,8 +3,8 @@ import axios, { AxiosResponse } from 'axios';
 
 export class SensorThingsService {
     private readonly _endpoint: URL;
-    constructor(endpoint: URL) {
-        this._endpoint = endpoint;
+    constructor(endpoint: URL | string) {
+        this._endpoint = typeof endpoint === "string" ? new URL(endpoint) : endpoint;
     }
     get endpoint(): URL {
         return this._endpoint;

@@ -11,6 +11,12 @@ describe('SensorThingsService', () => {
         expect(build).toThrowError(new TypeError('Invalid URL: '));
     });
 
+    it ('should accept string constructor', () => {
+        const service1 = new SensorThingsService(new URL('https://example.org/'));
+        const service2 = new SensorThingsService('https://example.org/');
+        expect(service1.endpoint).toEqual(service2.endpoint);
+    });
+
     it('should not accept random string as endpoint', () => {
         const build = () =>
             new SensorThingsService(new URL('this_is_my_endpoint'));
