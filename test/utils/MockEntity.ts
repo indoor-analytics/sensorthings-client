@@ -14,7 +14,7 @@ export class MockEntity extends Entity {
     toString(): string {
         return JSON.stringify({
             name: this.name,
-            description: this.description
+            description: this.description,
         });
     }
 }

@@ -26,7 +26,10 @@ describe('SensorThingsService', () => {
         it('should do a POST call on entity creation', () => {
             const endpoint = 'https://example.org';
             const service = new SensorThingsService(new URL(endpoint));
-            const payload = new MockEntity('Hello there', 'This is a test entity.');
+            const payload = new MockEntity(
+                'Hello there',
+                'This is a test entity.'
+            );
             mockedAxios.post.mockResolvedValueOnce(`{
                 "@iot.id": 2708592,
                 "@iot.selfLink": "https://example.org/Things(2708592)",
