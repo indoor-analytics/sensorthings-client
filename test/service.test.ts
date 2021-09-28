@@ -1,4 +1,5 @@
 import { SensorThingsService } from '../src/service/SensorThingsService';
+// @ts-ignore
 import { MockEntity } from './utils/MockEntity';
 import axios from 'axios';
 jest.mock('axios');
@@ -44,6 +45,28 @@ describe('SensorThingsService', () => {
 
             expect(mockedAxios.post).toHaveBeenCalledWith(
                 'https://example.org/MockEntity',
+                payload.toString()
+            );
+        });
+
+        it('should do a DELETE call on entity removal', () => {
+            const endpoint = 'https://example.org';
+            const service = new SensorThingsService(new URL(endpoint));
+            const payload = new MockEntity(
+                'Hello there',
+                'This is a test entity.'
+            );
+            mockedAxios.delete.mockResolvedValueOnce(`{
+                "readyState": 4,
+                "responseText": "",
+                "status": 200,
+                "statusText": "OK"
+                }`);
+
+            service.delete(payload);
+
+            expect(mockedAxios.delete).toHaveBeenCalledWith(
+                'https://example.org/MockEntity', // TODO specify entity id
                 payload.toString()
             );
         });
