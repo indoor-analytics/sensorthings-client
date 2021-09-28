@@ -13,7 +13,7 @@ export class SensorThingsService {
     public async create(entity: Entity): Promise<void> {
         const response: AxiosResponse = await axios.post(
             [
-                this._endpoint.protocol + '//' + this._endpoint.host,
+                this._endpoint.origin,
                 entity.getURLSuffix(),
             ].join('/'),
             entity.toString()
@@ -25,8 +25,8 @@ export class SensorThingsService {
     public async update(entity: Entity): Promise<void> {
         await axios.patch(
             [
-                this._endpoint.protocol + '//' + this._endpoint.host,
-                entity.getURLSuffix() + `(${entity.id})`,
+                this._endpoint.origin,
+                entity.entityResourcePathname
             ].join('/'),
             entity
         );
@@ -36,8 +36,8 @@ export class SensorThingsService {
     public async delete(entity: Entity): Promise<void> {
         await axios.delete(
             [
-                this._endpoint.protocol + '//' + this._endpoint.host,
-                entity.getURLSuffix() + `(${entity.id})`,
+                this._endpoint.origin,
+                entity.entityResourcePathname,
             ].join('/')
         );
     }
