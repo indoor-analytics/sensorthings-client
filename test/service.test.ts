@@ -69,5 +69,28 @@ describe('SensorThingsService', () => {
                 'https://example.org/MockEntity(42)',
             );
         });
+
+        it ('should assign an id to the entity on creation', () => {
+            const endpoint = 'https://example.org';
+            const service = new SensorThingsService(new URL(endpoint));
+            const payload = new MockEntity(
+                'Hello there',
+                'This is a test entity.'
+            );
+            const createdId: number = Math.ceil(Math.random() * 3000000);
+            mockedAxios.post.mockResolvedValueOnce(`{
+                "@iot.id": ${createdId},
+                "@iot.selfLink": "https://example.org/Things(2708592)",
+                "description": "This is a test entity.",
+                "name": "Hello there",
+                "Datastreams@iot.navigationLink": "https://example.org/Things(2708592)/Datastreams",
+                "HistoricalLocations@iot.navigationLink": "https://example.org/Things(2708592)/HistoricalLocations",
+                "Locations@iot.navigationLink": "https://example.org/Things(2708592)/Locations"
+                }`);
+
+            service.create(payload);
+
+            expect(payload.getId()).toEqual(createdId);
+        });
     });
 });
