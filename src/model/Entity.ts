@@ -1,7 +1,13 @@
 export abstract class Entity {
-    protected _id: number | undefined;
-    abstract get id(): number;
-    abstract set id(number);
+    private _id: number | undefined;
+    get id(): number {
+        if (this._id === undefined)
+            throw new RangeError('Entity hasn\'t been created on a service yet.');
+        return this._id;
+    }
+    set id (value: number) {
+        this._id = value;
+    }
 
     abstract getURLSuffix(): string;
     abstract toString(): string;
