@@ -55,7 +55,7 @@ describe('SensorThingsService', () => {
 
             expect(mockedAxios.post).toHaveBeenCalledWith(
                 'https://example.org/MockEntity',
-                payload.toString()
+                payload
             );
         });
 

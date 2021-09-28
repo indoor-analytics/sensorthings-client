@@ -12,10 +12,4 @@ export class MockEntity extends Entity {
     getURLSuffix(): string {
         return 'MockEntity';
     }
-    toString(): string {
-        return JSON.stringify({
-            name: this.name,
-            description: this.description,
-        });
-    }
 }

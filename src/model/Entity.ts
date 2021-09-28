@@ -15,5 +15,4 @@ export abstract class Entity {
     get entityResourcePathname(): string {
         return `${this.getURLSuffix()}(${this.id})`;
     }
-    abstract toString(): string;
 }

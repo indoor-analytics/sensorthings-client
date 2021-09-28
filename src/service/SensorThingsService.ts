@@ -16,7 +16,7 @@ export class SensorThingsService {
                 this._endpoint.origin,
                 entity.getURLSuffix(),
             ].join('/'),
-            entity.toString()
+            entity
         );
         entity.id = response.data['@iot.id'];
         return;
