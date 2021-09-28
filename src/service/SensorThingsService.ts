@@ -26,10 +26,6 @@ export class SensorThingsService {
         throw Error(`Not implemented: ${entity}`);
     }
 
-    public patch(entity: Entity): void {
-        throw Error(`Not implemented: ${entity}`);
-    }
-
     public async delete(entity: Entity): Promise<void> {
         await axios.delete(
             [
