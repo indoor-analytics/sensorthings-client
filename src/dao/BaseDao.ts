@@ -10,15 +10,25 @@ export abstract class BaseDao<T extends Entity> {
 
 
     public async create (entity: T): Promise<void> {
-        return this._service.create(entity);
+        const response = await this._service.httpClient.post(
+            [this._service.endpoint.origin, this.getEntityPathname()].join('/'),
+            entity.toNetworkObject()
+        );
+        entity.id = response.data['@iot.id'];
+        return;
     }
 
     public async update (entity: T): Promise<void> {
-        return this._service.update(entity);
+        return this._service.httpClient.patch(
+            [this._service.endpoint.origin, entity.entityResourcePathname(this._service)].join('/'),
+            entity.toNetworkObject()
+        );
     }
 
     public async delete (entity: T): Promise<void> {
-        return this._service.delete(entity);
+        return this._service.httpClient.delete(
+            [this._service.endpoint.origin, entity.entityResourcePathname(this._service)].join('/')
+        );
     }
 
 

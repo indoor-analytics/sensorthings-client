@@ -1,38 +1,31 @@
 import { Entity } from '../model/Entity';
-import axios, { AxiosResponse } from 'axios';
+import axios, {AxiosInstance} from 'axios';
 import {ThingDao} from "../dao/ThingDao";
 
 export class SensorThingsService {
     private readonly _endpoint: URL;
+    public httpClient: AxiosInstance;
     constructor(endpoint: URL | string) {
         this._endpoint =
             typeof endpoint === 'string' ? new URL(endpoint) : endpoint;
+        this.httpClient = axios.create({
+            url: typeof endpoint === 'string' ? endpoint : endpoint.href
+        });
     }
     get endpoint(): URL {
         return this._endpoint;
     }
 
     public async create(entity: Entity): Promise<void> {
-        const response: AxiosResponse = await axios.post(
-            [this._endpoint.origin, entity.getDao(this).getEntityPathname()].join('/'),
-            entity.toNetworkObject()
-        );
-        entity.id = response.data['@iot.id'];
-        return;
+        return entity.getDao(this).create(entity);
     }
 
     public async update(entity: Entity): Promise<void> {
-        await axios.patch(
-            [this._endpoint.origin, entity.entityResourcePathname(this)].join('/'),
-            entity.toNetworkObject()
-        );
-        return;
+        return entity.getDao(this).update(entity);
     }
 
     public async delete(entity: Entity): Promise<void> {
-        await axios.delete(
-            [this._endpoint.origin, entity.entityResourcePathname(this)].join('/')
-        );
+        return entity.getDao(this).delete(entity);
     }
 
     public get things(): ThingDao {
