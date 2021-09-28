@@ -22,8 +22,15 @@ export class SensorThingsService {
         return;
     }
 
-    public update(entity: Entity): void {
-        throw Error(`Not implemented: ${entity}`);
+    public async update(entity: Entity): Promise<void> {
+        await axios.patch(
+            [
+                this._endpoint.protocol + '//' + this._endpoint.host,
+                entity.getURLSuffix() + `(${entity.id})`,
+            ].join('/'),
+            entity
+        );
+        return;
     }
 
     public async delete(entity: Entity): Promise<void> {

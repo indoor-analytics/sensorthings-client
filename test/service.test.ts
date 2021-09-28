@@ -146,7 +146,7 @@ describe('SensorThingsService', () => {
 
             expect(mockedAxios.patch).toHaveBeenCalledWith(
                 'https://example.org/MockEntity(42)',
-                newInfo
+                expect.objectContaining(newInfo)
             );
         });
     });
