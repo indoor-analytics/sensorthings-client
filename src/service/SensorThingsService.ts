@@ -3,7 +3,6 @@ import axios, {AxiosInstance} from 'axios';
 import {ThingDao} from "../dao/ThingDao";
 
 export class SensorThingsService {
-    [x: string]: {};
     private readonly _endpoint: URL;
     public httpClient: AxiosInstance;
     constructor(endpoint: URL | string) {
