@@ -5,7 +5,7 @@ import { AxiosRequestConfig } from 'axios';
  * Injects dependencies in service HTTP client.
  */
 export class HttpClientMock {
-    private _calledUrls: { [url: string]: number };
+    private readonly _calledUrls: { [url: string]: number };
 
     constructor() {
         this._calledUrls = {};
