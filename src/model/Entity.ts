@@ -14,6 +14,10 @@ export abstract class Entity {
         this._id = value;
     }
 
+    // TODO force Entity subclasses to implement a static method to instantiate such subclass from HTTP data
+    // abstract fromSensorThingsAPI(data: any): Entity;
+
+    // TODO review return type
     abstract getDao(service: SensorThingsService): BaseDao<Entity>;
     public entityResourcePathname(service: SensorThingsService): string {
         return `${this.getDao(service).getEntityPathname()}(${this.id})`;

@@ -8,6 +8,7 @@ export class ThingDao extends BaseDao<Thing> {
         return 'Things';
     }
 
+    // TODO move to BaseDao
     async get(id: number): Promise<Thing> {
         return await this._service.httpClient
             .get(
