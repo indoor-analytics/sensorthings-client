@@ -123,5 +123,42 @@ describe('DAO', () => {
                 new NotFoundError('Entity does not exist.')
             );
         });
+
+        it('should update an entity', async () => {
+            const service = new SensorThingsService('https://example.org');
+            const randomThingId = Math.ceil(Math.random()*3000000);
+            mockInjector.injectMockCall(service, `https://example.org/Things(${randomThingId})`, 'get', () => {
+                return {
+                    "data": {
+                        "@iot.id": randomThingId,
+                        "@iot.selfLink": `https://example.org/Things(${randomThingId})`,
+                        "description": "This is a test object.",
+                        "name": "Test object",
+                        "Datastreams@iot.navigationLink": `https://example.org/Things(${randomThingId})/Datastreams`,
+                        "HistoricalLocations@iot.navigationLink": `https://example.org/Things(${randomThingId})/HistoricalLocations`,
+                        "Locations@iot.navigationLink": `https://example.org/Things(${randomThingId})/Locations`
+                    }
+                };
+            });
+            mockInjector.injectMockCall(service, `https://example.org/Things(${randomThingId})`, 'patch', (_data: any) => {
+                return {
+                    "data": {
+                        "@iot.id": randomThingId,
+                        "@iot.selfLink": `https://example.org/Things(${randomThingId})`,
+                        "description": _data.description,
+                        "name": _data.name,
+                        "Datastreams@iot.navigationLink": `https://example.org/Things(${randomThingId})/Datastreams`,
+                        "HistoricalLocations@iot.navigationLink": `https://example.org/Things(${randomThingId})/HistoricalLocations`,
+                        "Locations@iot.navigationLink": `https://example.org/Things(${randomThingId})/Locations`
+                    }
+                };
+            });
+
+            const thing = await service.things.get(randomThingId);
+            const newDescription = 'bonsoir';
+            thing.description = newDescription;
+            const updateResult = await service.things.update(thing);
+            expect(updateResult['description']).toEqual(newDescription);
+        });
     });
 });

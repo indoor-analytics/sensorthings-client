@@ -33,7 +33,7 @@ export abstract class BaseDao<T extends Entity> {
      * Throws a NotFoundError exception if entity was not found.
      * @param entity entity to update (contains updated information regarding service entity data)
      */
-    public async update(entity: T): Promise<void> {
+    public async update(entity: T): Promise<any> {
         return this._service.httpClient.patch(
             [
                 this._service.endpoint.origin,
@@ -41,8 +41,8 @@ export abstract class BaseDao<T extends Entity> {
             ].join('/'),
             entity.toNetworkObject()
         )
-            .then((_response: AxiosResponse) => {
-                return;
+            .then((response: AxiosResponse) => {
+                return response.data;
             }).catch((error: AxiosError) => {
                 if (error.response?.status === 404) {
                     throw new NotFoundError('Entity does not exist.');
