@@ -6,7 +6,7 @@ import { SensorThingsService } from '../service/SensorThingsService';
  * It allows to create, update and remove entities.
  */
 export abstract class BaseDao<T extends Entity> {
-    private _service: SensorThingsService;
+    protected _service: SensorThingsService;
 
     constructor(service: SensorThingsService) {
         this._service = service;
