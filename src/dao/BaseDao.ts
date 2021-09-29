@@ -41,4 +41,6 @@ export abstract class BaseDao<T extends Entity> {
     }
 
     abstract getEntityPathname(): string;
+
+    abstract get(id: number): Promise<T>;
 }
