@@ -126,33 +126,43 @@ describe('DAO', () => {
 
         it('should update an entity', async () => {
             const service = new SensorThingsService('https://example.org');
-            const randomThingId = Math.ceil(Math.random()*3000000);
-            mockInjector.injectMockCall(service, `https://example.org/Things(${randomThingId})`, 'get', () => {
-                return {
-                    "data": {
-                        "@iot.id": randomThingId,
-                        "@iot.selfLink": `https://example.org/Things(${randomThingId})`,
-                        "description": "This is a test object.",
-                        "name": "Test object",
-                        "Datastreams@iot.navigationLink": `https://example.org/Things(${randomThingId})/Datastreams`,
-                        "HistoricalLocations@iot.navigationLink": `https://example.org/Things(${randomThingId})/HistoricalLocations`,
-                        "Locations@iot.navigationLink": `https://example.org/Things(${randomThingId})/Locations`
-                    }
-                };
-            });
-            mockInjector.injectMockCall(service, `https://example.org/Things(${randomThingId})`, 'patch', (_data: any) => {
-                return {
-                    "data": {
-                        "@iot.id": randomThingId,
-                        "@iot.selfLink": `https://example.org/Things(${randomThingId})`,
-                        "description": _data.description,
-                        "name": _data.name,
-                        "Datastreams@iot.navigationLink": `https://example.org/Things(${randomThingId})/Datastreams`,
-                        "HistoricalLocations@iot.navigationLink": `https://example.org/Things(${randomThingId})/HistoricalLocations`,
-                        "Locations@iot.navigationLink": `https://example.org/Things(${randomThingId})/Locations`
-                    }
-                };
-            });
+            const randomThingId = Math.ceil(Math.random() * 3000000);
+            mockInjector.injectMockCall(
+                service,
+                `https://example.org/Things(${randomThingId})`,
+                'get',
+                () => {
+                    return {
+                        data: {
+                            '@iot.id': randomThingId,
+                            '@iot.selfLink': `https://example.org/Things(${randomThingId})`,
+                            description: 'This is a test object.',
+                            name: 'Test object',
+                            'Datastreams@iot.navigationLink': `https://example.org/Things(${randomThingId})/Datastreams`,
+                            'HistoricalLocations@iot.navigationLink': `https://example.org/Things(${randomThingId})/HistoricalLocations`,
+                            'Locations@iot.navigationLink': `https://example.org/Things(${randomThingId})/Locations`,
+                        },
+                    };
+                }
+            );
+            mockInjector.injectMockCall(
+                service,
+                `https://example.org/Things(${randomThingId})`,
+                'patch',
+                (_data: any) => {
+                    return {
+                        data: {
+                            '@iot.id': randomThingId,
+                            '@iot.selfLink': `https://example.org/Things(${randomThingId})`,
+                            description: _data.description,
+                            name: _data.name,
+                            'Datastreams@iot.navigationLink': `https://example.org/Things(${randomThingId})/Datastreams`,
+                            'HistoricalLocations@iot.navigationLink': `https://example.org/Things(${randomThingId})/HistoricalLocations`,
+                            'Locations@iot.navigationLink': `https://example.org/Things(${randomThingId})/Locations`,
+                        },
+                    };
+                }
+            );
 
             const thing = await service.things.get(randomThingId);
             const newDescription = 'bonsoir';
@@ -163,7 +173,7 @@ describe('DAO', () => {
 
         it('should delete an entity', async () => {
             const service = new SensorThingsService('https://example.org');
-            const randomThingId = Math.ceil(Math.random()*3000000);
+            const randomThingId = Math.ceil(Math.random() * 3000000);
             const targetUrl = `https://example.org/Things(${randomThingId})`;
             let calledOnce = false;
             mockInjector.injectMockCall(service, targetUrl, 'get', () => {
@@ -187,20 +197,23 @@ describe('DAO', () => {
                 }
                 calledOnce = true;
                 return {
-                    "data": {
-                        "@iot.id": randomThingId,
-                        "@iot.selfLink": `https://example.org/Things(${randomThingId})`,
-                        "description": "This is a test object.",
-                        "name": "Test object",
-                        "Datastreams@iot.navigationLink": `https://example.org/Things(${randomThingId})/Datastreams`,
-                        "HistoricalLocations@iot.navigationLink": `https://example.org/Things(${randomThingId})/HistoricalLocations`,
-                        "Locations@iot.navigationLink": `https://example.org/Things(${randomThingId})/Locations`
-                    }
+                    data: {
+                        '@iot.id': randomThingId,
+                        '@iot.selfLink': `https://example.org/Things(${randomThingId})`,
+                        description: 'This is a test object.',
+                        name: 'Test object',
+                        'Datastreams@iot.navigationLink': `https://example.org/Things(${randomThingId})/Datastreams`,
+                        'HistoricalLocations@iot.navigationLink': `https://example.org/Things(${randomThingId})/HistoricalLocations`,
+                        'Locations@iot.navigationLink': `https://example.org/Things(${randomThingId})/Locations`,
+                    },
                 };
             });
-            mockInjector.injectMockCall(service, targetUrl, 'delete', () => { return });
+            mockInjector.injectMockCall(service, targetUrl, 'delete', () => {
+                return;
+            });
 
-            const getThing = async () => await service.things.get(randomThingId);
+            const getThing = async () =>
+                await service.things.get(randomThingId);
             const thing = await getThing();
 
             await service.things.delete(thing);

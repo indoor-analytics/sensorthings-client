@@ -1,7 +1,7 @@
 import { Entity } from '../model/Entity';
 import { SensorThingsService } from '../service/SensorThingsService';
-import {AxiosError, AxiosResponse} from "axios";
-import {NotFoundError} from "../error/NotFoundError";
+import { AxiosError, AxiosResponse } from 'axios';
+import { NotFoundError } from '../error/NotFoundError';
 
 /**
  * Entity independent implementation of a data access object.
@@ -34,16 +34,18 @@ export abstract class BaseDao<T extends Entity> {
      * @param entity entity to update (contains updated information regarding service entity data)
      */
     public async update(entity: T): Promise<any> {
-        return this._service.httpClient.patch(
-            [
-                this._service.endpoint.origin,
-                entity.entityResourcePathname(this._service),
-            ].join('/'),
-            entity.toNetworkObject()
-        )
+        return this._service.httpClient
+            .patch(
+                [
+                    this._service.endpoint.origin,
+                    entity.entityResourcePathname(this._service),
+                ].join('/'),
+                entity.toNetworkObject()
+            )
             .then((response: AxiosResponse) => {
                 return response.data;
-            }).catch((error: AxiosError) => {
+            })
+            .catch((error: AxiosError) => {
                 if (error.response?.status === 404) {
                     throw new NotFoundError('Entity does not exist.');
                 }
@@ -57,15 +59,17 @@ export abstract class BaseDao<T extends Entity> {
      * @param entity entity to remove
      */
     public async delete(entity: T): Promise<void> {
-        return this._service.httpClient.delete(
-            [
-                this._service.endpoint.origin,
-                entity.entityResourcePathname(this._service),
-            ].join('/')
-        )
+        return this._service.httpClient
+            .delete(
+                [
+                    this._service.endpoint.origin,
+                    entity.entityResourcePathname(this._service),
+                ].join('/')
+            )
             .then(() => {
                 return;
-            }).catch((error: AxiosError) => {
+            })
+            .catch((error: AxiosError) => {
                 if (error.response?.status === 404) {
                     throw new NotFoundError('Entity does not exist.');
                 }
