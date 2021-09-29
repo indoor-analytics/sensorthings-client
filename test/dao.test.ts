@@ -3,6 +3,7 @@ import { SensorThingsService } from '../src';
 import {Thing} from "../src/model/Thing";
 // @ts-ignore
 import {HttpClientMock} from "./utils/HttpClientMock";
+import {NotFoundError} from "../src/error/NotFoundError";
 
 let mockInjector: HttpClientMock;
 beforeEach(() => {
@@ -46,6 +47,25 @@ describe('DAO', () => {
             const createdThing = await service.things.get(thing.id);
 
             expect(createdThing.equals(thing)).toBeTruthy();
+        });
+
+        it('should throw when getting non-existent entity', async () => {
+            const service = new SensorThingsService('https://example.org');
+            mockInjector.injectMockCall(service, "https://example.org/Things(42)", "get", async () => {
+                throw {
+                    "response": {
+                        "status": 404,
+                        "data": {
+                            "errorId": "46a645ec-d50f-4ae5-92ee-b5d532ddfaec",
+                            "code": "INVALID_ID",
+                            "message":"Entity not found",
+                            "baseURL":"https://example.org"
+                        }
+                    }
+                };
+            });
+            const getThing = () => service.things.get(42);
+            await expect(getThing()).rejects.toThrow(new NotFoundError('Entity does not exist.'));
         });
     });
 });

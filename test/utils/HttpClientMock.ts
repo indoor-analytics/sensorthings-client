@@ -28,8 +28,16 @@ export class HttpClientMock {
                     url: string,
                     _config?: AxiosRequestConfig
                 ): Promise<any> => {
-                    this._setUrlAsCalled(url);
-                    if (url === targetUrl) return callback();
+                    return new Promise<any>(async (resolve, reject) => {
+                        this._setUrlAsCalled(url);
+                        if (url === targetUrl) {
+                            try {
+                                resolve( await callback() );
+                            } catch (err: any) {
+                                reject (err);
+                            }
+                        }
+                    });
                 };
                 break;
             case 'post':
