@@ -90,5 +90,38 @@ describe('DAO', () => {
                 new NotFoundError('Entity does not exist.')
             );
         });
+
+        it('should throw when updating non-existent entity', async () => {
+            const service = new SensorThingsService('https://example.org');
+            mockInjector.injectMockCall(
+                service,
+                'https://example.org/Things(42)',
+                'patch',
+                async () => {
+                    const error: Error = new Error() as AxiosError;
+                    // @ts-ignore
+                    error.response = {
+                        config: undefined,
+                        headers: undefined,
+                        request: undefined,
+                        statusText: '',
+                        status: 404,
+                        data: {
+                            errorId: '46a645cc-d50f-4ae5-92ee-b5d532ddfaec',
+                            code: 'INVALID_ID',
+                            message: 'Entity not found',
+                            baseURL: 'https://example.org',
+                        },
+                    };
+                    throw error;
+                }
+            );
+            const thing = new Thing('name', 'description');
+            thing.id = 42;
+            const updateThing = () => service.things.update(thing);
+            await expect(updateThing()).rejects.toThrow(
+                new NotFoundError('Entity does not exist.')
+            );
+        });
     });
 });
