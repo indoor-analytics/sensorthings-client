@@ -12,7 +12,7 @@ export class ThingDao extends BaseDao<Thing> {
             this.getEntityPathname() + `(${id})`
         ].join('/'));
         const thing = new Thing(response.data.name, response.data.description);
-        // thing.id = response.data['@iot.id']
+        thing.id = response.data['@iot.id']
         return thing;
     }
 }

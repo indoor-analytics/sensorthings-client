@@ -45,7 +45,10 @@ describe('DAO', () => {
             await service.things.create(thing);
 
             const createdThing = await service.things.get(thing.id);
-            expect(createdThing.toNetworkObject()).toEqual(thing.toNetworkObject());
+            // TODO add a Entity.equals(Entity) method to compare all attributes at once
+            expect(createdThing.id).toEqual(thing.id);
+            expect(createdThing.name).toEqual(thing.name);
+            expect(createdThing.description).toEqual(thing.description);
         });
     });
 });
