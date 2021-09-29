@@ -19,12 +19,15 @@ export abstract class Entity {
         return `${this.getDao(service).getEntityPathname()}(${this.id})`;
     }
 
-    public toNetworkObject(): Object {
-        const publicAttributes = Object.getOwnPropertyNames(this).filter(
+    get publicAttributes(): string[] {
+        return Object.getOwnPropertyNames(this).filter(
             value => value.charAt(0) !== '_'
         );
+    }
+
+    public toNetworkObject(): Object {
         const object: { [attr: string]: any } = {};
-        for (const attribute of publicAttributes) {
+        for (const attribute of this.publicAttributes) {
             // @ts-ignore
             object[attribute] = this[attribute];
         }
