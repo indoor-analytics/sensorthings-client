@@ -160,5 +160,54 @@ describe('DAO', () => {
             const updateResult = await service.things.update(thing);
             expect(updateResult['description']).toEqual(newDescription);
         });
+
+        it('should delete an entity', async () => {
+            const service = new SensorThingsService('https://example.org');
+            const randomThingId = Math.ceil(Math.random()*3000000);
+            const targetUrl = `https://example.org/Things(${randomThingId})`;
+            let calledOnce = false;
+            mockInjector.injectMockCall(service, targetUrl, 'get', () => {
+                if (calledOnce) {
+                    const error: Error = new Error() as AxiosError;
+                    // @ts-ignore
+                    error.response = {
+                        config: undefined,
+                        headers: undefined,
+                        request: undefined,
+                        statusText: '',
+                        status: 404,
+                        data: {
+                            errorId: '46a645cc-d40f-4ae5-92ee-b5d532ddfaec',
+                            code: 'INVALID_ID',
+                            message: 'Entity not found',
+                            baseURL: 'https://example.org',
+                        },
+                    };
+                    throw error;
+                }
+                calledOnce = true;
+                return {
+                    "data": {
+                        "@iot.id": randomThingId,
+                        "@iot.selfLink": `https://example.org/Things(${randomThingId})`,
+                        "description": "This is a test object.",
+                        "name": "Test object",
+                        "Datastreams@iot.navigationLink": `https://example.org/Things(${randomThingId})/Datastreams`,
+                        "HistoricalLocations@iot.navigationLink": `https://example.org/Things(${randomThingId})/HistoricalLocations`,
+                        "Locations@iot.navigationLink": `https://example.org/Things(${randomThingId})/Locations`
+                    }
+                };
+            });
+            mockInjector.injectMockCall(service, targetUrl, 'delete', () => { return });
+
+            const getThing = async () => await service.things.get(randomThingId);
+            const thing = await getThing();
+
+            await service.things.delete(thing);
+
+            await expect(getThing()).rejects.toThrow(
+                new NotFoundError('Entity does not exist.')
+            );
+        });
     });
 });
