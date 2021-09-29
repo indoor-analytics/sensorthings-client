@@ -57,4 +57,9 @@ describe('Entity', () => {
             )
         ).toEqual(`MockEntities(${createdId})`);
     });
+
+    it('should return all MockEntity\'s attributes', () => {
+        const payload = new MockEntity('name', 'description');
+        expect(payload.publicAttributes).toEqual(['name', 'description']);
+    })
 });
