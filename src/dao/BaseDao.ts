@@ -62,7 +62,15 @@ export abstract class BaseDao<T extends Entity> {
                 this._service.endpoint.origin,
                 entity.entityResourcePathname(this._service),
             ].join('/')
-        );
+        )
+            .then(() => {
+                return;
+            }).catch((error: AxiosError) => {
+                if (error.response?.status === 404) {
+                    throw new NotFoundError('Entity does not exist.');
+                }
+                throw error;
+            });
     }
 
     /**
