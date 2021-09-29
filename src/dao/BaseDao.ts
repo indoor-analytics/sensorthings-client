@@ -1,5 +1,7 @@
 import { Entity } from '../model/Entity';
 import { SensorThingsService } from '../service/SensorThingsService';
+import {AxiosError, AxiosResponse} from "axios";
+import {NotFoundError} from "../error/NotFoundError";
 
 /**
  * Entity independent implementation of a data access object.
@@ -38,7 +40,15 @@ export abstract class BaseDao<T extends Entity> {
                 entity.entityResourcePathname(this._service),
             ].join('/'),
             entity.toNetworkObject()
-        );
+        )
+            .then((_response: AxiosResponse) => {
+                return;
+            }).catch((error: AxiosError) => {
+                if (error.response?.status === 404) {
+                    throw new NotFoundError('Entity does not exist.');
+                }
+                throw error;
+            });
     }
 
     /**
