@@ -1,6 +1,7 @@
 // @ts-ignore
 import { MockEntity } from './utils/MockEntity';
 import { SensorThingsService } from '../src';
+// @ts-ignore
 import { HttpClientMock } from './utils/HttpClientMock';
 
 describe('Entity', () => {
