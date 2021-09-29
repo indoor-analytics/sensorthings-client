@@ -32,9 +32,9 @@ export class HttpClientMock {
                         this._setUrlAsCalled(url);
                         if (url === targetUrl) {
                             try {
-                                resolve( await callback() );
-                            } catch (err: any) {
-                                reject (err);
+                                resolve(await callback());
+                            } catch (err) {
+                                reject(err);
                             }
                         }
                     });

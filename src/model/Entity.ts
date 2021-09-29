@@ -32,9 +32,11 @@ export abstract class Entity {
     }
 
     public equals(comparedTo: Entity): boolean {
-        return Object.getOwnPropertyNames(this).filter((attribute: string) => {
-            // @ts-ignore
-            return this[attribute] !== comparedTo[attribute];
-        }).length === 0;
+        return (
+            Object.getOwnPropertyNames(this).filter((attribute: string) => {
+                // @ts-ignore
+                return this[attribute] !== comparedTo[attribute];
+            }).length === 0
+        );
     }
 }
