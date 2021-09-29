@@ -16,15 +16,15 @@ export class SensorThingsService {
         return this._endpoint;
     }
 
-    public async create(entity: Entity): Promise<void> {
+    public async create(entity: Entity<any>): Promise<void> {
         return entity.getDao(this).create(entity);
     }
 
-    public async update(entity: Entity): Promise<void> {
+    public async update(entity: Entity<any>): Promise<void> {
         return entity.getDao(this).update(entity);
     }
 
-    public async delete(entity: Entity): Promise<void> {
+    public async delete(entity: Entity<any>): Promise<void> {
         return entity.getDao(this).delete(entity);
     }
 

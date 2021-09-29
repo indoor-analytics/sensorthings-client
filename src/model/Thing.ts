@@ -3,7 +3,7 @@ import { BaseDao } from '../dao/BaseDao';
 import { ThingDao } from '../dao/ThingDao';
 import { SensorThingsService } from '../service/SensorThingsService';
 
-export class Thing extends Entity {
+export class Thing extends Entity<Thing> {
     public name: string;
     public description: string;
 

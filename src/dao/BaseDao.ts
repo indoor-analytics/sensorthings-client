@@ -7,7 +7,7 @@ import { NotFoundError } from '../error/NotFoundError';
  * Entity independent implementation of a data access object.
  * It allows to create, update and remove entities.
  */
-export abstract class BaseDao<T extends Entity> {
+export abstract class BaseDao<T extends Entity<T>> {
     protected _service: SensorThingsService;
 
     constructor(service: SensorThingsService) {

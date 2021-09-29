@@ -1,7 +1,7 @@
 import { BaseDao } from '../dao/BaseDao';
 import { SensorThingsService } from '../service/SensorThingsService';
 
-export abstract class Entity {
+export abstract class Entity<T extends Entity<T>> {
     private _id: number | undefined;
     get id(): number {
         if (this._id === undefined)
@@ -17,8 +17,7 @@ export abstract class Entity {
     // TODO force Entity subclasses to implement a static method to instantiate such subclass from HTTP data
     // abstract fromSensorThingsAPI(data: any): Entity;
 
-    // TODO review return type
-    abstract getDao(service: SensorThingsService): BaseDao<Entity>;
+    abstract getDao(service: SensorThingsService): BaseDao<T>;
     public entityResourcePathname(service: SensorThingsService): string {
         return `${this.getDao(service).getEntityPathname()}(${this.id})`;
     }
@@ -38,7 +37,7 @@ export abstract class Entity {
         return object;
     }
 
-    public equals(comparedTo: Entity): boolean {
+    public equals(comparedTo: T): boolean {
         return (
             Object.getOwnPropertyNames(this).filter((attribute: string) => {
                 // @ts-ignore
