@@ -4,8 +4,8 @@ import { SensorThingsService } from '../src';
 import { HttpClientMock } from './utils/HttpClientMock';
 import { NotFoundError } from '../src/error/NotFoundError';
 import { AxiosError } from 'axios';
-import {MockEntityDao} from "./utils/MockEntityDao";
-import { MockEntity } from './utils/MockEntity';
+import {DumbEntityDao} from "./utils/DumbEntityDao";
+import { DumbEntity } from './utils/DumbEntity';
 
 let mockInjector: HttpClientMock;
 beforeEach(() => {
@@ -22,7 +22,7 @@ describe('DAO', () => {
         });
 
         it('MockDao should return correct path name', () => {
-            const urlPrefix = new MockEntityDao(service).getEntityPathname();
+            const urlPrefix = new DumbEntityDao(service).getEntityPathname();
             expect(urlPrefix).toEqual('MockEntities');
         });
     });
@@ -33,7 +33,7 @@ describe('DAO', () => {
             const service = new SensorThingsService('https://example.org');
             const mockName = 'name',
                 mockDescription = 'description';
-            const mock = new MockEntity(mockName, mockDescription);
+            const mock = new DumbEntity(mockName, mockDescription);
             const getMockObject = () => {
                 return JSON.parse(`{
                     "data": {
@@ -60,7 +60,7 @@ describe('DAO', () => {
                 getMockObject
             );
 
-            const dao = new MockEntityDao(service);
+            const dao = new DumbEntityDao(service);
             await dao.create(mock);
             const createdMock = await dao.get(mock.id);
 
@@ -92,7 +92,7 @@ describe('DAO', () => {
                     throw error;
                 }
             );
-            const getMock = () => new MockEntityDao(service).get(42);
+            const getMock = () => new DumbEntityDao(service).get(42);
             await expect(getMock()).rejects.toThrow(
                 new NotFoundError('Entity does not exist.')
             );
@@ -123,7 +123,7 @@ describe('DAO', () => {
                     throw error;
                 }
             );
-            const mock = new MockEntity('name', 'description');
+            const mock = new DumbEntity('name', 'description');
             mock.id = 42;
             const updateMock = () => service.things.update(mock);
             await expect(updateMock()).rejects.toThrow(
@@ -171,7 +171,7 @@ describe('DAO', () => {
                 }
             );
 
-            const dao = new MockEntityDao(service);
+            const dao = new DumbEntityDao(service);
             const mock = await dao.get(randomMockId);
             const newDescription = 'bonsoir';
             mock.description = newDescription;
@@ -181,7 +181,7 @@ describe('DAO', () => {
 
         it('should delete an entity', async () => {
             const service = new SensorThingsService('https://example.org');
-            const dao = new MockEntityDao(service);
+            const dao = new DumbEntityDao(service);
             const randomMockId = Math.ceil(Math.random() * 3000000);
             const targetUrl = `https://example.org/MockEntities(${randomMockId})`;
             let calledOnce = false;
@@ -257,9 +257,9 @@ describe('DAO', () => {
                     throw error;
                 }
             );
-            const mock = new MockEntity('name', 'description');
+            const mock = new DumbEntity('name', 'description');
             mock.id = 42;
-            const deleteMock = () => new MockEntityDao(service).delete(mock);
+            const deleteMock = () => new DumbEntityDao(service).delete(mock);
             await expect(deleteMock()).rejects.toThrow(
                 new NotFoundError('Entity does not exist.')
             );

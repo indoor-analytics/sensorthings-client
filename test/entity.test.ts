@@ -1,12 +1,11 @@
-// @ts-ignore
-import { MockEntity } from './utils/MockEntity';
 import { SensorThingsService } from '../src';
+import { DumbEntity } from './utils/DumbEntity';
 // @ts-ignore
 import { HttpClientMock } from './utils/HttpClientMock';
 
 describe('Entity', () => {
     it("shouldn't return id when not created", () => {
-        const payload = new MockEntity('name', 'description');
+        const payload = new DumbEntity('name', 'description');
         const getId = () => payload.id;
         expect(getId).toThrowError(
             new RangeError("Entity hasn't been created on a service yet.")
@@ -14,7 +13,7 @@ describe('Entity', () => {
     });
 
     it('should not return pathname when not created', () => {
-        const payload = new MockEntity('name', 'description');
+        const payload = new DumbEntity('name', 'description');
         const getLink = () =>
             payload.entityResourcePathname(
                 new SensorThingsService('https://example.org')
@@ -25,7 +24,7 @@ describe('Entity', () => {
     });
 
     it('should return id when created', async () => {
-        const payload = new MockEntity('name', 'description');
+        const payload = new DumbEntity('name', 'description');
         const service = new SensorThingsService('https://example.org');
         const mockInjector = new HttpClientMock();
         const createdId = Math.ceil(Math.random() * 3000000);
@@ -58,8 +57,8 @@ describe('Entity', () => {
         ).toEqual(`MockEntities(${createdId})`);
     });
 
-    it('should return all MockEntity\'s attributes', () => {
-        const payload = new MockEntity('name', 'description');
+    it('should return all DumbEntity\'s attributes', () => {
+        const payload = new DumbEntity('name', 'description');
         expect(payload.publicAttributes).toEqual(['name', 'description']);
     })
 });

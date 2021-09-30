@@ -1,6 +1,5 @@
 import { SensorThingsService } from '../src';
-// @ts-ignore
-import { MockEntity } from './utils/MockEntity';
+import { DumbEntity } from './utils/DumbEntity';
 // @ts-ignore
 import { HttpClientMock } from './utils/HttpClientMock';
 
@@ -59,7 +58,7 @@ describe('SensorThingsService', () => {
                 }
             );
 
-            const payload = new MockEntity(
+            const payload = new DumbEntity(
                 'Hello there',
                 'This is a test entity.'
             );
@@ -87,7 +86,7 @@ describe('SensorThingsService', () => {
                     }
                 }`);
             });
-            const payload = new MockEntity(
+            const payload = new DumbEntity(
                 'Hello there',
                 'This is a test entity.'
             );
@@ -120,7 +119,7 @@ describe('SensorThingsService', () => {
                 }`);
                 }
             );
-            const payload = new MockEntity(
+            const payload = new DumbEntity(
                 'Hello there',
                 'This is a test entity.'
             );
@@ -153,7 +152,7 @@ describe('SensorThingsService', () => {
                 }`);
                 }
             );
-            const payload = new MockEntity(
+            const payload = new DumbEntity(
                 'Hello there',
                 'This is a test entity.'
             );

@@ -2,10 +2,10 @@ import { Entity } from '../../src/model/Entity';
 import { SensorThingsService } from '../../src';
 import { BaseDao } from '../../src/dao/BaseDao';
 // @ts-ignore
-import { MockEntityDao } from './MockEntityDao';
+import { DumbEntityDao } from './DumbEntityDao';
 
 
-export class MockEntity extends Entity<MockEntity> {
+export class DumbEntity extends Entity<DumbEntity> {
     public name: string;
     public description: string;
 
@@ -15,7 +15,7 @@ export class MockEntity extends Entity<MockEntity> {
         this.description = description;
     }
 
-    getDao(service: SensorThingsService): BaseDao<MockEntity> {
-        return new MockEntityDao(service);
+    getDao(service: SensorThingsService): BaseDao<DumbEntity> {
+        return new DumbEntityDao(service);
     }
 }
