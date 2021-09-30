@@ -1,7 +1,6 @@
-import {BaseDao} from "../../src/dao/BaseDao";
+import { BaseDao } from '../../src/dao/BaseDao';
 // @ts-ignore
-import {DumbEntity} from "./DumbEntity";
-
+import { DumbEntity } from './DumbEntity';
 
 /**
  * This is a dumb implementation of the BaseDao abstract class,

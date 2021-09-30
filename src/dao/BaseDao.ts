@@ -3,7 +3,6 @@ import { SensorThingsService } from '../service/SensorThingsService';
 import { AxiosError, AxiosResponse } from 'axios';
 import { NotFoundError } from '../error/NotFoundError';
 
-
 /**
  * Entity independent implementation of a data access object.
  * It allows to create, get, update and remove entities.
@@ -105,7 +104,9 @@ export abstract class BaseDao<T extends Entity<T>> {
                 ].join('/')
             )
             .then((response: AxiosResponse) => {
-                const entity = this.buildEntityFromSensorThingsAPI(response.data);
+                const entity = this.buildEntityFromSensorThingsAPI(
+                    response.data
+                );
                 entity.id = response.data['@iot.id'];
                 return entity;
             })

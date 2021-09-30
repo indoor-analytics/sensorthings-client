@@ -57,8 +57,8 @@ describe('Entity', () => {
         ).toEqual(`MockEntities(${createdId})`);
     });
 
-    it('should return all DumbEntity\'s attributes', () => {
+    it("should return all DumbEntity's attributes", () => {
         const payload = new DumbEntity('name', 'description');
         expect(payload.publicAttributes).toEqual(['name', 'description']);
-    })
+    });
 });

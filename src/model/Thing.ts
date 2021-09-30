@@ -3,7 +3,6 @@ import { BaseDao } from '../dao/BaseDao';
 import { ThingDao } from '../dao/ThingDao';
 import { SensorThingsService } from '../service/SensorThingsService';
 
-
 /**
  * Representation of a Thing SensorThings entity.
  * http://docs.opengeospatial.org/is/15-078r6/15-078r6.html#25

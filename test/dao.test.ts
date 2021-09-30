@@ -4,7 +4,7 @@ import { SensorThingsService } from '../src';
 import { HttpClientMock } from './utils/HttpClientMock';
 import { NotFoundError } from '../src/error/NotFoundError';
 import { AxiosError } from 'axios';
-import {DumbEntityDao} from "./utils/DumbEntityDao";
+import { DumbEntityDao } from './utils/DumbEntityDao';
 import { DumbEntity } from './utils/DumbEntity';
 
 let mockInjector: HttpClientMock;
@@ -221,8 +221,7 @@ describe('DAO', () => {
                 return;
             });
 
-            const getMock = async () =>
-                await dao.get(randomMockId);
+            const getMock = async () => await dao.get(randomMockId);
             const mock = await getMock();
 
             await dao.delete(mock);

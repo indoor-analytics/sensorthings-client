@@ -1,7 +1,6 @@
 import { BaseDao } from '../dao/BaseDao';
 import { SensorThingsService } from '../service/SensorThingsService';
 
-
 /**
  * Abstract representation of a SensorThings entity.
  * http://docs.opengeospatial.org/is/15-078r6/15-078r6.html#24
@@ -33,9 +32,9 @@ export abstract class Entity<T extends Entity<T>> {
      * @param service endpoint to use
      */
     abstract getDao(service: SensorThingsService): BaseDao<T>;
-    
+
     /**
-     * Returns an URL containing the entity URL domain name and id of 
+     * Returns an URL containing the entity URL domain name and id of
      * the current entity.
      * @param service service hosting entity
      * @returns an url defining current entity
