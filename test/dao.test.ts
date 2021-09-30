@@ -5,6 +5,7 @@ import { Thing } from '../src/model/Thing';
 import { HttpClientMock } from './utils/HttpClientMock';
 import { NotFoundError } from '../src/error/NotFoundError';
 import { AxiosError } from 'axios';
+import {MockEntityDao} from "./utils/MockEntityDao";
 
 let mockInjector: HttpClientMock;
 beforeEach(() => {
@@ -18,6 +19,11 @@ describe('DAO', () => {
         it('ThingDao should return correct path name', () => {
             const urlPrefix = new ThingDao(service).getEntityPathname();
             expect(urlPrefix).toEqual('Things');
+        });
+
+        it('MockDao should return correct path name', () => {
+            const urlPrefix = new MockEntityDao(service).getEntityPathname();
+            expect(urlPrefix).toEqual('MockEntities');
         });
     });
 
