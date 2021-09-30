@@ -2,6 +2,10 @@ import { Entity } from '../model/Entity';
 import axios, { AxiosInstance } from 'axios';
 import { ThingDao } from '../dao/ThingDao';
 
+
+/**
+ * A SensorThingsService represents the service endpoint of a server.
+ */
 export class SensorThingsService {
     private readonly _endpoint: URL;
     public httpClient: AxiosInstance;

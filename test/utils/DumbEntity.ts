@@ -5,6 +5,10 @@ import { BaseDao } from '../../src/dao/BaseDao';
 import { DumbEntityDao } from './DumbEntityDao';
 
 
+/**
+ * This is a dumb implementation of the Entity abstract class.
+ * It is used only in tests, and does not exist in the SensorThings specification.
+ */
 export class DumbEntity extends Entity<DumbEntity> {
     public name: string;
     public description: string;
