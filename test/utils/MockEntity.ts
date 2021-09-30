@@ -3,8 +3,8 @@ import { SensorThingsService } from '../../src';
 import { BaseDao } from '../../src/dao/BaseDao';
 
 class MockEntityDao extends BaseDao<MockEntity> {
-    get(id: number): Promise<MockEntity> {
-        throw new Error(`Method not implemented: ${id}`);
+    buildEntityFromSensorThingsAPI(data: any): MockEntity {
+        return new MockEntity(data.name, data.description);
     }
     getEntityPathname(): string {
         return 'MockEntities';

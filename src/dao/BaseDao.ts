@@ -3,6 +3,7 @@ import { SensorThingsService } from '../service/SensorThingsService';
 import { AxiosError, AxiosResponse } from 'axios';
 import { NotFoundError } from '../error/NotFoundError';
 
+
 /**
  * Entity independent implementation of a data access object.
  * It allows to create, update and remove entities.
@@ -85,9 +86,34 @@ export abstract class BaseDao<T extends Entity<T>> {
     abstract getEntityPathname(): string;
 
     /**
+     * Returns an instance of the type inferred in the current DAO.
+     * @param data entity body from service
+     */
+    abstract buildEntityFromSensorThingsAPI(data: any): T;
+
+    /**
      * Returns an entity from a given identifier.
      * Throws a NotFoundError exception if such entity was not found.
      * @param id object id
      */
-    abstract get(id: number): Promise<T>;
+    async get(id: number): Promise<T> {
+        return await this._service.httpClient
+            .get(
+                [
+                    this._service.endpoint.origin,
+                    this.getEntityPathname() + `(${id})`,
+                ].join('/')
+            )
+            .then((response: AxiosResponse) => {
+                const entity = this.buildEntityFromSensorThingsAPI(response.data);
+                entity.id = response.data['@iot.id'];
+                return entity;
+            })
+            .catch((error: AxiosError) => {
+                if (error.response?.status === 404) {
+                    throw new NotFoundError('Entity does not exist.');
+                }
+                throw error;
+            });
+    }
 }

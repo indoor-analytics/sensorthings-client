@@ -14,9 +14,6 @@ export abstract class Entity<T extends Entity<T>> {
         this._id = value;
     }
 
-    // TODO force Entity subclasses to implement a static method to instantiate such subclass from HTTP data
-    // abstract fromSensorThingsAPI(data: any): Entity;
-
     abstract getDao(service: SensorThingsService): BaseDao<T>;
     public entityResourcePathname(service: SensorThingsService): string {
         return `${this.getDao(service).getEntityPathname()}(${this.id})`;
