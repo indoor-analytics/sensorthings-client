@@ -30,8 +30,8 @@ export class Query<T extends Entity<T>> {
             });
             return objects;
         })
-        .catch((error: AxiosError) => {
-            throw error;
-        });
+            .catch((error: AxiosError) => {
+                throw error;
+            });
     }
 }
