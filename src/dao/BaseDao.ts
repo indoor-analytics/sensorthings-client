@@ -2,6 +2,7 @@ import { Entity } from '../model/Entity';
 import { SensorThingsService } from '../service/SensorThingsService';
 import { AxiosError, AxiosResponse } from 'axios';
 import { NotFoundError } from '../error/NotFoundError';
+import {Query} from "../query/Query";
 
 /**
  * Entity independent implementation of a data access object.
@@ -117,5 +118,12 @@ export abstract class BaseDao<T extends Entity<T>> {
                 }
                 throw error;
             });
+    }
+
+    /**
+     * Returns a query object allowing data filtering on inferred-type entities.
+     */
+    public query(): Query<T> {
+        return new Query<T>(this._service, this);
     }
 }

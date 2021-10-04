@@ -38,4 +38,15 @@ describe('Query', () => {
         const result = await query.list();
         expect(result.length).toEqual(10);
     });
+
+    it('should return 10 items when called from service DAO', async () => {
+        const service = new SensorThingsService('https://example.org/v1.0');
+        mockInjector.injectMockCall(service, 'https://example.org/v1.0/Things', 'get', () => {
+            return {
+                data: things
+            }
+        });
+        const result = await service.things.query().list();
+        expect(result.length).toEqual(10);
+    });
 });
