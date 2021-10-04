@@ -33,6 +33,13 @@ describe('SensorThingsService', () => {
         expect(service.url.toString()).toEqual(endpoint);
     });
 
+    it ('should return endpoint without final slash', () => {
+        const endpoint = 'https://example.org/';
+        const service = new SensorThingsService(new URL(endpoint));
+        const result = service.endpoint;
+        expect(result).toEqual('https://example.org');
+    });
+
     describe('Entities handling', () => {
         it('should do a POST call on entity creation', () => {
             const endpoint = 'https://example.org';
