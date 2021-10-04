@@ -21,6 +21,7 @@ describe('Query', () => {
     it('should return some items', async () => {
         const service = new SensorThingsService('https://example.org/v1.0');
         const query = new Query<DumbEntity>(service, new DumbEntityDao(service));
+        // TODO mock server response with things object
         const result = await query.list();
         expect(result.length).toBeGreaterThanOrEqual(1);
     });
