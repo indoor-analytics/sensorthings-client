@@ -1,15 +1,17 @@
 import {Entity} from "../model/Entity";
 import {SensorThingsService} from "../service/SensorThingsService";
+import {BaseDao} from "../dao/BaseDao";
 
 export class Query<T extends Entity<T>> {
     private _service: SensorThingsService;
+    private _dao: BaseDao<T>;
 
-    constructor (service: SensorThingsService) {
+    constructor (service: SensorThingsService, dao: BaseDao<T>) {
         this._service = service;
-        console.log(this._endpoint);
+        this._dao = dao;
     }
 
-    private get _endpoint (): string {
-        return [this._service.endpoint, '// TODO'].join('/');
+    public get endpoint (): string {
+        return [this._service.endpoint, this._dao.getEntityPathname()].join('/');
     }
 }
