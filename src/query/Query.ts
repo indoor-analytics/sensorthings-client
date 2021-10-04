@@ -1,7 +1,7 @@
 import {Entity} from "../model/Entity";
 import {SensorThingsService} from "../service/SensorThingsService";
 import {BaseDao} from "../dao/BaseDao";
-import { AxiosError, AxiosResponse } from "axios";
+import {AxiosError, AxiosResponse} from "axios";
 
 export class Query<T extends Entity<T>> {
     private _service: SensorThingsService;
@@ -24,12 +24,12 @@ export class Query<T extends Entity<T>> {
     public async list(): Promise<T[]> {
         return this._service.httpClient.get(
             this.endpoint
-        ).then((response: AxiosResponse<{value: Record<string, string>[]}>) => {
-            const objects: T[] = response.data.value.map((datum: Record<string, string>) => {
-                return this._dao.buildEntityFromSensorThingsAPI(datum)
-            });
-            return objects;
-        })
+        )
+            .then((response: AxiosResponse<{value: Record<string, string>[]}>) => {
+                return response.data.value.map((datum: Record<string, string>) => {
+                    return this._dao.buildEntityFromSensorThingsAPI(datum)
+                });
+            })
             .catch((error: AxiosError) => {
                 throw error;
             });
