@@ -1,9 +1,12 @@
-import { SensorThingsService } from '../src/service/SensorThingsService';
+import { SensorThingsService } from '../src';
+import { DumbEntity } from './utils/DumbEntity';
 // @ts-ignore
-import { MockEntity } from './utils/MockEntity';
-import axios from 'axios';
-jest.mock('axios');
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+import { HttpClientMock } from './utils/HttpClientMock';
+
+let mockInjector: HttpClientMock;
+beforeEach(() => {
+    mockInjector = new HttpClientMock();
+});
 
 describe('SensorThingsService', () => {
     it('should not accept empty constructor', () => {
@@ -35,78 +38,90 @@ describe('SensorThingsService', () => {
         it('should do a POST call on entity creation', () => {
             const endpoint = 'https://example.org';
             const service = new SensorThingsService(new URL(endpoint));
-            const payload = new MockEntity(
+            mockInjector.injectMockCall(
+                service,
+                'https://example.org/MockEntities',
+                'post',
+                (_data: any) => {
+                    expect(_data).toEqual(payload);
+                    return JSON.parse(`{
+                    "data": {
+                        "@iot.id": 2708592,
+                        "@iot.selfLink": "https://example.org/Things(2708592)",
+                        "description": "This is a test entity.",
+                        "name": "Hello there",
+                        "Datastreams@iot.navigationLink": "https://example.org/Things(2708592)/Datastreams",
+                        "HistoricalLocations@iot.navigationLink": "https://example.org/Things(2708592)/HistoricalLocations",
+                        "Locations@iot.navigationLink": "https://example.org/Things(2708592)/Locations"
+                    }
+                }`);
+                }
+            );
+
+            const payload = new DumbEntity(
                 'Hello there',
                 'This is a test entity.'
-            );
-            mockedAxios.post.mockResolvedValueOnce(
-                JSON.parse(`{
-                "data": {
-                    "@iot.id": 2708592,
-                    "@iot.selfLink": "https://example.org/Things(2708592)",
-                    "description": "This is a test entity.",
-                    "name": "Hello there",
-                    "Datastreams@iot.navigationLink": "https://example.org/Things(2708592)/Datastreams",
-                    "HistoricalLocations@iot.navigationLink": "https://example.org/Things(2708592)/HistoricalLocations",
-                    "Locations@iot.navigationLink": "https://example.org/Things(2708592)/Locations"
-                }
-            }`)
             );
 
             service.create(payload);
 
-            expect(mockedAxios.post).toHaveBeenCalledWith(
-                'https://example.org/MockEntity',
-                payload
-            );
+            expect(
+                mockInjector.urlHasBeenCalled(
+                    'https://example.org/MockEntities'
+                )
+            ).toBeTruthy();
         });
 
         it('should do a DELETE call on entity removal', async () => {
             const endpoint = 'https://example.org';
+            const deleteUrl = 'https://example.org/MockEntities(42)';
             const service = new SensorThingsService(new URL(endpoint));
-            const payload = new MockEntity(
+            mockInjector.injectMockCall(service, deleteUrl, 'delete', () => {
+                return JSON.parse(`{
+                    "data": {
+                        "readyState": 4,
+                        "responseText": "",
+                        "status": 200,
+                        "statusText": "OK"
+                    }
+                }`);
+            });
+            const payload = new DumbEntity(
                 'Hello there',
                 'This is a test entity.'
             );
             payload.id = 42;
-            mockedAxios.delete.mockResolvedValueOnce(
-                JSON.parse(`{
-                "data": {
-                    "readyState": 4,
-                    "responseText": "",
-                    "status": 200,
-                    "statusText": "OK"
-                }
-            }`)
-            );
 
             await service.delete(payload);
 
-            expect(mockedAxios.delete).toHaveBeenCalledWith(
-                'https://example.org/MockEntity(42)'
-            );
+            expect(mockInjector.urlHasBeenCalled(deleteUrl));
         });
 
         it('should assign an id to the entity on creation', async () => {
             const endpoint = 'https://example.org';
             const service = new SensorThingsService(new URL(endpoint));
-            const payload = new MockEntity(
+            const createdId: number = Math.ceil(Math.random() * 3000000);
+            mockInjector.injectMockCall(
+                service,
+                'https://example.org/MockEntities',
+                'post',
+                () => {
+                    return JSON.parse(`{
+                    "data": {
+                        "@iot.id": ${createdId},
+                        "@iot.selfLink": "https://example.org/Things(${createdId})",
+                        "description": "This is a test entity.",
+                        "name": "Hello there",
+                        "Datastreams@iot.navigationLink": "https://example.org/Things(${createdId})/Datastreams",
+                        "HistoricalLocations@iot.navigationLink": "https://example.org/Things(${createdId})/HistoricalLocations",
+                        "Locations@iot.navigationLink": "https://example.org/Things(${createdId})/Locations"
+                    }
+                }`);
+                }
+            );
+            const payload = new DumbEntity(
                 'Hello there',
                 'This is a test entity.'
-            );
-            const createdId: number = Math.ceil(Math.random() * 3000000);
-            mockedAxios.post.mockResolvedValueOnce(
-                JSON.parse(`{
-                "data": {
-                    "@iot.id": ${createdId},
-                    "@iot.selfLink": "https://example.org/Things(${createdId})",
-                    "description": "This is a test entity.",
-                    "name": "Hello there",
-                    "Datastreams@iot.navigationLink": "https://example.org/Things(${createdId})/Datastreams",
-                    "HistoricalLocations@iot.navigationLink": "https://example.org/Things(${createdId})/HistoricalLocations",
-                    "Locations@iot.navigationLink": "https://example.org/Things(${createdId})/Locations"
-                }
-            }`)
             );
 
             await service.create(payload);
@@ -117,7 +132,27 @@ describe('SensorThingsService', () => {
         it('should do a PATCH call on entity update', async () => {
             const endpoint = 'https://example.org';
             const service = new SensorThingsService(new URL(endpoint));
-            const payload = new MockEntity(
+            const patchUrl = 'https://example.org/MockEntities(42)';
+            mockInjector.injectMockCall(
+                service,
+                patchUrl,
+                'patch',
+                (_data: any) => {
+                    expect(_data).toEqual(expect.objectContaining(newInfo));
+                    return JSON.parse(`{
+                    "data": {
+                        "@iot.id": 42,
+                        "@iot.selfLink": "https://example.org/Things(42)",
+                        "description": "${newInfo.description}",
+                        "name": "${newInfo.name}",
+                        "Datastreams@iot.navigationLink": "https://example.org/Things(42)/Datastreams",
+                        "HistoricalLocations@iot.navigationLink": "https://example.org/Things(42)/HistoricalLocations",
+                        "Locations@iot.navigationLink": "https://example.org/Things(42)/Locations"
+                    }
+                }`);
+                }
+            );
+            const payload = new DumbEntity(
                 'Hello there',
                 'This is a test entity.'
             );
@@ -130,26 +165,9 @@ describe('SensorThingsService', () => {
             payload.name = newInfo.name;
             payload.description = newInfo.description;
 
-            mockedAxios.patch.mockResolvedValueOnce(
-                JSON.parse(`{
-                "data": {
-                    "@iot.id": 42,
-                    "@iot.selfLink": "https://example.org/Things(42)",
-                    "description": "${newInfo.description}",
-                    "name": "${newInfo.name}",
-                    "Datastreams@iot.navigationLink": "https://example.org/Things(42)/Datastreams",
-                    "HistoricalLocations@iot.navigationLink": "https://example.org/Things(42)/HistoricalLocations",
-                    "Locations@iot.navigationLink": "https://example.org/Things(42)/Locations"
-                }
-            }`)
-            );
-
             await service.update(payload);
 
-            expect(mockedAxios.patch).toHaveBeenCalledWith(
-                'https://example.org/MockEntity(42)',
-                expect.objectContaining(newInfo)
-            );
+            expect(mockInjector.urlHasBeenCalled(patchUrl)).toBeTruthy();
         });
     });
 });
