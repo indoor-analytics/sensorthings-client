@@ -10,6 +10,6 @@ export class DumbEntityDao extends BaseDao<DumbEntity> {
         return new DumbEntity(data.name, data.description);
     }
     getEntityPathname(): string {
-        return 'MockEntities';
+        return 'DumbEntities';
     }
 }

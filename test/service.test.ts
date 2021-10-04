@@ -53,7 +53,7 @@ describe('SensorThingsService', () => {
             const service = new SensorThingsService(new URL(endpoint));
             mockInjector.injectMockCall(
                 service,
-                'https://example.org/MockEntities',
+                'https://example.org/DumbEntities',
                 'post',
                 (_data: DumbEntity) => {
                     expect(_data).toEqual(payload);
@@ -80,14 +80,14 @@ describe('SensorThingsService', () => {
 
             expect(
                 mockInjector.urlHasBeenCalled(
-                    'https://example.org/MockEntities'
+                    'https://example.org/DumbEntities'
                 )
             ).toBeTruthy();
         });
 
         it('should do a DELETE call on entity removal', async () => {
             const endpoint = 'https://example.org';
-            const deleteUrl = 'https://example.org/MockEntities(42)';
+            const deleteUrl = 'https://example.org/DumbEntities(42)';
             const service = new SensorThingsService(new URL(endpoint));
             mockInjector.injectMockCall(service, deleteUrl, 'delete', () => {
                 return JSON.parse(`{
@@ -116,7 +116,7 @@ describe('SensorThingsService', () => {
             const createdId: number = Math.ceil(Math.random() * 3000000);
             mockInjector.injectMockCall(
                 service,
-                'https://example.org/MockEntities',
+                'https://example.org/DumbEntities',
                 'post',
                 () => {
                     return JSON.parse(`{
@@ -145,7 +145,7 @@ describe('SensorThingsService', () => {
         it('should do a PATCH call on entity update', async () => {
             const endpoint = 'https://example.org';
             const service = new SensorThingsService(new URL(endpoint));
-            const patchUrl = 'https://example.org/MockEntities(42)';
+            const patchUrl = 'https://example.org/DumbEntities(42)';
             mockInjector.injectMockCall(
                 service,
                 patchUrl,

@@ -22,7 +22,7 @@ describe('DAO', () => {
 
         it('MockDao should return correct path name', () => {
             const urlPrefix = new DumbEntityDao(service).getEntityPathname();
-            expect(urlPrefix).toEqual('MockEntities');
+            expect(urlPrefix).toEqual('DumbEntities');
         });
     });
 
@@ -37,24 +37,24 @@ describe('DAO', () => {
                 return JSON.parse(`{
                     "data": {
                         "@iot.id": ${randomMockId},
-                        "@iot.selfLink": "https://example.org/MockEntities(${randomMockId})",
+                        "@iot.selfLink": "https://example.org/DumbEntities(${randomMockId})",
                         "description": "${mockDescription}",
                         "name": "${mockName}",
-                        "Datastreams@iot.navigationLink": "https://example.org/MockEntities(${randomMockId})/Datastreams",
-                        "HistoricalLocations@iot.navigationLink": "https://example.org/MockEntities(${randomMockId})/HistoricalLocations",
-                        "Locations@iot.navigationLink": "https://example.org/MockEntities(${randomMockId})/Locations"
+                        "Datastreams@iot.navigationLink": "https://example.org/DumbEntities(${randomMockId})/Datastreams",
+                        "HistoricalLocations@iot.navigationLink": "https://example.org/DumbEntities(${randomMockId})/HistoricalLocations",
+                        "Locations@iot.navigationLink": "https://example.org/DumbEntities(${randomMockId})/Locations"
                     }
                 }`);
             };
             mockInjector.injectMockCall(
                 service,
-                'https://example.org/MockEntities',
+                'https://example.org/DumbEntities',
                 'post',
                 getMockObject
             );
             mockInjector.injectMockCall(
                 service,
-                `https://example.org/MockEntities(${randomMockId})`,
+                `https://example.org/DumbEntities(${randomMockId})`,
                 'get',
                 getMockObject
             );
@@ -70,7 +70,7 @@ describe('DAO', () => {
             const service = new SensorThingsService('https://example.org');
             mockInjector.injectMockCall(
                 service,
-                'https://example.org/MockEntities(42)',
+                'https://example.org/DumbEntities(42)',
                 'get',
                 async () => {
                     const error: Error = new Error() as AxiosError;
@@ -101,7 +101,7 @@ describe('DAO', () => {
             const service = new SensorThingsService('https://example.org');
             mockInjector.injectMockCall(
                 service,
-                'https://example.org/MockEntities(42)',
+                'https://example.org/DumbEntities(42)',
                 'patch',
                 async () => {
                     const error: Error = new Error() as AxiosError;
@@ -135,36 +135,36 @@ describe('DAO', () => {
             const randomMockId = Math.ceil(Math.random() * 3000000);
             mockInjector.injectMockCall(
                 service,
-                `https://example.org/MockEntities(${randomMockId})`,
+                `https://example.org/DumbEntities(${randomMockId})`,
                 'get',
                 () => {
                     return {
                         data: {
                             '@iot.id': randomMockId,
-                            '@iot.selfLink': `https://example.org/MockEntities(${randomMockId})`,
+                            '@iot.selfLink': `https://example.org/DumbEntities(${randomMockId})`,
                             description: 'This is a test object.',
                             name: 'Test object',
-                            'Datastreams@iot.navigationLink': `https://example.org/MockEntities(${randomMockId})/Datastreams`,
-                            'HistoricalLocations@iot.navigationLink': `https://example.org/MockEntities(${randomMockId})/HistoricalLocations`,
-                            'Locations@iot.navigationLink': `https://example.org/MockEntities(${randomMockId})/Locations`,
+                            'Datastreams@iot.navigationLink': `https://example.org/DumbEntities(${randomMockId})/Datastreams`,
+                            'HistoricalLocations@iot.navigationLink': `https://example.org/DumbEntities(${randomMockId})/HistoricalLocations`,
+                            'Locations@iot.navigationLink': `https://example.org/DumbEntities(${randomMockId})/Locations`,
                         },
                     };
                 }
             );
             mockInjector.injectMockCall(
                 service,
-                `https://example.org/MockEntities(${randomMockId})`,
+                `https://example.org/DumbEntities(${randomMockId})`,
                 'patch',
                 (_data: Record<string, unknown>) => {
                     return {
                         data: {
                             '@iot.id': randomMockId,
-                            '@iot.selfLink': `https://example.org/MockEntities(${randomMockId})`,
+                            '@iot.selfLink': `https://example.org/DumbEntities(${randomMockId})`,
                             description: _data.description,
                             name: _data.name,
-                            'Datastreams@iot.navigationLink': `https://example.org/MockEntities(${randomMockId})/Datastreams`,
-                            'HistoricalLocations@iot.navigationLink': `https://example.org/MockEntities(${randomMockId})/HistoricalLocations`,
-                            'Locations@iot.navigationLink': `https://example.org/MockEntities(${randomMockId})/Locations`,
+                            'Datastreams@iot.navigationLink': `https://example.org/DumbEntities(${randomMockId})/Datastreams`,
+                            'HistoricalLocations@iot.navigationLink': `https://example.org/DumbEntities(${randomMockId})/HistoricalLocations`,
+                            'Locations@iot.navigationLink': `https://example.org/DumbEntities(${randomMockId})/Locations`,
                         },
                     };
                 }
@@ -183,7 +183,7 @@ describe('DAO', () => {
             const service = new SensorThingsService('https://example.org');
             const dao = new DumbEntityDao(service);
             const randomMockId = Math.ceil(Math.random() * 3000000);
-            const targetUrl = `https://example.org/MockEntities(${randomMockId})`;
+            const targetUrl = `https://example.org/DumbEntities(${randomMockId})`;
             let calledOnce = false;
             mockInjector.injectMockCall(service, targetUrl, 'get', () => {
                 if (calledOnce) {
@@ -208,12 +208,12 @@ describe('DAO', () => {
                 return {
                     data: {
                         '@iot.id': randomMockId,
-                        '@iot.selfLink': `https://example.org/MockEntities(${randomMockId})`,
+                        '@iot.selfLink': `https://example.org/DumbEntities(${randomMockId})`,
                         description: 'This is a test object.',
                         name: 'Test object',
-                        'Datastreams@iot.navigationLink': `https://example.org/MockEntities(${randomMockId})/Datastreams`,
-                        'HistoricalLocations@iot.navigationLink': `https://example.org/MockEntities(${randomMockId})/HistoricalLocations`,
-                        'Locations@iot.navigationLink': `https://example.org/MockEntities(${randomMockId})/Locations`,
+                        'Datastreams@iot.navigationLink': `https://example.org/DumbEntities(${randomMockId})/Datastreams`,
+                        'HistoricalLocations@iot.navigationLink': `https://example.org/DumbEntities(${randomMockId})/HistoricalLocations`,
+                        'Locations@iot.navigationLink': `https://example.org/DumbEntities(${randomMockId})/Locations`,
                     },
                 };
             });
@@ -235,7 +235,7 @@ describe('DAO', () => {
             const service = new SensorThingsService('https://example.org');
             mockInjector.injectMockCall(
                 service,
-                'https://example.org/MockEntities(42)',
+                'https://example.org/DumbEntities(42)',
                 'delete',
                 async () => {
                     const error: Error = new Error() as AxiosError;
