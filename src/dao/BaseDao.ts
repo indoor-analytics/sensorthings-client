@@ -24,6 +24,7 @@ export abstract class BaseDao<T extends Entity<T>> {
             [this._service.endpoint.origin, this.getEntityPathname()].join('/'),
             entity.toNetworkObject()
         );
+        // @ts-ignore
         entity.id = response.data['@iot.id'];
         return;
     }
@@ -33,7 +34,7 @@ export abstract class BaseDao<T extends Entity<T>> {
      * Throws a NotFoundError exception if entity was not found.
      * @param entity entity to update (contains updated information regarding service entity data)
      */
-    public async update(entity: T): Promise<any> {
+    public async update(entity: T): Promise<Object> {
         return this._service.httpClient
             .patch(
                 [
@@ -42,7 +43,7 @@ export abstract class BaseDao<T extends Entity<T>> {
                 ].join('/'),
                 entity.toNetworkObject()
             )
-            .then((response: AxiosResponse) => {
+            .then((response: AxiosResponse<Object>) => {
                 return response.data;
             })
             .catch((error: AxiosError) => {
@@ -88,7 +89,7 @@ export abstract class BaseDao<T extends Entity<T>> {
      * Returns an instance of the type inferred in the current DAO.
      * @param data entity body from service
      */
-    abstract buildEntityFromSensorThingsAPI(data: any): T;
+    abstract buildEntityFromSensorThingsAPI(data: Record<string, string>): T;
 
     /**
      * Returns an entity from a given identifier.

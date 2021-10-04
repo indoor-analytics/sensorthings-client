@@ -1,6 +1,5 @@
 import { ThingDao } from '../src/dao/ThingDao';
 import { SensorThingsService } from '../src';
-// @ts-ignore
 import { HttpClientMock } from './utils/HttpClientMock';
 import { NotFoundError } from '../src/error/NotFoundError';
 import { AxiosError } from 'axios';

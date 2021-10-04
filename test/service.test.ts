@@ -1,6 +1,5 @@
 import { SensorThingsService } from '../src';
 import { DumbEntity } from './utils/DumbEntity';
-// @ts-ignore
 import { HttpClientMock } from './utils/HttpClientMock';
 
 let mockInjector: HttpClientMock;
