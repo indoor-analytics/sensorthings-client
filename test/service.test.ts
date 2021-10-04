@@ -41,7 +41,7 @@ describe('SensorThingsService', () => {
                 service,
                 'https://example.org/MockEntities',
                 'post',
-                (_data: any) => {
+                (_data: DumbEntity) => {
                     expect(_data).toEqual(payload);
                     return JSON.parse(`{
                     "data": {
@@ -136,7 +136,7 @@ describe('SensorThingsService', () => {
                 service,
                 patchUrl,
                 'patch',
-                (_data: any) => {
+                (_data: never) => {
                     expect(_data).toEqual(expect.objectContaining(newInfo));
                     return JSON.parse(`{
                     "data": {

@@ -155,7 +155,7 @@ describe('DAO', () => {
                 service,
                 `https://example.org/MockEntities(${randomMockId})`,
                 'patch',
-                (_data: any) => {
+                (_data: Record<string, unknown>) => {
                     return {
                         data: {
                             '@iot.id': randomMockId,
@@ -175,6 +175,7 @@ describe('DAO', () => {
             const newDescription = 'bonsoir';
             mock.description = newDescription;
             const updateResult = await dao.update(mock);
+            // @ts-ignore
             expect(updateResult['description']).toEqual(newDescription);
         });
 
