@@ -19,15 +19,16 @@ export class SensorThingsService {
         return this._endpoint;
     }
 
-    public async create<T extends Entity<T>>(entity: T): Promise<void> {
+
+    public async create<T extends Entity<T>> (entity: T): Promise<void> {
         return entity.getDao(this).create(entity);
     }
 
-    public async update<T extends Entity<T>>(entity: T): Promise<Object> {
+    public async update<T extends Entity<T>> (entity: T): Promise<Object> {
         return entity.getDao(this).update(entity);
     }
 
-    public async delete<T extends Entity<T>>(entity: T): Promise<void> {
+    public async delete<T extends Entity<T>> (entity: T): Promise<void> {
         return entity.getDao(this).delete(entity);
     }
 
