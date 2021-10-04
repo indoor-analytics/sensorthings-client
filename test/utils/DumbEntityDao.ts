@@ -1,5 +1,4 @@
 import { BaseDao } from '../../src/dao/BaseDao';
-// @ts-ignore
 import { DumbEntity } from './DumbEntity';
 
 /**

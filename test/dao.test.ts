@@ -1,6 +1,5 @@
 import { ThingDao } from '../src/dao/ThingDao';
 import { SensorThingsService } from '../src';
-// @ts-ignore
 import { HttpClientMock } from './utils/HttpClientMock';
 import { NotFoundError } from '../src/error/NotFoundError';
 import { AxiosError } from 'axios';
@@ -156,7 +155,7 @@ describe('DAO', () => {
                 service,
                 `https://example.org/MockEntities(${randomMockId})`,
                 'patch',
-                (_data: any) => {
+                (_data: Record<string, unknown>) => {
                     return {
                         data: {
                             '@iot.id': randomMockId,
@@ -176,6 +175,7 @@ describe('DAO', () => {
             const newDescription = 'bonsoir';
             mock.description = newDescription;
             const updateResult = await dao.update(mock);
+            // @ts-ignore
             expect(updateResult['description']).toEqual(newDescription);
         });
 

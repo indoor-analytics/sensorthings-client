@@ -59,7 +59,7 @@ export abstract class Entity<T extends Entity<T>> {
      * @returns an object containing all public attributes
      */
     public toNetworkObject(): Object {
-        const object: { [attr: string]: any } = {};
+        const object: Record<string, string> = {};
         for (const attribute of this.publicAttributes) {
             // @ts-ignore
             object[attribute] = this[attribute];

@@ -1,6 +1,5 @@
 import { SensorThingsService } from '../src';
 import { DumbEntity } from './utils/DumbEntity';
-// @ts-ignore
 import { HttpClientMock } from './utils/HttpClientMock';
 
 let mockInjector: HttpClientMock;
@@ -11,7 +10,7 @@ beforeEach(() => {
 describe('SensorThingsService', () => {
     it('should not accept empty constructor', () => {
         const build = () => new SensorThingsService(new URL(''));
-        expect(build).toThrowError(new TypeError('Invalid URL: '));
+        expect(build).toThrowError(/Invalid URL/);
     });
 
     it('should accept string constructor', () => {
@@ -25,7 +24,7 @@ describe('SensorThingsService', () => {
     it('should not accept random string as endpoint', () => {
         const build = () =>
             new SensorThingsService(new URL('this_is_my_endpoint'));
-        expect(build).toThrowError(/Invalid URL:/);
+        expect(build).toThrowError(/Invalid URL/);
     });
 
     it('should return endpoint', () => {
@@ -42,7 +41,7 @@ describe('SensorThingsService', () => {
                 service,
                 'https://example.org/MockEntities',
                 'post',
-                (_data: any) => {
+                (_data: DumbEntity) => {
                     expect(_data).toEqual(payload);
                     return JSON.parse(`{
                     "data": {
@@ -137,7 +136,7 @@ describe('SensorThingsService', () => {
                 service,
                 patchUrl,
                 'patch',
-                (_data: any) => {
+                (_data: never) => {
                     expect(_data).toEqual(expect.objectContaining(newInfo));
                     return JSON.parse(`{
                     "data": {

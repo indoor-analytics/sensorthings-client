@@ -1,7 +1,6 @@
 import { Entity } from '../../src/model/Entity';
 import { SensorThingsService } from '../../src';
 import { BaseDao } from '../../src/dao/BaseDao';
-// @ts-ignore
 import { DumbEntityDao } from './DumbEntityDao';
 
 /**
