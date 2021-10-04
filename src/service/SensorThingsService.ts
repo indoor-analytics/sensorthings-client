@@ -12,7 +12,7 @@ export class SensorThingsService {
         this._url =
             typeof endpoint === 'string' ? new URL(endpoint) : endpoint;
         this.httpClient = axios.create({
-            url: typeof endpoint === 'string' ? endpoint : endpoint.href,
+            url: this._url.href
         });
     }
     get url(): URL {
