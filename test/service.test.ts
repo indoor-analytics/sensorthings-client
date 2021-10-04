@@ -18,7 +18,7 @@ describe('SensorThingsService', () => {
             new URL('https://example.org/')
         );
         const service2 = new SensorThingsService('https://example.org/');
-        expect(service1.endpoint).toEqual(service2.endpoint);
+        expect(service1.url).toEqual(service2.url);
     });
 
     it('should not accept random string as endpoint', () => {
@@ -30,7 +30,7 @@ describe('SensorThingsService', () => {
     it('should return endpoint', () => {
         const endpoint = 'https://example.org/';
         const service = new SensorThingsService(new URL(endpoint));
-        expect(service.endpoint.toString()).toEqual(endpoint);
+        expect(service.url.toString()).toEqual(endpoint);
     });
 
     describe('Entities handling', () => {

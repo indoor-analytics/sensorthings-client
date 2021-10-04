@@ -21,7 +21,7 @@ export abstract class BaseDao<T extends Entity<T>> {
      */
     public async create(entity: T): Promise<void> {
         const response = await this._service.httpClient.post(
-            [this._service.endpoint.origin, this.getEntityPathname()].join('/'),
+            [this._service.url.origin, this.getEntityPathname()].join('/'),
             entity.toNetworkObject()
         );
         // @ts-ignore
@@ -38,7 +38,7 @@ export abstract class BaseDao<T extends Entity<T>> {
         return this._service.httpClient
             .patch(
                 [
-                    this._service.endpoint.origin,
+                    this._service.url.origin,
                     entity.entityResourcePathname(this._service),
                 ].join('/'),
                 entity.toNetworkObject()
@@ -63,7 +63,7 @@ export abstract class BaseDao<T extends Entity<T>> {
         return this._service.httpClient
             .delete(
                 [
-                    this._service.endpoint.origin,
+                    this._service.url.origin,
                     entity.entityResourcePathname(this._service),
                 ].join('/')
             )
@@ -100,7 +100,7 @@ export abstract class BaseDao<T extends Entity<T>> {
         return await this._service.httpClient
             .get(
                 [
-                    this._service.endpoint.origin,
+                    this._service.url.origin,
                     this.getEntityPathname() + `(${id})`,
                 ].join('/')
             )

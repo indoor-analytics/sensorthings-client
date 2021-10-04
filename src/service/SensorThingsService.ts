@@ -6,17 +6,17 @@ import { ThingDao } from '../dao/ThingDao';
  * A SensorThingsService represents the service endpoint of a server.
  */
 export class SensorThingsService {
-    private readonly _endpoint: URL;
+    private readonly _url: URL;
     public httpClient: AxiosInstance;
     constructor(endpoint: URL | string) {
-        this._endpoint =
+        this._url =
             typeof endpoint === 'string' ? new URL(endpoint) : endpoint;
         this.httpClient = axios.create({
             url: typeof endpoint === 'string' ? endpoint : endpoint.href,
         });
     }
-    get endpoint(): URL {
-        return this._endpoint;
+    get url(): URL {
+        return this._url;
     }
 
 
