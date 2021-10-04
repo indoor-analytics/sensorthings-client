@@ -18,6 +18,12 @@ export class SensorThingsService {
     get url(): URL {
         return this._url;
     }
+    get endpoint(): string {
+        const endpoint = this.url.toString();
+        return endpoint.charAt(endpoint.length-1) === '/'
+            ? endpoint.substring(0, endpoint.length-1)
+            : endpoint;
+    }
 
 
     public async create<T extends Entity<T>> (entity: T): Promise<void> {
