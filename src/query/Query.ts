@@ -20,7 +20,7 @@ export class Query<T extends Entity<T>> {
      * invoked on this query instance.
      * @returns an array of entites matching query parameters
      */
-    public list(): Array<T> {
+    public async list(): Promise<T[]> {
         return [];
     }
 }
