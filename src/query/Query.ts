@@ -14,4 +14,13 @@ export class Query<T extends Entity<T>> {
     public get endpoint (): string {
         return [this._service.endpoint, this._dao.getEntityPathname()].join('/');
     }
+
+    /**
+     * Queries current service for entities matching parameters that have been
+     * invoked on this query instance.
+     * @returns an array of entites matching query parameters
+     */
+    public list(): Array<T> {
+        return [];
+    }
 }
