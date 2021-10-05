@@ -39,6 +39,15 @@ export class Query<T extends Entity<T>> {
         return this;
     }
 
+    /**
+     * Specifies a number of entities that shall be excluded from the result.
+     * @param count number of items to skip
+     */
+    public skip(count: number): this {
+        console.log(count);
+        return this;
+    }
+
 
     /**
      * Queries current service for entities matching parameters that have been
