@@ -29,61 +29,65 @@ describe('Query', () => {
         expect(query.endpoint).toEqual('https://example.org/v1.0/Things');
     });
 
-    it('should return 10 items', async () => {
-        const service = new SensorThingsService('https://example.org/v1.0');
-        const query = new Query<DumbEntity>(service, new DumbEntityDao(service));
+    describe('Query.list', () => {
+        it('should return 10 items', async () => {
+            const service = new SensorThingsService('https://example.org/v1.0');
+            const query = new Query<DumbEntity>(service, new DumbEntityDao(service));
 
-        mockInjector.injectMockCall(service, 'https://example.org/v1.0/DumbEntities', 'get', () => {
-            return {
-                data: things
-            }
+            mockInjector.injectMockCall(service, 'https://example.org/v1.0/DumbEntities', 'get', () => {
+                return {
+                    data: things
+                }
+            });
+
+            const result = await query.list();
+            expect(result.length).toEqual(10);
         });
 
-        const result = await query.list();
-        expect(result.length).toEqual(10);
-    });
-
-    it('should return 10 items when called from service DAO', async () => {
-        const service = new SensorThingsService('https://example.org/v1.0');
-        mockInjector.injectMockCall(service, 'https://example.org/v1.0/Things', 'get', () => {
-            return {
-                data: things
-            }
+        it('should return 10 items when called from service DAO', async () => {
+            const service = new SensorThingsService('https://example.org/v1.0');
+            mockInjector.injectMockCall(service, 'https://example.org/v1.0/Things', 'get', () => {
+                return {
+                    data: things
+                }
+            });
+            const result = await service.things.query().list();
+            expect(result.length).toEqual(10);
         });
-        const result = await service.things.query().list();
-        expect(result.length).toEqual(10);
-    });
 
-    it('should return 5 items with top command', async () => {
-        const service = new SensorThingsService('https://example.org/v1.0');
-        mockInjector.injectMockCall(service, 'https://example.org/v1.0/Things?$top=5', 'get', () => {
-            return {
-                data: top5Things
-            }
+        describe('top filter', () => {
+            it('should return 5 items with top command', async () => {
+                const service = new SensorThingsService('https://example.org/v1.0');
+                mockInjector.injectMockCall(service, 'https://example.org/v1.0/Things?$top=5', 'get', () => {
+                    return {
+                        data: top5Things
+                    }
+                });
+                const result = await service.things.query()
+                    .top(5)
+                    .list();
+                expect(result.length).toEqual(5);
+            });
+
+            it('should throw when trying to get first -7 items', async () => {
+                const service = new SensorThingsService('https://example.org/v1.0');
+                const getThings = async () => await service.things.query()
+                    .top(-7)
+                    .list();
+                await expect(getThings()).rejects.toThrow(
+                    new NegativeValueError('Top argument shall be a non-negative integer.')
+                );
+            });
+
+            it('should throw when trying to get first 9.6 items', async () => {
+                const service = new SensorThingsService('https://example.org/v1.0');
+                const getThings = async () => await service.things.query()
+                    .top(9.6)
+                    .list();
+                await expect(getThings()).rejects.toThrow(
+                    new NotIntegerError('Top argument shall be a non-negative integer.')
+                );
+            });
         });
-        const result = await service.things.query()
-            .top(5)
-            .list();
-        expect(result.length).toEqual(5);
-    });
-
-    it('should throw when trying to get first -7 items', async () => {
-        const service = new SensorThingsService('https://example.org/v1.0');
-        const getThings = async () => await service.things.query()
-            .top(-7)
-            .list();
-        await expect(getThings()).rejects.toThrow(
-            new NegativeValueError('Top argument shall be a non-negative integer.')
-        );
-    });
-
-    it('should throw when trying to get first 9.6 items', async () => {
-        const service = new SensorThingsService('https://example.org/v1.0');
-        const getThings = async () => await service.things.query()
-            .top(9.6)
-            .list();
-        await expect(getThings()).rejects.toThrow(
-            new NotIntegerError('Top argument shall be a non-negative integer.')
-        );
     });
 });
