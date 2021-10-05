@@ -12,7 +12,7 @@ export class Query<T extends Entity<T>> {
         this._dao = dao;
     }
 
-    public get endpoint (): string {
+    protected get _endpoint (): string {
         return [this._service.endpoint, this._dao.getEntityPathname()].join('/');
     }
 
@@ -23,7 +23,7 @@ export class Query<T extends Entity<T>> {
      */
     public async list(): Promise<T[]> {
         return this._service.httpClient.get(
-            this.endpoint
+            this._endpoint
         )
             .then((response: AxiosResponse<{value: Record<string, string>[]}>) => {
                 return response.data.value.map((datum: Record<string, string>) => {

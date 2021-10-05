@@ -6,6 +6,7 @@ import { DumbEntity } from "./utils/DumbEntity";
 import { DumbEntityDao } from "./utils/DumbEntityDao";
 import { HttpClientMock } from "./utils/HttpClientMock";
 import { things } from "./responses/things";
+import {DumbQuery} from "./utils/DumbQuery";
 
 let mockInjector: HttpClientMock;
 beforeEach(() => {
@@ -15,13 +16,13 @@ beforeEach(() => {
 describe('Query', () => {
     it('Query<DumbEntity> should return DumbEntity endpoint', () => {
         const service = new SensorThingsService('https://example.org/v1.0');
-        const query = new Query<DumbEntity>(service, new DumbEntityDao(service));
+        const query = new DumbQuery<DumbEntity>(service, new DumbEntityDao(service));
         expect(query.endpoint).toEqual('https://example.org/v1.0/DumbEntities');
     });
 
     it('Query<Thing> should return Things endpoint', () => {
         const service = new SensorThingsService('https://example.org/v1.0');
-        const query = new Query<Thing>(service, new ThingDao(service));
+        const query = new DumbQuery<Thing>(service, new ThingDao(service));
         expect(query.endpoint).toEqual('https://example.org/v1.0/Things');
     });
 
