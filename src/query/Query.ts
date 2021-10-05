@@ -4,6 +4,7 @@ import {BaseDao} from "../dao/BaseDao";
 import {AxiosError, AxiosResponse} from "axios";
 import {QuerySettings} from "./QuerySettings";
 import {NegativeValueError} from "../error/NegativeValueError";
+import {NotIntegerError} from "../error/NotIntegerError";
 
 export class Query<T extends Entity<T>> {
     private _service: SensorThingsService;
@@ -32,6 +33,8 @@ export class Query<T extends Entity<T>> {
     public top(count: number): this {
         if (count < 0)
             throw new NegativeValueError('Top argument shall be a non-negative integer.');
+        if (count !== Math.round(count))
+            throw new NotIntegerError('Top argument shall be a non-negative integer.');
         this._settings.top = count;
         return this;
     }
