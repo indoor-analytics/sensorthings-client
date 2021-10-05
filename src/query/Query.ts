@@ -46,6 +46,10 @@ export class Query<T extends Entity<T>> {
      * @param count number of items to skip
      */
     public skip(count: number): this {
+        if (count < 0)
+            throw new NegativeValueError('Skip argument must be a non-negative integer.');
+        if (count !== Math.round(count))
+            throw new NotIntegerError('Skip argument must be a non-negative integer.');
         this._settings.skip = count;
         return this;
     }
