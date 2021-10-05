@@ -16,6 +16,17 @@ export class Query<T extends Entity<T>> {
         return [this._service.endpoint, this._dao.getEntityPathname()].join('/');
     }
 
+
+    /**
+     * Specifies the limit on the number of items returned from an entities collection.
+     * @param count number of items to return
+     */
+    public top(count: number): this {
+        console.log(count);
+        return this;
+    }
+
+
     /**
      * Queries current service for entities matching parameters that have been
      * invoked on this query instance.
