@@ -94,7 +94,7 @@ describe('Query', () => {
                 const service = new SensorThingsService('https://example.org/v1.0');
                 mockInjector.injectMockCall(service, 'https://example.org/v1.0/Things?$skip=5', 'get', () => {
                     return {
-                        data: ThingAPIResponses.skip5things
+                        data: ThingAPIResponses.skipNThings(5)
                     }
                 });
                 const result = await service.things.query()
