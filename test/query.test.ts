@@ -88,5 +88,20 @@ describe('Query', () => {
                 );
             });
         });
+
+        describe('skip command', () => {
+            it('should skip 5 items', async () => {
+                const service = new SensorThingsService('https://example.org/v1.0');
+                mockInjector.injectMockCall(service, 'https://example.org/v1.0/Things?$skip=5', 'get', () => {
+                    return {
+                        data: ThingAPIResponses.skip5things
+                    }
+                });
+                const result = await service.things.query()
+                    .skip(5)
+                    .list();
+                expect(result.length).toEqual(5);
+            });
+        });
     });
 });
