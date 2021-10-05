@@ -2,18 +2,25 @@ import {Entity} from "../model/Entity";
 import {SensorThingsService} from "../service/SensorThingsService";
 import {BaseDao} from "../dao/BaseDao";
 import {AxiosError, AxiosResponse} from "axios";
+import {QuerySettings} from "./QuerySettings";
 
 export class Query<T extends Entity<T>> {
     private _service: SensorThingsService;
     private _dao: BaseDao<T>;
+    private _settings: QuerySettings;
 
     constructor (service: SensorThingsService, dao: BaseDao<T>) {
         this._service = service;
         this._dao = dao;
+        this._settings = {};
     }
 
     protected get _endpoint (): string {
-        return [this._service.endpoint, this._dao.getEntityPathname()].join('/');
+        let baseUrl = [this._service.endpoint, this._dao.getEntityPathname()].join('/');
+        if (this._settings.top) {
+            baseUrl += `?$top=${this._settings.top}`;
+        }
+        return baseUrl;
     }
 
 
@@ -22,7 +29,7 @@ export class Query<T extends Entity<T>> {
      * @param count number of items to return
      */
     public top(count: number): this {
-        console.log(count);
+        this._settings.top = count;
         return this;
     }
 
