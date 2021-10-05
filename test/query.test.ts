@@ -137,6 +137,21 @@ describe('Query', () => {
                 new NegativeValueError('Skip argument must be a non-negative integer.')
             );
         });
+
+        it('should skip with last argument passed when called multiple times', async () => {
+            const service = new SensorThingsService('https://example.org/v1.0');
+            const skipCount = 42;
+            mockInjector.injectMockCall(service, `https://example.org/v1.0/Things?$skip=${skipCount}`, 'get', () => {
+                return {
+                    data: ThingAPIResponses.skipNThings(skipCount)
+                }
+            });
+            const result = await service.things.query()
+                .skip(55)
+                .skip(skipCount)
+                .list();
+            expect(result.length).toEqual(ThingAPIResponses.thingsLength - skipCount);
+        });
     });
 
     describe('Combining query operations', () => {
