@@ -19,8 +19,9 @@ export class Query<T extends Entity<T>> {
     }
 
     protected get _endpoint (): string {
-        let baseUrl = [this._service.endpoint, this._dao.getEntityPathname()].join('/');
-        const url = new URL(baseUrl);
+        const url = new URL(
+            [this._service.endpoint, this._dao.getEntityPathname()].join('/')
+        );
 
         if (this._settings.skip)
             url.searchParams.set('$skip', this._settings.skip.toString());
