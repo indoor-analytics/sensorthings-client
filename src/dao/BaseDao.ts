@@ -87,7 +87,7 @@ export abstract class BaseDao<T extends Entity<T>> {
     abstract getEntityPathname(): string;
 
     /**
-     * Returns an instance of the type inferred in the current DAO.
+     * Returns an instance of the type inferred in the current DAO (with the service id).
      * @param data entity body from service
      */
     abstract buildEntityFromSensorThingsAPI(data: Record<string, string>): T;
@@ -106,11 +106,9 @@ export abstract class BaseDao<T extends Entity<T>> {
                 ].join('/')
             )
             .then((response: AxiosResponse) => {
-                const entity = this.buildEntityFromSensorThingsAPI(
+                return this.buildEntityFromSensorThingsAPI(
                     response.data
                 );
-                entity.id = response.data['@iot.id'];
-                return entity;
             })
             .catch((error: AxiosError) => {
                 if (error.response?.status === 404) {
