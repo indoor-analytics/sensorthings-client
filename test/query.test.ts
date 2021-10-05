@@ -163,5 +163,30 @@ describe('Query', () => {
 
             expect(entitiesIds).toEqual(expectedIds);
         });
+
+        it('should top and skip', async () => {
+            const service = new SensorThingsService('https://example.org/v1.0');
+            const skippedCount = 30;
+            const topCount = 12;
+            const expectedUrl = `https://example.org/v1.0/DumbEntities?$skip=${skippedCount}&$top=${topCount}`;
+            const query = new DumbQuery<DumbEntity>(service, new DumbEntityDao(service));
+            query
+                .top(topCount)
+                .skip(skippedCount)
+
+            expect(query.endpoint).toEqual(expectedUrl);
+
+            mockInjector.injectMockCall(service, expectedUrl, 'get', () => {
+                return {
+                    data: ThingAPIResponses.skipAndTop(skippedCount, topCount)
+                }
+            });
+
+            const entities = await query.list();
+            const entitiesIds = entities.map(entity => entity.id);
+            const expectedIds = ThingAPIResponses.getThingsIdsBetween(skippedCount, skippedCount+topCount);
+
+            expect(entitiesIds).toEqual(expectedIds);
+        });
     });
 });
