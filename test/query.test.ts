@@ -102,6 +102,7 @@ describe('Query', () => {
                 .skip(5)
                 .list();
             expect(result.length).toEqual(ThingAPIResponses.thingsLength - 5);
+            expect(result[0].id).toEqual((ThingAPIResponses.things.value as Record<string, unknown>[])[5]['@iot.id']);
         });
 
         it('should skip 2 items', async () => {
@@ -116,6 +117,7 @@ describe('Query', () => {
                 .skip(skippedCount)
                 .list();
             expect(result.length).toEqual(ThingAPIResponses.thingsLength - skippedCount);
+            expect(result[0].id).toEqual((ThingAPIResponses.things.value as Record<string, unknown>[])[2]['@iot.id']);
         });
 
         it('should not skip with negative value', async () => {
@@ -151,6 +153,7 @@ describe('Query', () => {
                 .skip(skipCount)
                 .list();
             expect(result.length).toEqual(ThingAPIResponses.thingsLength - skipCount);
+            expect(result[0].id).toEqual((ThingAPIResponses.things.value as Record<string, unknown>[])[skipCount]['@iot.id']);
         });
     });
 
