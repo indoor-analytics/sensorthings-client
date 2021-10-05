@@ -5,6 +5,7 @@ import {AxiosError, AxiosResponse} from "axios";
 import {QuerySettings} from "./QuerySettings";
 import {NegativeValueError} from "../error/NegativeValueError";
 import {NotIntegerError} from "../error/NotIntegerError";
+import {URL} from "url";
 
 export class Query<T extends Entity<T>> {
     private _service: SensorThingsService;
@@ -19,12 +20,14 @@ export class Query<T extends Entity<T>> {
 
     protected get _endpoint (): string {
         let baseUrl = [this._service.endpoint, this._dao.getEntityPathname()].join('/');
+        const url = new URL(baseUrl);
+
         if (this._settings.skip)
-            baseUrl += `?$skip=${this._settings.skip}`;
-        if (this._settings.top) {
-            baseUrl += `?$top=${this._settings.top}`;
-        }
-        return baseUrl;
+            url.searchParams.set('$skip', this._settings.skip.toString());
+        if (this._settings.top)
+            url.searchParams.set('$top', this._settings.top.toString());
+
+        return decodeURIComponent(url.toString());
     }
 
 
