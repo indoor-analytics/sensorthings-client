@@ -19,6 +19,8 @@ export class Query<T extends Entity<T>> {
 
     protected get _endpoint (): string {
         let baseUrl = [this._service.endpoint, this._dao.getEntityPathname()].join('/');
+        if (this._settings.skip)
+            baseUrl += `?$skip=${this._settings.skip}`;
         if (this._settings.top) {
             baseUrl += `?$top=${this._settings.top}`;
         }
@@ -44,7 +46,7 @@ export class Query<T extends Entity<T>> {
      * @param count number of items to skip
      */
     public skip(count: number): this {
-        console.log(count);
+        this._settings.skip = count;
         return this;
     }
 
