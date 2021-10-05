@@ -102,6 +102,20 @@ describe('Query', () => {
                     .list();
                 expect(result.length).toEqual(5);
             });
+
+            it('should skip 2 items', async () => {
+                const service = new SensorThingsService('https://example.org/v1.0');
+                const skippedCount = 2;
+                mockInjector.injectMockCall(service, `https://example.org/v1.0/Things?$skip=${skippedCount}`, 'get', () => {
+                    return {
+                        data: ThingAPIResponses.skipNThings(skippedCount)
+                    }
+                });
+                const result = await service.things.query()
+                    .skip(skippedCount)
+                    .list();
+                expect(result.length).toEqual(10 - skippedCount);
+            });
         });
     });
 });
