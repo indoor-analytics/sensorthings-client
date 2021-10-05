@@ -53,89 +53,89 @@ describe('Query', () => {
             const result = await service.things.query().list();
             expect(result.length).toEqual(10);
         });
+    });
 
-        describe('top filter', () => {
-            it('should return 5 items with top command', async () => {
-                const service = new SensorThingsService('https://example.org/v1.0');
-                mockInjector.injectMockCall(service, 'https://example.org/v1.0/Things?$top=5', 'get', () => {
-                    return {
-                        data: ThingAPIResponses.top5things
-                    }
-                });
-                const result = await service.things.query()
-                    .top(5)
-                    .list();
-                expect(result.length).toEqual(5);
+    describe('Query.top', () => {
+        it('should return 5 items with top command', async () => {
+            const service = new SensorThingsService('https://example.org/v1.0');
+            mockInjector.injectMockCall(service, 'https://example.org/v1.0/Things?$top=5', 'get', () => {
+                return {
+                    data: ThingAPIResponses.top5things
+                }
             });
-
-            it('should throw when trying to get first -7 items', async () => {
-                const service = new SensorThingsService('https://example.org/v1.0');
-                const getThings = async () => await service.things.query()
-                    .top(-7)
-                    .list();
-                await expect(getThings()).rejects.toThrow(
-                    new NegativeValueError('Top argument shall be a non-negative integer.')
-                );
-            });
-
-            it('should throw when trying to get first 9.6 items', async () => {
-                const service = new SensorThingsService('https://example.org/v1.0');
-                const getThings = async () => await service.things.query()
-                    .top(9.6)
-                    .list();
-                await expect(getThings()).rejects.toThrow(
-                    new NotIntegerError('Top argument shall be a non-negative integer.')
-                );
-            });
+            const result = await service.things.query()
+                .top(5)
+                .list();
+            expect(result.length).toEqual(5);
         });
 
-        describe('skip command', () => {
-            it('should skip 5 items', async () => {
-                const service = new SensorThingsService('https://example.org/v1.0');
-                mockInjector.injectMockCall(service, 'https://example.org/v1.0/Things?$skip=5', 'get', () => {
-                    return {
-                        data: ThingAPIResponses.skipNThings(5)
-                    }
-                });
-                const result = await service.things.query()
-                    .skip(5)
-                    .list();
-                expect(result.length).toEqual(5);
-            });
+        it('should throw when trying to get first -7 items', async () => {
+            const service = new SensorThingsService('https://example.org/v1.0');
+            const getThings = async () => await service.things.query()
+                .top(-7)
+                .list();
+            await expect(getThings()).rejects.toThrow(
+                new NegativeValueError('Top argument shall be a non-negative integer.')
+            );
+        });
 
-            it('should skip 2 items', async () => {
-                const service = new SensorThingsService('https://example.org/v1.0');
-                const skippedCount = 2;
-                mockInjector.injectMockCall(service, `https://example.org/v1.0/Things?$skip=${skippedCount}`, 'get', () => {
-                    return {
-                        data: ThingAPIResponses.skipNThings(skippedCount)
-                    }
-                });
-                const result = await service.things.query()
-                    .skip(skippedCount)
-                    .list();
-                expect(result.length).toEqual(ThingAPIResponses.thingsLength - skippedCount);
-            });
+        it('should throw when trying to get first 9.6 items', async () => {
+            const service = new SensorThingsService('https://example.org/v1.0');
+            const getThings = async () => await service.things.query()
+                .top(9.6)
+                .list();
+            await expect(getThings()).rejects.toThrow(
+                new NotIntegerError('Top argument shall be a non-negative integer.')
+            );
+        });
+    });
 
-            it('should not skip with negative value', async () => {
-                const service = new SensorThingsService('https://example.org/v1.0');
-                const skipThings = async () => await service.things.query()
-                    .skip(-7)
-                    .list();
-                await expect(skipThings()).rejects.toThrow(
-                    new NegativeValueError('Skip argument must be a non-negative integer.')
-                );
+    describe('Query.skip', () => {
+        it('should skip 5 items', async () => {
+            const service = new SensorThingsService('https://example.org/v1.0');
+            mockInjector.injectMockCall(service, 'https://example.org/v1.0/Things?$skip=5', 'get', () => {
+                return {
+                    data: ThingAPIResponses.skipNThings(5)
+                }
             });
+            const result = await service.things.query()
+                .skip(5)
+                .list();
+            expect(result.length).toEqual(5);
+        });
 
-            it('should not skip with float value', async () => {
-                const service = new SensorThingsService('https://example.org/v1.0');
-                const skipThings = async () => await service.things.query()
-                    .skip(9.6)
-                    .list();
-                await expect(skipThings()).rejects.toThrow(
-                    new NegativeValueError('Skip argument must be a non-negative integer.')
-                );
+        it('should skip 2 items', async () => {
+            const service = new SensorThingsService('https://example.org/v1.0');
+            const skippedCount = 2;
+            mockInjector.injectMockCall(service, `https://example.org/v1.0/Things?$skip=${skippedCount}`, 'get', () => {
+                return {
+                    data: ThingAPIResponses.skipNThings(skippedCount)
+                }
             });
+            const result = await service.things.query()
+                .skip(skippedCount)
+                .list();
+            expect(result.length).toEqual(ThingAPIResponses.thingsLength - skippedCount);
+        });
+
+        it('should not skip with negative value', async () => {
+            const service = new SensorThingsService('https://example.org/v1.0');
+            const skipThings = async () => await service.things.query()
+                .skip(-7)
+                .list();
+            await expect(skipThings()).rejects.toThrow(
+                new NegativeValueError('Skip argument must be a non-negative integer.')
+            );
+        });
+
+        it('should not skip with float value', async () => {
+            const service = new SensorThingsService('https://example.org/v1.0');
+            const skipThings = async () => await service.things.query()
+                .skip(9.6)
+                .list();
+            await expect(skipThings()).rejects.toThrow(
+                new NegativeValueError('Skip argument must be a non-negative integer.')
+            );
         });
     });
 });
