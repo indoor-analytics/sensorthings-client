@@ -29,7 +29,7 @@ describe('Query', () => {
     });
 
     describe('Query.list', () => {
-        it('should return 10 items', async () => {
+        it('should return 100 items', async () => {
             const service = new SensorThingsService('https://example.org/v1.0');
             const query = new Query<DumbEntity>(service, new DumbEntityDao(service));
 
@@ -40,10 +40,10 @@ describe('Query', () => {
             });
 
             const result = await query.list();
-            expect(result.length).toEqual(10);
+            expect(result.length).toEqual(ThingAPIResponses.thingsLength);
         });
 
-        it('should return 10 items when called from service DAO', async () => {
+        it('should return 100 items when called from service DAO', async () => {
             const service = new SensorThingsService('https://example.org/v1.0');
             mockInjector.injectMockCall(service, 'https://example.org/v1.0/Things', 'get', () => {
                 return {
@@ -51,7 +51,7 @@ describe('Query', () => {
                 }
             });
             const result = await service.things.query().list();
-            expect(result.length).toEqual(10);
+            expect(result.length).toEqual(ThingAPIResponses.thingsLength);
         });
     });
 
@@ -101,7 +101,7 @@ describe('Query', () => {
             const result = await service.things.query()
                 .skip(5)
                 .list();
-            expect(result.length).toEqual(5);
+            expect(result.length).toEqual(ThingAPIResponses.thingsLength - 5);
         });
 
         it('should skip 2 items', async () => {
