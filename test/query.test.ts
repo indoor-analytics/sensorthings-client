@@ -159,7 +159,9 @@ describe('Query', () => {
 
             const entities = await query.list();
             const entitiesIds = entities.map(entity => entity.id);
-            expect(entitiesIds).toContainEqual(ThingAPIResponses.getThingsIdsBetween(skippedCount, skippedCount+topCount));
+            const expectedIds = ThingAPIResponses.getThingsIdsBetween(skippedCount, skippedCount+topCount);
+
+            expect(entitiesIds).toEqual(expectedIds);
         });
     });
 });

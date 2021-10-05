@@ -32,8 +32,9 @@ export class ThingAPIResponses {
 
     static getThingsIdsBetween(startIndex: number, endIndex: number): number[] {
         let things = this.things.value as Object[];
-        things.filter((_value, index) => index >= startIndex && index < endIndex);
-        return things.map((value => (value as Record<string, number>)['@iot.id']));
+        return things
+            .filter((_value, index) => index >= startIndex && index < endIndex)
+            .map((value => (value as Record<string, number>)['@iot.id']));
     }
 
     static get things(): Record<string, unknown> {
