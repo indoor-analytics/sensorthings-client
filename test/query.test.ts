@@ -114,7 +114,7 @@ describe('Query', () => {
                 const result = await service.things.query()
                     .skip(skippedCount)
                     .list();
-                expect(result.length).toEqual(10 - skippedCount);
+                expect(result.length).toEqual(ThingAPIResponses.thingsLength - skippedCount);
             });
         });
     });

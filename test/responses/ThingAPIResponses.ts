@@ -27,6 +27,10 @@ export class ThingAPIResponses {
         };
     }
 
+    static get thingsLength(): number {
+        return (this.things.value as Object[]).length;
+    }
+
     static skipNThings(count: number): Object {
         let things = this.things.value as Object[];
         return {
