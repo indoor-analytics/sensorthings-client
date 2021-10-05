@@ -7,6 +7,7 @@ import { DumbEntityDao } from "./utils/DumbEntityDao";
 import { HttpClientMock } from "./utils/HttpClientMock";
 import { things } from "./responses/things";
 import {DumbQuery} from "./utils/DumbQuery";
+import {top5Things} from "./responses/top5Things";
 
 let mockInjector: HttpClientMock;
 beforeEach(() => {
@@ -49,5 +50,18 @@ describe('Query', () => {
         });
         const result = await service.things.query().list();
         expect(result.length).toEqual(10);
+    });
+
+    it('should return 5 items with top command', async () => {
+        const service = new SensorThingsService('https://example.org/v1.0');
+        mockInjector.injectMockCall(service, 'https://example.org/v1.0/Things?$top=5', 'get', () => {
+            return {
+                data: top5Things
+            }
+        });
+        const result = await service.things.query()
+            .top(5)
+            .list();
+        expect(result.length).toEqual(5);
     });
 });
