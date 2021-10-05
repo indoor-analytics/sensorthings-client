@@ -5,11 +5,10 @@ import {ThingDao} from "../src/dao/ThingDao";
 import { DumbEntity } from "./utils/DumbEntity";
 import { DumbEntityDao } from "./utils/DumbEntityDao";
 import { HttpClientMock } from "./utils/HttpClientMock";
-import { things } from "./responses/things";
 import {DumbQuery} from "./utils/DumbQuery";
-import {top5Things} from "./responses/top5Things";
 import {NegativeValueError} from "../src/error/NegativeValueError";
 import {NotIntegerError} from "../src/error/NotIntegerError";
+import {ThingAPIResponses} from "./responses/ThingAPIResponses";
 
 let mockInjector: HttpClientMock;
 beforeEach(() => {
@@ -36,7 +35,7 @@ describe('Query', () => {
 
             mockInjector.injectMockCall(service, 'https://example.org/v1.0/DumbEntities', 'get', () => {
                 return {
-                    data: things
+                    data: ThingAPIResponses.things
                 }
             });
 
@@ -48,7 +47,7 @@ describe('Query', () => {
             const service = new SensorThingsService('https://example.org/v1.0');
             mockInjector.injectMockCall(service, 'https://example.org/v1.0/Things', 'get', () => {
                 return {
-                    data: things
+                    data: ThingAPIResponses.things
                 }
             });
             const result = await service.things.query().list();
@@ -60,7 +59,7 @@ describe('Query', () => {
                 const service = new SensorThingsService('https://example.org/v1.0');
                 mockInjector.injectMockCall(service, 'https://example.org/v1.0/Things?$top=5', 'get', () => {
                     return {
-                        data: top5Things
+                        data: ThingAPIResponses.top5things
                     }
                 });
                 const result = await service.things.query()
