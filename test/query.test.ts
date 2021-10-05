@@ -126,6 +126,16 @@ describe('Query', () => {
                     new NegativeValueError('Skip argument must be a non-negative integer.')
                 );
             });
+
+            it('should not skip with float value', async () => {
+                const service = new SensorThingsService('https://example.org/v1.0');
+                const skipThings = async () => await service.things.query()
+                    .skip(9.6)
+                    .list();
+                await expect(skipThings()).rejects.toThrow(
+                    new NegativeValueError('Skip argument must be a non-negative integer.')
+                );
+            });
         });
     });
 });
