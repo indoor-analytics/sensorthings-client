@@ -116,6 +116,16 @@ describe('Query', () => {
                     .list();
                 expect(result.length).toEqual(ThingAPIResponses.thingsLength - skippedCount);
             });
+
+            it('should not skip with negative value', async () => {
+                const service = new SensorThingsService('https://example.org/v1.0');
+                const skipThings = async () => await service.things.query()
+                    .skip(-7)
+                    .list();
+                await expect(skipThings()).rejects.toThrow(
+                    new NegativeValueError('Skip argument must be a non-negative integer.')
+                );
+            });
         });
     });
 });
