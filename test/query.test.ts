@@ -144,7 +144,7 @@ describe('Query', () => {
             const service = new SensorThingsService('https://example.org/v1.0');
             const skippedCount = 15;
             const topCount = 42;
-            const expectedUrl = `https://example.org/v1.0/DumbEntities?$skip=${skippedCount}&top=${topCount}`;
+            const expectedUrl = `https://example.org/v1.0/DumbEntities?$skip=${skippedCount}&$top=${topCount}`;
             const query = new DumbQuery<DumbEntity>(service, new DumbEntityDao(service));
             query
                 .skip(skippedCount)
