@@ -21,6 +21,15 @@ export class ThingAPIResponses {
         };
     }
 
+    static skipAndTop(skipCount: number, topCount: number): Object {
+        let things = this.things.value as Object[];
+        return {
+            "@iot.count":27590,
+            "@iot.nextLink":"https://scratchpad.sensorup.com/OGCSensorThings/v1.0/Things?$top=100&$skip=105",
+            "value": things.filter((_value, index) => index >= skipCount && index < skipCount+topCount)
+        };
+    }
+
     static get things(): Record<string, unknown> {
         return {
             "@iot.count":27590,
