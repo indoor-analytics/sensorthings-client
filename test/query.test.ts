@@ -8,6 +8,7 @@ import { HttpClientMock } from "./utils/HttpClientMock";
 import { things } from "./responses/things";
 import {DumbQuery} from "./utils/DumbQuery";
 import {top5Things} from "./responses/top5Things";
+import {NegativeValueError} from "../src/error/NegativeValueError";
 
 let mockInjector: HttpClientMock;
 beforeEach(() => {
@@ -63,5 +64,15 @@ describe('Query', () => {
             .top(5)
             .list();
         expect(result.length).toEqual(5);
+    });
+
+    it('should throw when trying to get first -7 items', async () => {
+        const service = new SensorThingsService('https://example.org/v1.0');
+        const getThings = async () => await service.things.query()
+            .top(-7)
+            .list();
+        await expect(getThings()).rejects.toThrow(
+            new NegativeValueError('Top argument shall be a non-negative integer.')
+        );
     });
 });
