@@ -58,6 +58,15 @@ export class Query<T extends Entity<T>> {
         return this;
     }
 
+    /**
+     * Specifies the order in which items are returned from the service.
+     * @param expression expression used to sort entities
+     */
+    public orderBy(expression: string): this {
+        console.log(expression);
+        return this;
+    }
+
 
     /**
      * Queries current service for entities matching parameters that have been
