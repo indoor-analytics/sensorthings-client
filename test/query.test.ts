@@ -9,6 +9,7 @@ import {DumbQuery} from "./utils/DumbQuery";
 import {NegativeValueError} from "../src/error/NegativeValueError";
 import {NotIntegerError} from "../src/error/NotIntegerError";
 import {ThingAPIResponses} from "./responses/ThingAPIResponses";
+import {EmptyValueError} from "../src/error/EmptyValueError";
 
 let mockInjector: HttpClientMock;
 beforeEach(() => {
@@ -154,6 +155,17 @@ describe('Query', () => {
                 .list();
             expect(result.length).toEqual(ThingAPIResponses.thingsLength - skipCount);
             expect(result[0].id).toEqual((ThingAPIResponses.things.value as Record<string, unknown>[])[skipCount]['@iot.id']);
+        });
+    });
+
+    describe('Query.orderBy', () => {
+        it('should not order by with empty string', async () => {
+            const service = new SensorThingsService('https://example.org/v1.0');
+            const query = new DumbQuery<DumbEntity>(service, new DumbEntityDao(service));
+            const orderByEmpty = () => query.orderBy('');
+            expect(orderByEmpty).toThrowError(
+                new EmptyValueError('OrderBy argument must be a non-empty string.')
+            );
         });
     });
 
