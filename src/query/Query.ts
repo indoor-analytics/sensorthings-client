@@ -7,6 +7,7 @@ import {NegativeValueError} from "../error/NegativeValueError";
 import {NotIntegerError} from "../error/NotIntegerError";
 import {URL} from "url";
 import {EmptyValueError} from "../error/EmptyValueError";
+import {IncorrectExpressionError} from "../error/IncorrectExpressionError";
 
 export class Query<T extends Entity<T>> {
     private _service: SensorThingsService;
@@ -68,6 +69,8 @@ export class Query<T extends Entity<T>> {
     public orderBy(expression: string): this {
         if (expression.length === 0)
             throw new EmptyValueError('OrderBy argument must be a non-empty string.');
+        if (!this._dao.entityPublicAttributes.includes(expression))
+            throw new IncorrectExpressionError(`"${expression}" is not a valid OrderBy expression.`);
         this._settings.orderBy = expression;
         return this;
     }
