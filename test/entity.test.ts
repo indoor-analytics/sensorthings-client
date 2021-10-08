@@ -55,9 +55,4 @@ describe('Entity', () => {
             )
         ).toEqual(`DumbEntities(${createdId})`);
     });
-
-    it("should return all DumbEntity's attributes", () => {
-        const payload = new DumbEntity('name', 'description');
-        expect(payload.publicAttributes).toEqual(['name', 'description']);
-    });
 });

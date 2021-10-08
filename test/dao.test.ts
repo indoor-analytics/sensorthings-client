@@ -264,4 +264,10 @@ describe('DAO', () => {
             );
         });
     });
+
+    it("should return all DumbEntity's attributes", () => {
+        const service = new SensorThingsService('https://example.org');
+        const dao = new DumbEntityDao(service);
+        expect(dao.entityPublicAttributes).toEqual(['name', 'description']);
+    });
 });

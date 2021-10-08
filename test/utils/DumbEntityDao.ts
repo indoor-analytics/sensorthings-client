@@ -14,4 +14,7 @@ export class DumbEntityDao extends BaseDao<DumbEntity> {
     getEntityPathname(): string {
         return 'DumbEntities';
     }
+    get entityPublicAttributes(): string[] {
+        return ['name', 'description'];
+    }
 }

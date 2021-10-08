@@ -43,29 +43,6 @@ export abstract class Entity<T extends Entity<T>> {
         return `${this.getDao(service).getEntityPathname()}(${this.id})`;
     }
 
-    /**
-     * Return all entity public (non-navigation and not private) properties.
-     */
-    get publicAttributes(): string[] {
-        return Object.getOwnPropertyNames(this).filter(
-            value => value.charAt(0) !== '_'
-        );
-    }
-
-    /**
-     * Returns an object containing all entity public attributes.
-     * This is used while updating an entity, by exposing only fields that
-     * can be updated.
-     * @returns an object containing all public attributes
-     */
-    public toNetworkObject(): Object {
-        const object: Record<string, string> = {};
-        for (const attribute of this.publicAttributes) {
-            // @ts-ignore
-            object[attribute] = this[attribute];
-        }
-        return object;
-    }
 
     /**
      * Checks if two entities are equal.

@@ -10,4 +10,7 @@ export class ThingDao extends BaseDao<Thing> {
         thing.id = data['@iot.id'] as unknown as number;
         return thing;
     }
+    get entityPublicAttributes(): string[] {
+        return ['name', 'description'];
+    }
 }

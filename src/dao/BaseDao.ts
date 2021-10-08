@@ -23,7 +23,7 @@ export abstract class BaseDao<T extends Entity<T>> {
     public async create(entity: T): Promise<void> {
         const response = await this._service.httpClient.post(
             [this._service.endpoint, this.getEntityPathname()].join('/'),
-            entity.toNetworkObject()
+            this.getEntityNetworkObject(entity)
         );
         // @ts-ignore
         entity.id = response.data['@iot.id'];
@@ -42,7 +42,7 @@ export abstract class BaseDao<T extends Entity<T>> {
                     this._service.endpoint,
                     entity.entityResourcePathname(this._service),
                 ].join('/'),
-                entity.toNetworkObject()
+                this.getEntityNetworkObject(entity)
             )
             .then((response: AxiosResponse<Object>) => {
                 return response.data;
@@ -87,10 +87,30 @@ export abstract class BaseDao<T extends Entity<T>> {
     abstract getEntityPathname(): string;
 
     /**
+     * Return all entity public (non-navigation and not private) properties.
+     */
+    abstract get entityPublicAttributes(): string[];
+
+    /**
      * Returns an instance of the type inferred in the current DAO (with the service id).
      * @param data entity body from service
      */
     abstract buildEntityFromSensorThingsAPI(data: Record<string, string>): T;
+
+    /**
+     * Returns an object containing all entity public attributes.
+     * This is used while updating an entity, by exposing only fields that
+     * can be updated.
+     * @returns an object containing all public attributes
+     */
+    public getEntityNetworkObject(entity: T): Object {
+        const object: Record<string, string> = {};
+        for (const attribute of this.entityPublicAttributes) {
+            // @ts-ignore
+            object[attribute] = entity[attribute];
+        }
+        return object;
+    }
 
     /**
      * Returns an entity from a given identifier.
