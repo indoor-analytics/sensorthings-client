@@ -184,8 +184,10 @@ describe('Query', () => {
             for (let i=0; i<entities.length-1; i++) {
                 const firstItem = entities[i];
                 const secondItem = entities[i+1];
-                if (firstItem.name.localeCompare(secondItem.name) >= 0)
+                if (firstItem.name.localeCompare(secondItem.name) > 0) {
                     fail('Items are not sorted by name.');
+                    return;
+                }
             }
         });
     });

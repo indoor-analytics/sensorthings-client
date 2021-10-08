@@ -28,6 +28,8 @@ export class Query<T extends Entity<T>> {
             url.searchParams.set('$skip', this._settings.skip.toString());
         if (this._settings.top)
             url.searchParams.set('$top', this._settings.top.toString());
+        if (this._settings.orderBy)
+            url.searchParams.set('$orderBy', this._settings.orderBy);
 
         return decodeURIComponent(url.toString());
     }
@@ -64,9 +66,9 @@ export class Query<T extends Entity<T>> {
      * @param expression expression used to sort entities
      */
     public orderBy(expression: string): this {
-        console.log(expression);
         if (expression.length === 0)
             throw new EmptyValueError('OrderBy argument must be a non-empty string.');
+        this._settings.orderBy = expression;
         return this;
     }
 
