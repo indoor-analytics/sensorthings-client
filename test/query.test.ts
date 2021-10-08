@@ -10,6 +10,7 @@ import {NegativeValueError} from "../src/error/NegativeValueError";
 import {NotIntegerError} from "../src/error/NotIntegerError";
 import {ThingAPIResponses} from "./responses/ThingAPIResponses";
 import {EmptyValueError} from "../src/error/EmptyValueError";
+import {IncorrectExpressionError} from "../src/error/IncorrectExpressionError";
 
 let mockInjector: HttpClientMock;
 beforeEach(() => {
@@ -212,6 +213,15 @@ describe('Query', () => {
                     return;
                 }
             }
+        });
+
+        it('should not order by with random string', async () => {
+            const service = new SensorThingsService('https://example.org/v1.0');
+            const query = new DumbQuery<DumbEntity>(service, new DumbEntityDao(service));
+            const orderByEmpty = () => query.orderBy('azerty');
+            expect(orderByEmpty).toThrowError(
+                new IncorrectExpressionError('"azerty" is not a valid OrderBy expression.')
+            );
         });
     });
 
