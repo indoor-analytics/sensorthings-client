@@ -37,13 +37,14 @@ export class ThingAPIResponses {
             .map((value => (value as Record<string, number>)['@iot.id']));
     }
 
-    static getThingsOrderedBy(attribute: string): Object {
+    static getThingsOrderedBy(attribute: string, descending: boolean = false): Object {
         let things = this.things.value as Record<string, any>[];
         return {
             "@iot.count":27590,
             "@iot.nextLink":"https://scratchpad.sensorup.com/OGCSensorThings/v1.0/Things?$top=100&$skip=105",
-            "value": things.sort(
-                (a, b) => a[attribute].toString().localeCompare(b[attribute].toString()))
+            "value": descending
+                ? things.sort((a, b) => b[attribute].toString().localeCompare(a[attribute].toString()))
+                : things.sort((a, b) => a[attribute].toString().localeCompare(b[attribute].toString()))
         };
     }
 

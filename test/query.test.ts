@@ -255,6 +255,29 @@ describe('Query', () => {
                 }
             }
         });
+
+        it ('should order by name with suffix "desc"', async () => {
+            const service = new SensorThingsService('https://example.org/v1.0');
+            const query = new DumbQuery<DumbEntity>(service, new DumbEntityDao(service));
+            mockInjector.injectMockCall(service, `https://example.org/v1.0/DumbEntities?$orderby=name+desc`, 'get', () => {
+                return {
+                    data: ThingAPIResponses.getThingsOrderedBy("name", true)
+                }
+            });
+
+            const entities = await query
+                .orderBy('name desc')
+                .list();
+
+            for (let i=0; i<entities.length-1; i++) {
+                const firstItem = entities[i];
+                const secondItem = entities[i+1];
+                if (firstItem.name.localeCompare(secondItem.name) < 0) {
+                    fail('Items are not sorted by name.');
+                    return;
+                }
+            }
+        });
     });
 
     describe('Combining query operations', () => {
