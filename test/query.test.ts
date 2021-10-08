@@ -190,6 +190,29 @@ describe('Query', () => {
                 }
             }
         });
+
+        it ('should order by description', async () => {
+            const service = new SensorThingsService('https://example.org/v1.0');
+            const query = new DumbQuery<DumbEntity>(service, new DumbEntityDao(service));
+            mockInjector.injectMockCall(service, `https://example.org/v1.0/DumbEntities?$orderBy=description`, 'get', () => {
+                return {
+                    data: ThingAPIResponses.getThingsOrderedBy("description")
+                }
+            });
+
+            const entities = await query
+                .orderBy('description')
+                .list();
+
+            for (let i=0; i<entities.length-1; i++) {
+                const firstItem = entities[i];
+                const secondItem = entities[i+1];
+                if (firstItem.description.localeCompare(secondItem.description) > 0) {
+                    fail('Items are not sorted by description.');
+                    return;
+                }
+            }
+        });
     });
 
     describe('Combining query operations', () => {
