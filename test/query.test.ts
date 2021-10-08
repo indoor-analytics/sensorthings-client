@@ -224,6 +224,15 @@ describe('Query', () => {
             );
         });
 
+        it('should not order by with blank string', async () => {
+            const service = new SensorThingsService('https://example.org/v1.0');
+            const query = new DumbQuery<DumbEntity>(service, new DumbEntityDao(service));
+            const orderByEmpty = () => query.orderBy('     ');
+            expect(orderByEmpty).toThrowError(
+                new IncorrectExpressionError('"     " is not a valid OrderBy expression.')
+            );
+        });
+
         it ('should order by name with suffix "asc"', async () => {
             const service = new SensorThingsService('https://example.org/v1.0');
             const query = new DumbQuery<DumbEntity>(service, new DumbEntityDao(service));
