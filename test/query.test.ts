@@ -172,7 +172,7 @@ describe('Query', () => {
         it ('should order by name', async () => {
             const service = new SensorThingsService('https://example.org/v1.0');
             const query = new DumbQuery<DumbEntity>(service, new DumbEntityDao(service));
-            mockInjector.injectMockCall(service, `https://example.org/v1.0/DumbEntities?$orderBy=name`, 'get', () => {
+            mockInjector.injectMockCall(service, `https://example.org/v1.0/DumbEntities?$orderby=name`, 'get', () => {
                 return {
                     data: ThingAPIResponses.getThingsOrderedBy("name")
                 }
@@ -195,7 +195,7 @@ describe('Query', () => {
         it ('should order by description', async () => {
             const service = new SensorThingsService('https://example.org/v1.0');
             const query = new DumbQuery<DumbEntity>(service, new DumbEntityDao(service));
-            mockInjector.injectMockCall(service, `https://example.org/v1.0/DumbEntities?$orderBy=description`, 'get', () => {
+            mockInjector.injectMockCall(service, `https://example.org/v1.0/DumbEntities?$orderby=description`, 'get', () => {
                 return {
                     data: ThingAPIResponses.getThingsOrderedBy("description")
                 }
@@ -236,7 +236,7 @@ describe('Query', () => {
         it ('should order by name with suffix "asc"', async () => {
             const service = new SensorThingsService('https://example.org/v1.0');
             const query = new DumbQuery<DumbEntity>(service, new DumbEntityDao(service));
-            mockInjector.injectMockCall(service, `https://example.org/v1.0/DumbEntities?$orderBy=name asc`, 'get', () => {
+            mockInjector.injectMockCall(service, `https://example.org/v1.0/DumbEntities?$orderby=name+asc`, 'get', () => {
                 return {
                     data: ThingAPIResponses.getThingsOrderedBy("name")
                 }
