@@ -30,7 +30,7 @@ export class Query<T extends Entity<T>> {
         if (this._settings.top)
             url.searchParams.set('$top', this._settings.top.toString());
         if (this._settings.orderBy)
-            url.searchParams.set('$orderBy', this._settings.orderBy);
+            url.searchParams.set('$orderby', this._settings.orderBy);
 
         return decodeURIComponent(url.toString());
     }
@@ -69,8 +69,18 @@ export class Query<T extends Entity<T>> {
     public orderBy(expression: string): this {
         if (expression.length === 0)
             throw new EmptyValueError('OrderBy argument must be a non-empty string.');
-        if (!this._dao.entityPublicAttributes.includes(expression))
+
+        if (expression.includes(' ')) {
+            const clearedExpression = expression.replace(/\s+/g, ' ').trim();
+            const args = clearedExpression.split(' ');
+            const validSuffixes = ['asc', 'desc'];
+            if (args.length > 2 || args.length < 2
+                || !this._dao.entityPublicAttributes.includes(args[0])
+                || !validSuffixes.includes(args[1]))
+                throw new IncorrectExpressionError(`"${expression}" is not a valid OrderBy expression.`);
+        } else if (!this._dao.entityPublicAttributes.includes(expression))
             throw new IncorrectExpressionError(`"${expression}" is not a valid OrderBy expression.`);
+
         this._settings.orderBy = expression;
         return this;
     }
