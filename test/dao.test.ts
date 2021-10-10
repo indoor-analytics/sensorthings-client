@@ -5,6 +5,7 @@ import { NotFoundError } from '../src/error/NotFoundError';
 import { AxiosError } from 'axios';
 import { DumbEntityDao } from './utils/DumbEntityDao';
 import { DumbEntity } from './utils/DumbEntity';
+import {ThingAPIResponses} from "./responses/ThingAPIResponses";
 
 let mockInjector: HttpClientMock;
 beforeEach(() => {
@@ -262,6 +263,18 @@ describe('DAO', () => {
             await expect(deleteMock()).rejects.toThrow(
                 new NotFoundError('Entity does not exist.')
             );
+        });
+
+        it('should return entities count', async () => {
+            const service = new SensorThingsService('https://example.org');
+            const dao = new DumbEntityDao(service);
+            mockInjector.injectMockCall(service, 'https://example.org/DumbEntities?$count=true', 'get', () => {
+                return {
+                    data: ThingAPIResponses.things
+                }
+            });
+            const entitiesCount = await dao.count();
+            expect(entitiesCount).toEqual(27590);
         });
     });
 

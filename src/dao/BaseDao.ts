@@ -144,4 +144,11 @@ export abstract class BaseDao<T extends Entity<T>> {
     public query(): Query<T> {
         return new Query<T>(this._service, this);
     }
+
+    /**
+     * Returns total count of items within DAO collection.
+     */
+    public async count(): Promise<number> {
+        return Promise.resolve(0);
+    }
 }
