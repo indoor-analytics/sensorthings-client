@@ -149,6 +149,15 @@ export abstract class BaseDao<T extends Entity<T>> {
      * Returns total count of items within DAO collection.
      */
     public async count(): Promise<number> {
-        return Promise.resolve(0);
+        return await this._service.httpClient
+            .get(
+                [
+                    this._service.endpoint,
+                    this.getEntityPathname() + `?$count=true`,
+                ].join('/')
+            )
+            .then((response: AxiosResponse) => {
+                return response.data['@iot.count'] as number;
+            });
     }
 }
