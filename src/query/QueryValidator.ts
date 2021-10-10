@@ -9,7 +9,7 @@ export class QueryValidator {
      * @param expression orderBy expression to be checked
      * @param entityProperties entity properties names
      */
-    checkOrderBy(expression: string, entityProperties: string[]) {
+    checkOrderBy(expression: string, entityProperties: string[]): void {
         if (expression.length === 0)
             throw new EmptyValueError('OrderBy argument must be a non-empty string.');
 
