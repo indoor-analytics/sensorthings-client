@@ -17,6 +17,7 @@ let mockInjector: HttpClientMock;
 beforeEach(() => {
     mockInjector = new HttpClientMock();
 });
+const entityPropertiesNames = ['name', 'description'];
 
 describe('Query', () => {
     it('Query<DumbEntity> should return DumbEntity endpoint', () => {
@@ -280,8 +281,7 @@ describe('Query', () => {
     describe('Query validation', () => {
         it('should not order by with empty string', async () => {
             const validator = new QueryValidator();
-            const service = new SensorThingsService('https://example.org/v1.0');
-            const orderByEmpty = () => validator.checkOrderBy('', new DumbEntityDao(service));
+            const orderByEmpty = () => validator.checkOrderBy('', entityPropertiesNames);
             expect(orderByEmpty).toThrowError(
                 new EmptyValueError('OrderBy argument must be a non-empty string.')
             );
@@ -289,8 +289,7 @@ describe('Query', () => {
 
         it('should not order by with random string', async () => {
             const validator = new QueryValidator();
-            const service = new SensorThingsService('https://example.org/v1.0');
-            const orderBy = () => validator.checkOrderBy('azerty', new DumbEntityDao(service));
+            const orderBy = () => validator.checkOrderBy('azerty', entityPropertiesNames);
             expect(orderBy).toThrowError(
                 new IncorrectExpressionError('"azerty" is not a valid OrderBy expression.')
             );
@@ -298,8 +297,7 @@ describe('Query', () => {
 
         it('should not order by with blank string', async () => {
             const validator = new QueryValidator();
-            const service = new SensorThingsService('https://example.org/v1.0');
-            const orderByEmpty = () => validator.checkOrderBy('     ', new DumbEntityDao(service));
+            const orderByEmpty = () => validator.checkOrderBy('     ', entityPropertiesNames);
             expect(orderByEmpty).toThrowError(
                 new IncorrectExpressionError('"     " is not a valid OrderBy expression.')
             );

@@ -1,6 +1,5 @@
 import {EmptyValueError} from "../error/EmptyValueError";
 import {IncorrectExpressionError} from "../error/IncorrectExpressionError";
-import {BaseDao} from "../dao/BaseDao";
 
 export class QueryValidator {
     /**
@@ -8,9 +7,9 @@ export class QueryValidator {
      * (https://docs.ogc.org/is/18-088/18-088.html#orderby).
      *
      * @param expression orderBy expression to be checked
-     * @param dao entity DAO used in the current query
+     * @param entityProperties entity properties names
      */
-    checkOrderBy(expression: string, dao: BaseDao<any>) {
+    checkOrderBy(expression: string, entityProperties: string[]) {
         if (expression.length === 0)
             throw new EmptyValueError('OrderBy argument must be a non-empty string.');
 
@@ -20,10 +19,10 @@ export class QueryValidator {
             const args = clearedExpression.split(' ');
             const validSuffixes = ['asc', 'desc'];
             if (args.length > 2 || args.length < 2
-                || !dao.entityPublicAttributes.includes(args[0])
+                || !entityProperties.includes(args[0])
                 || !validSuffixes.includes(args[1]))
                 throw new IncorrectExpressionError(`"${expression}" is not a valid OrderBy expression.`);
-        } else if (!dao.entityPublicAttributes.includes(expression))
+        } else if (!entityProperties.includes(expression))
             throw new IncorrectExpressionError(`"${expression}" is not a valid OrderBy expression.`);
 
     }

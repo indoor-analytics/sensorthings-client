@@ -68,7 +68,7 @@ export class Query<T extends Entity<T>> {
      * @param expression expression used to sort entities
      */
     public orderBy(expression: string): this {
-        this._validator.checkOrderBy(expression, this._dao);
+        this._validator.checkOrderBy(expression, this._dao.entityPublicAttributes);
         this._settings.orderBy = expression;
         return this;
     }
