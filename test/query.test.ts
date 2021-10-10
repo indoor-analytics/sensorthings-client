@@ -11,6 +11,7 @@ import {NotIntegerError} from "../src/error/NotIntegerError";
 import {ThingAPIResponses} from "./responses/ThingAPIResponses";
 import {EmptyValueError} from "../src/error/EmptyValueError";
 import {IncorrectExpressionError} from "../src/error/IncorrectExpressionError";
+import {QueryValidator} from "../src/query/QueryValidator";
 
 let mockInjector: HttpClientMock;
 beforeEach(() => {
@@ -160,15 +161,6 @@ describe('Query', () => {
     });
 
     describe('Query.orderBy', () => {
-        it('should not order by with empty string', async () => {
-            const service = new SensorThingsService('https://example.org/v1.0');
-            const query = new DumbQuery<DumbEntity>(service, new DumbEntityDao(service));
-            const orderByEmpty = () => query.orderBy('');
-            expect(orderByEmpty).toThrowError(
-                new EmptyValueError('OrderBy argument must be a non-empty string.')
-            );
-        });
-
         it ('should order by name', async () => {
             const service = new SensorThingsService('https://example.org/v1.0');
             const query = new DumbQuery<DumbEntity>(service, new DumbEntityDao(service));
@@ -213,24 +205,6 @@ describe('Query', () => {
                     return;
                 }
             }
-        });
-
-        it('should not order by with random string', async () => {
-            const service = new SensorThingsService('https://example.org/v1.0');
-            const query = new DumbQuery<DumbEntity>(service, new DumbEntityDao(service));
-            const orderByEmpty = () => query.orderBy('azerty');
-            expect(orderByEmpty).toThrowError(
-                new IncorrectExpressionError('"azerty" is not a valid OrderBy expression.')
-            );
-        });
-
-        it('should not order by with blank string', async () => {
-            const service = new SensorThingsService('https://example.org/v1.0');
-            const query = new DumbQuery<DumbEntity>(service, new DumbEntityDao(service));
-            const orderByEmpty = () => query.orderBy('     ');
-            expect(orderByEmpty).toThrowError(
-                new IncorrectExpressionError('"     " is not a valid OrderBy expression.')
-            );
         });
 
         it ('should order by name with suffix "asc"', async () => {
@@ -300,6 +274,35 @@ describe('Query', () => {
                     return;
                 }
             }
+        });
+    });
+
+    describe('Query validation', () => {
+        it('should not order by with empty string', async () => {
+            const validator = new QueryValidator();
+            const service = new SensorThingsService('https://example.org/v1.0');
+            const orderByEmpty = () => validator.checkOrderBy('', new DumbEntityDao(service));
+            expect(orderByEmpty).toThrowError(
+                new EmptyValueError('OrderBy argument must be a non-empty string.')
+            );
+        });
+
+        it('should not order by with random string', async () => {
+            const validator = new QueryValidator();
+            const service = new SensorThingsService('https://example.org/v1.0');
+            const orderBy = () => validator.checkOrderBy('azerty', new DumbEntityDao(service));
+            expect(orderBy).toThrowError(
+                new IncorrectExpressionError('"azerty" is not a valid OrderBy expression.')
+            );
+        });
+
+        it('should not order by with blank string', async () => {
+            const validator = new QueryValidator();
+            const service = new SensorThingsService('https://example.org/v1.0');
+            const orderByEmpty = () => validator.checkOrderBy('     ', new DumbEntityDao(service));
+            expect(orderByEmpty).toThrowError(
+                new IncorrectExpressionError('"     " is not a valid OrderBy expression.')
+            );
         });
     });
 

@@ -6,18 +6,19 @@ import {QuerySettings} from "./QuerySettings";
 import {NegativeValueError} from "../error/NegativeValueError";
 import {NotIntegerError} from "../error/NotIntegerError";
 import {URL} from "url";
-import {EmptyValueError} from "../error/EmptyValueError";
-import {IncorrectExpressionError} from "../error/IncorrectExpressionError";
+import {QueryValidator} from "./QueryValidator";
 
 export class Query<T extends Entity<T>> {
     private _service: SensorThingsService;
     private _dao: BaseDao<T>;
     private _settings: QuerySettings;
+    private _validator: QueryValidator;
 
     constructor (service: SensorThingsService, dao: BaseDao<T>) {
         this._service = service;
         this._dao = dao;
         this._settings = {};
+        this._validator = new QueryValidator();
     }
 
     protected get _endpoint (): string {
@@ -67,20 +68,7 @@ export class Query<T extends Entity<T>> {
      * @param expression expression used to sort entities
      */
     public orderBy(expression: string): this {
-        if (expression.length === 0)
-            throw new EmptyValueError('OrderBy argument must be a non-empty string.');
-
-        if (expression.includes(' ')) {
-            const clearedExpression = expression.replace(/\s+/g, ' ').trim();
-            const args = clearedExpression.split(' ');
-            const validSuffixes = ['asc', 'desc'];
-            if (args.length > 2 || args.length < 2
-                || !this._dao.entityPublicAttributes.includes(args[0])
-                || !validSuffixes.includes(args[1]))
-                throw new IncorrectExpressionError(`"${expression}" is not a valid OrderBy expression.`);
-        } else if (!this._dao.entityPublicAttributes.includes(expression))
-            throw new IncorrectExpressionError(`"${expression}" is not a valid OrderBy expression.`);
-
+        this._validator.checkOrderBy(expression, this._dao);
         this._settings.orderBy = expression;
         return this;
     }
