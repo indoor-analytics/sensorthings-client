@@ -27,8 +27,9 @@ export class QueryValidator {
 
     }
 
-    // @ts-ignore
     checkSelect(attributes: string[], entityProperties: string[]): void {
-
+        for (const attribute of attributes)
+            if (!entityProperties.includes(attribute))
+                throw new IncorrectExpressionError(`"${attribute}" is not a valid $select expression.`);
     }
 }
