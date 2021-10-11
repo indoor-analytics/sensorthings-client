@@ -48,6 +48,20 @@ export class ThingAPIResponses {
         };
     }
 
+    static getThingsSelectedAttributes(properties: string[]): Object {
+        let things = this.things.value as Record<string, any>[];
+        return {
+            "@iot.count":27590,
+            "@iot.nextLink":`https://scratchpad.sensorup.com/OGCSensorThings/v1.0/Things?$select=${properties.join(',')}&$top=100&$skip=100`,
+            "value": things.map((value) => {
+                let obj: Record<string, any> = {};
+                for (const property of properties)
+                    obj[property] = value[property];
+                return obj;
+            })
+        };
+    }
+
     static get things(): Record<string, unknown> {
         return {
             "@iot.count":27590,

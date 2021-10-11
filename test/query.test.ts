@@ -278,6 +278,30 @@ describe('Query', () => {
         });
     });
 
+    describe('Query.select', () => {
+        it('should return entities names', async () => {
+            const service = new SensorThingsService('https://example.org/v1.0');
+            const query = new DumbQuery<DumbEntity>(service, new DumbEntityDao(service));
+            mockInjector.injectMockCall(service, `https://example.org/v1.0/DumbEntities?$select=name`, 'get', () => {
+                return {
+                    data: ThingAPIResponses.getThingsSelectedAttributes(['name'])
+                }
+            });
+
+            const entities = await query
+                .select('name')
+                .list();
+
+            if (entities.length === 0)
+                fail('No entities were found with select filter.');
+            for (let i=0; i<entities.length; i++) {
+                const entity = entities[i];
+                expect(entity.name).toBeDefined();
+                expect(entity.description).not.toBeDefined();
+            }
+        });
+    });
+
     describe('Query validation', () => {
         it('should not order by with empty string', async () => {
             const validator = new QueryValidator();
