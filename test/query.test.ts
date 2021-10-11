@@ -378,6 +378,14 @@ describe('Query', () => {
                 new IncorrectExpressionError('"   " is not a valid $select expression.')
             );
         });
+
+        it('should not select with random string', () => {
+            const validator = new QueryValidator();
+            const selectByEmpty = () => validator.checkSelect(['azerty', 'description'], entityPropertiesNames);
+            expect(selectByEmpty).toThrowError(
+                new IncorrectExpressionError('"azerty" is not a valid $select expression.')
+            );
+        });
     });
 
     describe('Combining query operations', () => {
