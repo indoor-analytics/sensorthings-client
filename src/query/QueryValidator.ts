@@ -27,6 +27,13 @@ export class QueryValidator {
 
     }
 
+    /**
+     * Verifies a select expression according to the filter specification
+     * (https://docs.ogc.org/is/18-088/18-088.html#select4).
+     *
+     * @param attributes select attributes to be checked
+     * @param entityProperties entity properties names
+     */
     checkSelect(attributes: string[], entityProperties: string[]): void {
         for (const attribute of attributes)
             if (!entityProperties.includes(attribute))
