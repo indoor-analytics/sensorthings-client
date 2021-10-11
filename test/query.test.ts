@@ -322,6 +322,28 @@ describe('Query', () => {
                 expect(entity.description).toBeDefined();
             }
         });
+
+        it('should return entities names and descriptions', async () => {
+            const service = new SensorThingsService('https://example.org/v1.0');
+            const query = new DumbQuery<DumbEntity>(service, new DumbEntityDao(service));
+            mockInjector.injectMockCall(service, `https://example.org/v1.0/DumbEntities?$select=name,description`, 'get', () => {
+                return {
+                    data: ThingAPIResponses.getThingsSelectedAttributes(['name', 'description'])
+                }
+            });
+
+            const entities = await query
+                .select('name,description')
+                .list();
+
+            if (entities.length === 0)
+                fail('No entities were found with select filter.');
+            for (let i=0; i<entities.length; i++) {
+                const entity = entities[i];
+                expect(entity.name).toBeDefined();
+                expect(entity.description).toBeDefined();
+            }
+        });
     });
 
     describe('Query validation', () => {
