@@ -77,10 +77,10 @@ export class Query<T extends Entity<T>> {
 
     /**
      * Specifies a set of properties to be returned from the service.
-     * @param expression comma-separated list of selection clauses
+     * @param attributes selection clauses
      */
-    public select(expression: string): this {
-        this._settings.select = expression;
+    public select(...attributes: string[]): this {
+        this._settings.select = attributes.join(',');
         return this;
     }
 

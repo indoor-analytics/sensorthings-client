@@ -333,7 +333,7 @@ describe('Query', () => {
             });
 
             const entities = await query
-                .select('name,description')
+                .select('name', 'description')
                 .list();
 
             if (entities.length === 0)
