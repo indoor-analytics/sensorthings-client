@@ -2,6 +2,7 @@ import { Entity } from '../model/Entity';
 import { SensorThingsService } from '../service/SensorThingsService';
 import { AxiosError, AxiosResponse } from 'axios';
 import { NotFoundError } from '../error/NotFoundError';
+import {Query} from "../query/Query";
 
 /**
  * Entity independent implementation of a data access object.
@@ -22,7 +23,7 @@ export abstract class BaseDao<T extends Entity<T>> {
     public async create(entity: T): Promise<void> {
         const response = await this._service.httpClient.post(
             [this._service.endpoint, this.getEntityPathname()].join('/'),
-            entity.toNetworkObject()
+            this.getEntityNetworkObject(entity)
         );
         // @ts-ignore
         entity.id = response.data['@iot.id'];
@@ -41,7 +42,7 @@ export abstract class BaseDao<T extends Entity<T>> {
                     this._service.endpoint,
                     entity.entityResourcePathname(this._service),
                 ].join('/'),
-                entity.toNetworkObject()
+                this.getEntityNetworkObject(entity)
             )
             .then((response: AxiosResponse<Object>) => {
                 return response.data;
@@ -86,10 +87,30 @@ export abstract class BaseDao<T extends Entity<T>> {
     abstract getEntityPathname(): string;
 
     /**
-     * Returns an instance of the type inferred in the current DAO.
+     * Return all entity public (non-navigation and not private) properties.
+     */
+    abstract get entityPublicAttributes(): string[];
+
+    /**
+     * Returns an instance of the type inferred in the current DAO (with the service id).
      * @param data entity body from service
      */
     abstract buildEntityFromSensorThingsAPI(data: Record<string, string>): T;
+
+    /**
+     * Returns an object containing all entity public attributes.
+     * This is used while updating an entity, by exposing only fields that
+     * can be updated.
+     * @returns an object containing all public attributes
+     */
+    public getEntityNetworkObject(entity: T): Object {
+        const object: Record<string, string> = {};
+        for (const attribute of this.entityPublicAttributes) {
+            // @ts-ignore
+            object[attribute] = entity[attribute];
+        }
+        return object;
+    }
 
     /**
      * Returns an entity from a given identifier.
@@ -105,17 +126,38 @@ export abstract class BaseDao<T extends Entity<T>> {
                 ].join('/')
             )
             .then((response: AxiosResponse) => {
-                const entity = this.buildEntityFromSensorThingsAPI(
+                return this.buildEntityFromSensorThingsAPI(
                     response.data
                 );
-                entity.id = response.data['@iot.id'];
-                return entity;
             })
             .catch((error: AxiosError) => {
                 if (error.response?.status === 404) {
                     throw new NotFoundError('Entity does not exist.');
                 }
                 throw error;
+            });
+    }
+
+    /**
+     * Returns a query object allowing data filtering on inferred-type entities.
+     */
+    public query(): Query<T> {
+        return new Query<T>(this._service, this);
+    }
+
+    /**
+     * Returns total count of items within DAO collection.
+     */
+    public async count(): Promise<number> {
+        return await this._service.httpClient
+            .get(
+                [
+                    this._service.endpoint,
+                    this.getEntityPathname() + `?$count=true`,
+                ].join('/')
+            )
+            .then((response: AxiosResponse) => {
+                return response.data['@iot.count'] as number;
             });
     }
 }

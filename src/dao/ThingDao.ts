@@ -6,6 +6,11 @@ export class ThingDao extends BaseDao<Thing> {
         return 'Things';
     }
     buildEntityFromSensorThingsAPI(data: Record<string, string>): Thing {
-        return new Thing(data.name, data.description);
+        const thing = new Thing(data.name, data.description);
+        thing.id = data['@iot.id'] as unknown as number;
+        return thing;
+    }
+    get entityPublicAttributes(): string[] {
+        return ['name', 'description'];
     }
 }

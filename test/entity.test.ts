@@ -29,7 +29,7 @@ describe('Entity', () => {
         const createdId = Math.ceil(Math.random() * 3000000);
         mockInjector.injectMockCall(
             service,
-            'https://example.org/MockEntities',
+            'https://example.org/DumbEntities',
             'post',
             () => {
                 return JSON.parse(`{
@@ -53,11 +53,6 @@ describe('Entity', () => {
             payload.entityResourcePathname(
                 new SensorThingsService('https://example.org')
             )
-        ).toEqual(`MockEntities(${createdId})`);
-    });
-
-    it("should return all DumbEntity's attributes", () => {
-        const payload = new DumbEntity('name', 'description');
-        expect(payload.publicAttributes).toEqual(['name', 'description']);
+        ).toEqual(`DumbEntities(${createdId})`);
     });
 });
