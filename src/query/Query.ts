@@ -80,6 +80,7 @@ export class Query<T extends Entity<T>> {
      * @param attributes selection clauses
      */
     public select(...attributes: string[]): this {
+        this._validator.checkSelect(attributes, this._dao.entityPublicAttributes);
         this._settings.select = attributes.join(',');
         return this;
     }

@@ -26,4 +26,9 @@ export class QueryValidator {
             throw new IncorrectExpressionError(`"${expression}" is not a valid OrderBy expression.`);
 
     }
+
+    // @ts-ignore
+    checkSelect(attributes: string[], entityProperties: string[]): void {
+
+    }
 }
