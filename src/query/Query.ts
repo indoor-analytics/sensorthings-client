@@ -26,6 +26,8 @@ export class Query<T extends Entity<T>> {
             [this._service.endpoint, this._dao.getEntityPathname()].join('/')
         );
 
+        if (this._settings.select)
+            url.searchParams.set('$select', this._settings.select);
         if (this._settings.skip)
             url.searchParams.set('$skip', this._settings.skip.toString());
         if (this._settings.top)
