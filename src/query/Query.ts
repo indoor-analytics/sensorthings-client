@@ -73,6 +73,15 @@ export class Query<T extends Entity<T>> {
         return this;
     }
 
+    /**
+     * Specifies a set of properties to be returned from the service.
+     * @param expression comma-separated list of selection clauses
+     */
+    public select(expression: string): this {
+        this._settings.select = expression;
+        return this;
+    }
+
 
     /**
      * Queries current service for entities matching parameters that have been

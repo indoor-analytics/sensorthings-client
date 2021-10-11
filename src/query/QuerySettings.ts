@@ -1,5 +1,6 @@
 export interface QuerySettings {
     top?: number,
     skip?: number,
-    orderBy?: string
+    orderBy?: string,
+    select?: string
 }
