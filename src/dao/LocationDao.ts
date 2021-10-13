@@ -5,6 +5,7 @@ export class LocationDao extends BaseDao<Location> {
     buildEntityFromSensorThingsAPI(data: Record<string, string>): Location {
         const location = new Location(data.name, data.description);
         location.id = data['@iot.id'] as unknown as number;
+        location.setService(this._service);
         return location;
     }
     get entityPublicAttributes(): string[] {
