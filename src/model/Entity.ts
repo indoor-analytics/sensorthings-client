@@ -7,6 +7,8 @@ import { SensorThingsService } from '../service/SensorThingsService';
  */
 export abstract class Entity<T extends Entity<T>> {
     private _id: number | undefined;
+    protected _service: SensorThingsService | undefined;
+
     /**
      * Get the SensorThings id associated to this entity on the current service.
      * If the id is not set, it means that the entity is not synchronized with
@@ -25,6 +27,13 @@ export abstract class Entity<T extends Entity<T>> {
      */
     set id(value: number) {
         this._id = value;
+    }
+
+    /**
+     * Sets the service of the current entity.
+     */
+    setService(service: SensorThingsService) {
+        this._service = service;
     }
 
     /**

@@ -27,6 +27,7 @@ export abstract class BaseDao<T extends Entity<T>> {
         );
         // @ts-ignore
         entity.id = response.data['@iot.id'];
+        entity.setService(this._service);
         return;
     }
 
