@@ -139,6 +139,26 @@ export abstract class BaseDao<T extends Entity<T>> {
             });
     }
 
+    async getFromEntity<D extends Entity<D>>(entity: D): Promise<T[]> {
+        return await this._service.httpClient
+            .get([
+                this._service.endpoint,
+                entity.entityResourcePathname(this._service),    // TODO remove argument
+                this.getEntityPathname()
+            ].join('/'))
+            .then((response: AxiosResponse<{value: Record<string, string>[]}>) => {
+                return response.data.value.map((datum: Record<string, string>) => {
+                    return this.buildEntityFromSensorThingsAPI(datum)
+                });
+            })
+            .catch((error: AxiosError) => {
+                if (error.response?.status === 404) {
+                    throw new NotFoundError('Entity does not exist.');
+                }
+                throw error;
+            });
+    }
+
     /**
      * Returns a query object allowing data filtering on inferred-type entities.
      */

@@ -2,6 +2,7 @@ import { Entity } from './Entity';
 import { BaseDao } from '../dao/BaseDao';
 import { ThingDao } from '../dao/ThingDao';
 import { SensorThingsService } from '../service/SensorThingsService';
+import {Location} from "./Location";
 
 /**
  * Representation of a Thing SensorThings entity.
@@ -19,5 +20,9 @@ export class Thing extends Entity<Thing> {
 
     getDao(service: SensorThingsService): BaseDao<Thing> {
         return new ThingDao(service);
+    }
+
+    get locations(): Promise<Location[]> {
+        return this._service!.locations.getFromEntity(this);
     }
 }
