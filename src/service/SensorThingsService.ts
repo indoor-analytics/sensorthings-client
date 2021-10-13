@@ -1,6 +1,7 @@
 import { Entity } from '../model/Entity';
 import axios, { AxiosInstance } from 'axios';
 import { ThingDao } from '../dao/ThingDao';
+import {LocationDao} from "../dao/LocationDao";
 
 /**
  * A SensorThingsService represents the service endpoint of a server.
@@ -49,5 +50,9 @@ export class SensorThingsService {
 
     public get things(): ThingDao {
         return new ThingDao(this);
+    }
+
+    public get locations(): LocationDao {
+        return new LocationDao(this);
     }
 }
