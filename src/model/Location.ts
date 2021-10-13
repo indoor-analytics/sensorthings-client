@@ -9,7 +9,6 @@ export class Location extends Entity<Location> {
     public description: string;
     public readonly encodingType: string;
     public location: Feature;
-    public properties: Record<string, unknown>;
 
     constructor(name: string, description: string) {
         super();
@@ -24,7 +23,6 @@ export class Location extends Entity<Location> {
                 "coordinates": [-114.06, 51.05]
             }
         };
-        this.properties = {};
     }
 
     getDao(service: SensorThingsService): BaseDao<Location> {
