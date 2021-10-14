@@ -41,7 +41,7 @@ export abstract class BaseDao<T extends Entity<T>> {
             .patch(
                 [
                     this._service.endpoint,
-                    entity.entityResourcePathname(this._service),
+                    entity.entityResourcePathname(),
                 ].join('/'),
                 this.getEntityNetworkObject(entity)
             )
@@ -66,7 +66,7 @@ export abstract class BaseDao<T extends Entity<T>> {
             .delete(
                 [
                     this._service.endpoint,
-                    entity.entityResourcePathname(this._service),
+                    entity.entityResourcePathname(),
                 ].join('/')
             )
             .then(() => {
