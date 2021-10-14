@@ -17,7 +17,7 @@ export class DumbEntityBuilder extends AbstractBuilder<DumbEntity> {
         return this;
     }
 
-    build(): DumbEntity {
+    protected buildEntity(): DumbEntity {
         if (!this._attributes.name)
             throw new MissingArgumentError('"name" argument is required to build a DumbEntity.');
         if (!this._attributes.description)
