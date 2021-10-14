@@ -16,7 +16,7 @@ describe('Entity', () => {
     it('should not return pathname when not created', () => {
         const payload = new DumbEntity('name', 'description', service);
         const getLink = () =>
-            payload.entityResourcePathname();
+            payload.instancePathname;
         expect(getLink).toThrowError(
             new RangeError("Entity hasn't been created on a service yet.")
         );
@@ -48,6 +48,6 @@ describe('Entity', () => {
         await service.create(payload);
 
         expect(payload.id).toEqual(createdId);
-        expect( payload.entityResourcePathname() ).toEqual(`DumbEntities(${createdId})`);
+        expect( payload.instancePathname ).toEqual(`DumbEntities(${createdId})`);
     });
 });
