@@ -13,10 +13,10 @@ describe('Entity', () => {
 
     it('should not return pathname when not created', () => {
         const payload = new DumbEntity('name', 'description');
-        const getLink = () =>
-            payload.entityResourcePathname(
-                new SensorThingsService('https://example.org')
-            );
+        payload.setService(
+            new SensorThingsService('https://example.org')
+        );
+        const getLink = () => payload.entityResourcePathname();
         expect(getLink).toThrowError(
             new RangeError("Entity hasn't been created on a service yet.")
         );
@@ -25,6 +25,7 @@ describe('Entity', () => {
     it('should return id when created', async () => {
         const payload = new DumbEntity('name', 'description');
         const service = new SensorThingsService('https://example.org');
+        payload.setService(new SensorThingsService('https://example.org'));
         const mockInjector = new HttpClientMock();
         const createdId = Math.ceil(Math.random() * 3000000);
         mockInjector.injectMockCall(
@@ -50,9 +51,7 @@ describe('Entity', () => {
 
         expect(payload.id).toEqual(createdId);
         expect(
-            payload.entityResourcePathname(
-                new SensorThingsService('https://example.org')
-            )
+            payload.entityResourcePathname()
         ).toEqual(`DumbEntities(${createdId})`);
     });
 });

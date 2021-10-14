@@ -45,11 +45,10 @@ export abstract class Entity<T extends Entity<T>> {
     /**
      * Returns an URL containing the entity URL domain name and id of
      * the current entity.
-     * @param service service hosting entity
      * @returns an url defining current entity
      */
-    public entityResourcePathname(service: SensorThingsService): string {
-        return `${this.getDao(service).getEntityPathname()}(${this.id})`;
+    public entityResourcePathname(): string {
+        return `${this.getDao(this._service!).getEntityPathname()}(${this.id})`;
     }
 
 
