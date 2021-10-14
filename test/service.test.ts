@@ -61,7 +61,7 @@ describe('SensorThingsService', () => {
                 'https://example.org/DumbEntities',
                 'post',
                 (_data: DumbEntity) => {
-                    for (const attribute of payload.getDao().entityPublicAttributes) {
+                    for (const attribute of payload.dao.entityPublicAttributes) {
                         // @ts-ignore
                         expect(_data[attribute]).toEqual(payload[attribute]);
                     }

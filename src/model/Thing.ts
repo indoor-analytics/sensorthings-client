@@ -17,7 +17,7 @@ export class Thing extends Entity<Thing> {
         this.description = description;
     }
 
-    getDao(): BaseDao<Thing> {
+    get dao(): BaseDao<Thing> {
         return new ThingDao(this._service);
     }
 }

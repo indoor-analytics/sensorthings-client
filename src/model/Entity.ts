@@ -43,7 +43,7 @@ export abstract class Entity<T extends Entity<T>> {
     /**
      * Allows to retrieve DAO related to a given entity.
      */
-    abstract getDao(): BaseDao<T>;
+    abstract get dao(): BaseDao<T>;
 
     /**
      * Returns an URL containing the entity URL domain name and id of
@@ -51,7 +51,7 @@ export abstract class Entity<T extends Entity<T>> {
      * @returns an url defining current entity
      */
     public entityResourcePathname(): string {
-        return `${this.getDao().getEntityPathname()}(${this.id})`;
+        return `${this.dao.getEntityPathname()}(${this.id})`;
     }
 
 

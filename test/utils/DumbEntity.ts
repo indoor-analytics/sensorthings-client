@@ -17,7 +17,7 @@ export class DumbEntity extends Entity<DumbEntity> {
         this.description = description;
     }
 
-    getDao(): BaseDao<DumbEntity> {
+    get dao(): BaseDao<DumbEntity> {
         return new DumbEntityDao(this._service);
     }
 }
