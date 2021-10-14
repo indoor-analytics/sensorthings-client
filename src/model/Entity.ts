@@ -1,5 +1,6 @@
 import { BaseDao } from '../dao/BaseDao';
 import { SensorThingsService } from '../service/SensorThingsService';
+import {ServiceNotInitializedError} from "../error/ServiceNotInitializedError";
 
 /**
  * Abstract representation of a SensorThings entity.
@@ -48,7 +49,8 @@ export abstract class Entity<T extends Entity<T>> {
      * @returns an url defining current entity
      */
     public entityResourcePathname(): string {
-        return `${this.getDao(this._service!).getEntityPathname()}(${this.id})`;
+        if (!this._service) throw new ServiceNotInitializedError();
+        return `${this.getDao(this._service).getEntityPathname()}(${this.id})`;
     }
 
 
