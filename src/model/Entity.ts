@@ -51,7 +51,7 @@ export abstract class Entity<T extends Entity<T>> {
      * @returns an url defining current entity
      */
     public get instancePathname(): string {
-        return `${this.dao.getEntityPathname()}(${this.id})`;
+        return `${this.dao.entityPathname}(${this.id})`;
     }
 
 

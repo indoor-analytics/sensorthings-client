@@ -2,7 +2,7 @@ import { BaseDao } from './BaseDao';
 import { Thing } from '../model/Thing';
 
 export class ThingDao extends BaseDao<Thing> {
-    getEntityPathname(): string {
+    get entityPathname(): string {
         return 'Things';
     }
     buildEntityFromSensorThingsAPI(data: Record<string, string>): Thing {

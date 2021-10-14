@@ -17,12 +17,12 @@ beforeEach(() => {
 describe('DAO', () => {
     describe('Entity path names', () => {
         it('ThingDao should return correct path name', () => {
-            const urlPrefix = new ThingDao(service).getEntityPathname();
+            const urlPrefix = new ThingDao(service).entityPathname;
             expect(urlPrefix).toEqual('Things');
         });
 
         it('MockDao should return correct path name', () => {
-            const urlPrefix = new DumbEntityDao(service).getEntityPathname();
+            const urlPrefix = new DumbEntityDao(service).entityPathname;
             expect(urlPrefix).toEqual('DumbEntities');
         });
     });

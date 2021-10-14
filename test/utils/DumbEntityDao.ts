@@ -11,7 +11,7 @@ export class DumbEntityDao extends BaseDao<DumbEntity> {
         entity.id = data['@iot.id'];
         return entity;
     }
-    getEntityPathname(): string {
+    get entityPathname(): string {
         return 'DumbEntities';
     }
     get entityPublicAttributes(): string[] {

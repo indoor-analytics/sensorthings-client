@@ -22,7 +22,7 @@ export abstract class BaseDao<T extends Entity<T>> {
      */
     public async create(entity: T): Promise<void> {
         const response = await this._service.httpClient.post(
-            [this._service.endpoint, this.getEntityPathname()].join('/'),
+            [this._service.endpoint, this.entityPathname].join('/'),
             this.getEntityNetworkObject(entity)
         );
         // @ts-ignore
@@ -82,10 +82,10 @@ export abstract class BaseDao<T extends Entity<T>> {
 
     /**
      * Returns the URL path part associated with the entity.
-     * For example, ThingDao.getEntityPathname() would return the string "Things"
+     * For example, ThingDao().entityPathname should return the string "Things"
      * (such as in https://example.org/Things(42)).
      */
-    abstract getEntityPathname(): string;
+    abstract get entityPathname(): string;
 
     /**
      * Return all entity public (non-navigation and not private) properties.
@@ -123,7 +123,7 @@ export abstract class BaseDao<T extends Entity<T>> {
             .get(
                 [
                     this._service.endpoint,
-                    this.getEntityPathname() + `(${id})`,
+                    this.entityPathname + `(${id})`,
                 ].join('/')
             )
             .then((response: AxiosResponse) => {
@@ -154,7 +154,7 @@ export abstract class BaseDao<T extends Entity<T>> {
             .get(
                 [
                     this._service.endpoint,
-                    this.getEntityPathname() + `?$count=true`,
+                    this.entityPathname + `?$count=true`,
                 ].join('/')
             )
             .then((response: AxiosResponse) => {
