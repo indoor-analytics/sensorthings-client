@@ -18,13 +18,25 @@ describe('Model builders', () => {
 
     it('should not build with missing name', () => {
         const builder = new ThingBuilder( new SensorThingsService('https://example.org') );
-        const description = 'This is a test description';
 
         const build = () => builder
-            .setDescription(description)
+            .setDescription('This is a test description')
             .build();
+
         expect(build).toThrowError(
             new MissingArgumentError('"name" argument is missing.')
+        );
+    });
+
+    it('should not build with missing description', () => {
+        const builder = new ThingBuilder( new SensorThingsService('https://example.org') );
+
+        const build = () => builder
+            .setName('Thingything')
+            .build();
+
+        expect(build).toThrowError(
+            new MissingArgumentError('"description" argument is missing.')
         );
     });
 });
