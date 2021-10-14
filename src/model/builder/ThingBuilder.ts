@@ -19,9 +19,9 @@ export class ThingBuilder extends AbstractBuilder<Thing> {
 
     build(): Thing {
         if (!this._attributes.name)
-            throw new MissingArgumentError('"name" argument is missing.');
+            throw new MissingArgumentError('"name" argument is required to build a Thing.');
         if (!this._attributes.description)
-            throw new MissingArgumentError('"description" argument is missing.');
+            throw new MissingArgumentError('"description" argument is required to build a Thing.');
 
         const t: Thing = new Thing('' + this._attributes.name, '' + this._attributes.description);
         t.setService(this._service);

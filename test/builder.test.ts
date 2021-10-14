@@ -24,7 +24,7 @@ describe('Model builders', () => {
             .build();
 
         expect(build).toThrowError(
-            new MissingArgumentError('"name" argument is missing.')
+            new MissingArgumentError('"name" argument is required to build a Thing.')
         );
     });
 
@@ -36,7 +36,7 @@ describe('Model builders', () => {
             .build();
 
         expect(build).toThrowError(
-            new MissingArgumentError('"description" argument is missing.')
+            new MissingArgumentError('"description" argument is required to build a Thing.')
         );
     });
 });
