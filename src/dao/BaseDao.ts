@@ -139,7 +139,7 @@ export abstract class BaseDao<T extends Entity<T>> {
             });
     }
 
-    async getFromEntity<D extends Entity<D>>(entity: D): Promise<T[]> {
+    async getFromEntity<D extends Entity<D>>(entity: Entity<D>): Promise<T[]> {
         return await this._service.httpClient
             .get([
                 this._service.endpoint,
