@@ -100,6 +100,7 @@ describe('DAO', () => {
 
         it('should throw when updating non-existent entity', async () => {
             const service = new SensorThingsService('https://example.org');
+            const dao = new DumbEntityDao(service);
             mockInjector.injectMockCall(
                 service,
                 'https://example.org/DumbEntities(42)',
@@ -125,7 +126,7 @@ describe('DAO', () => {
             );
             const mock = new DumbEntity('name', 'description');
             mock.id = 42;
-            const updateMock = () => service.things.update(mock);
+            const updateMock = () => dao.update(mock);
             await expect(updateMock()).rejects.toThrow(
                 new NotFoundError('Entity does not exist.')
             );
