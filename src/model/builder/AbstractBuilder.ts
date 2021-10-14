@@ -14,8 +14,18 @@ export abstract class AbstractBuilder<T extends Entity<T>> {
         this._attributes = {};
     }
     /**
+     * Builds an entity from type T with all builder-specified properties.
+     * This method should check if all entity properties have been specified,
+     * and throw if not.
+     */
+    protected abstract buildEntity(): T;
+    /**
      * Returns an entity of type T with all specified properties.
      * Throws if a needed property has not been set on this builder.
      */
-    abstract build(): T;
+    public build(): T {
+        const entity: T = this.buildEntity();
+        this._attributes = {};
+        return entity;
+    }
 }

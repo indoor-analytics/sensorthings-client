@@ -17,7 +17,7 @@ export class ThingBuilder extends AbstractBuilder<Thing> {
         return this;
     }
 
-    build(): Thing {
+    buildEntity(): Thing {
         if (!this._attributes.name)
             throw new MissingArgumentError('"name" argument is required to build a Thing.');
         if (!this._attributes.description)
