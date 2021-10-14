@@ -32,7 +32,7 @@ export abstract class Entity<T extends Entity<T>> {
     /**
      * Sets the service of the current entity.
      */
-    setService(service: SensorThingsService) {
+    setService(service: SensorThingsService): void {
         this._service = service;
     }
 
