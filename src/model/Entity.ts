@@ -7,7 +7,11 @@ import { SensorThingsService } from '../service/SensorThingsService';
  */
 export abstract class Entity<T extends Entity<T>> {
     private _id: number | undefined;
-    protected _service: SensorThingsService | undefined;
+    protected _service: SensorThingsService;
+
+    protected constructor(service: SensorThingsService) {
+        this._service = service;
+    }
 
     /**
      * Get the SensorThings id associated to this entity on the current service.
@@ -38,18 +42,16 @@ export abstract class Entity<T extends Entity<T>> {
 
     /**
      * Allows to retrieve DAO related to a given entity.
-     * @param service endpoint to use
      */
-    abstract getDao(service: SensorThingsService): BaseDao<T>;
+    abstract getDao(): BaseDao<T>;
 
     /**
      * Returns an URL containing the entity URL domain name and id of
      * the current entity.
-     * @param service service hosting entity
      * @returns an url defining current entity
      */
-    public entityResourcePathname(service: SensorThingsService): string {
-        return `${this.getDao(service).getEntityPathname()}(${this.id})`;
+    public entityResourcePathname(): string {
+        return `${this.getDao().getEntityPathname()}(${this.id})`;
     }
 
 

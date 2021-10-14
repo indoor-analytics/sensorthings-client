@@ -11,13 +11,13 @@ export class Thing extends Entity<Thing> {
     public name: string;
     public description: string;
 
-    constructor(name: string, description: string) {
-        super();
+    constructor(name: string, description: string, service: SensorThingsService) {
+        super(service);
         this.name = name;
         this.description = description;
     }
 
-    getDao(service: SensorThingsService): BaseDao<Thing> {
-        return new ThingDao(service);
+    getDao(): BaseDao<Thing> {
+        return new ThingDao(this._service);
     }
 }

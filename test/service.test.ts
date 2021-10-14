@@ -73,7 +73,8 @@ describe('SensorThingsService', () => {
 
             const payload = new DumbEntity(
                 'Hello there',
-                'This is a test entity.'
+                'This is a test entity.',
+                service
             );
 
             service.create(payload);
@@ -101,7 +102,8 @@ describe('SensorThingsService', () => {
             });
             const payload = new DumbEntity(
                 'Hello there',
-                'This is a test entity.'
+                'This is a test entity.',
+                service
             );
             payload.id = 42;
 
@@ -134,7 +136,8 @@ describe('SensorThingsService', () => {
             );
             const payload = new DumbEntity(
                 'Hello there',
-                'This is a test entity.'
+                'This is a test entity.',
+                service
             );
 
             await service.create(payload);
@@ -167,7 +170,8 @@ describe('SensorThingsService', () => {
             );
             const payload = new DumbEntity(
                 'Hello there',
-                'This is a test entity.'
+                'This is a test entity.',
+                service
             );
             payload.id = 42;
 
