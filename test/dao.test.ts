@@ -4,25 +4,25 @@ import { HttpClientMock } from './utils/HttpClientMock';
 import { NotFoundError } from '../src/error/NotFoundError';
 import { AxiosError } from 'axios';
 import { DumbEntityDao } from './utils/DumbEntityDao';
-import { DumbEntity } from './utils/DumbEntity';
 import {ThingAPIResponses} from "./responses/ThingAPIResponses";
+import {DumbEntityBuilder} from "./utils/DumbEntityBuilder";
 
+const service = new SensorThingsService('https://example.org');
 let mockInjector: HttpClientMock;
+let builder = new DumbEntityBuilder(service);
 beforeEach(() => {
     mockInjector = new HttpClientMock();
 });
 
 describe('DAO', () => {
     describe('Entity path names', () => {
-        const service = new SensorThingsService('https://example.org');
-
         it('ThingDao should return correct path name', () => {
-            const urlPrefix = new ThingDao(service).getEntityPathname();
+            const urlPrefix = new ThingDao(service).entityPathname;
             expect(urlPrefix).toEqual('Things');
         });
 
         it('MockDao should return correct path name', () => {
-            const urlPrefix = new DumbEntityDao(service).getEntityPathname();
+            const urlPrefix = new DumbEntityDao(service).entityPathname;
             expect(urlPrefix).toEqual('DumbEntities');
         });
     });
@@ -33,7 +33,7 @@ describe('DAO', () => {
             const service = new SensorThingsService('https://example.org');
             const mockName = 'name',
                 mockDescription = 'description';
-            const mock = new DumbEntity(mockName, mockDescription);
+            const mock = builder.setName(mockName).setDescription(mockDescription).build();
             const getMockObject = () => {
                 return JSON.parse(`{
                     "data": {
@@ -123,7 +123,7 @@ describe('DAO', () => {
                     throw error;
                 }
             );
-            const mock = new DumbEntity('name', 'description');
+            const mock = builder.setName('name').setDescription('description').build();
             mock.id = 42;
             const updateMock = () => service.things.update(mock);
             await expect(updateMock()).rejects.toThrow(
@@ -257,7 +257,7 @@ describe('DAO', () => {
                     throw error;
                 }
             );
-            const mock = new DumbEntity('name', 'description');
+            const mock = builder.setName('name').setDescription('description').build();
             mock.id = 42;
             const deleteMock = () => new DumbEntityDao(service).delete(mock);
             await expect(deleteMock()).rejects.toThrow(

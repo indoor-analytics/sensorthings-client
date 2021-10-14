@@ -51,12 +51,20 @@ describe('SensorThingsService', () => {
         it('should do a POST call on entity creation', () => {
             const endpoint = 'https://example.org';
             const service = new SensorThingsService(new URL(endpoint));
+            const payload = new DumbEntity(
+                'Hello there',
+                'This is a test entity.',
+                service
+            );
             mockInjector.injectMockCall(
                 service,
                 'https://example.org/DumbEntities',
                 'post',
                 (_data: DumbEntity) => {
-                    expect(_data).toEqual(payload);
+                    for (const attribute of payload.dao.entityPublicAttributes) {
+                        // @ts-ignore
+                        expect(_data[attribute]).toEqual(payload[attribute]);
+                    }
                     return JSON.parse(`{
                     "data": {
                         "@iot.id": 2708592,
@@ -69,11 +77,6 @@ describe('SensorThingsService', () => {
                     }
                 }`);
                 }
-            );
-
-            const payload = new DumbEntity(
-                'Hello there',
-                'This is a test entity.'
             );
 
             service.create(payload);
@@ -101,7 +104,8 @@ describe('SensorThingsService', () => {
             });
             const payload = new DumbEntity(
                 'Hello there',
-                'This is a test entity.'
+                'This is a test entity.',
+                service
             );
             payload.id = 42;
 
@@ -134,7 +138,8 @@ describe('SensorThingsService', () => {
             );
             const payload = new DumbEntity(
                 'Hello there',
-                'This is a test entity.'
+                'This is a test entity.',
+                service
             );
 
             await service.create(payload);
@@ -167,7 +172,8 @@ describe('SensorThingsService', () => {
             );
             const payload = new DumbEntity(
                 'Hello there',
-                'This is a test entity.'
+                'This is a test entity.',
+                service
             );
             payload.id = 42;
 
