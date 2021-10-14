@@ -126,6 +126,7 @@ describe('DAO', () => {
             );
             const mock = new DumbEntity('name', 'description');
             mock.id = 42;
+            mock.setService(service);
             const updateMock = () => dao.update(mock);
             await expect(updateMock()).rejects.toThrow(
                 new NotFoundError('Entity does not exist.')
@@ -260,6 +261,7 @@ describe('DAO', () => {
             );
             const mock = new DumbEntity('name', 'description');
             mock.id = 42;
+            mock.setService(service);
             const deleteMock = () => new DumbEntityDao(service).delete(mock);
             await expect(deleteMock()).rejects.toThrow(
                 new NotFoundError('Entity does not exist.')

@@ -75,6 +75,7 @@ describe('SensorThingsService', () => {
                 'Hello there',
                 'This is a test entity.'
             );
+            payload.setService(service);
 
             service.create(payload);
 
@@ -104,6 +105,7 @@ describe('SensorThingsService', () => {
                 'This is a test entity.'
             );
             payload.id = 42;
+            payload.setService(service);
 
             await service.delete(payload);
 
@@ -170,6 +172,7 @@ describe('SensorThingsService', () => {
                 'This is a test entity.'
             );
             payload.id = 42;
+            payload.setService(service);
 
             const newInfo = {
                 name: 'New name',
