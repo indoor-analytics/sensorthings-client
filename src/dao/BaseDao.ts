@@ -139,6 +139,12 @@ export abstract class BaseDao<T extends Entity<T>> {
             });
     }
 
+    /**
+     * Returns a collection of entities attached to a given entity of another type.
+     * For example, LocationDao().getFromEntity(Thing(42)) should return a list of Location entities (those listed on
+     * https://myservice.org/Things(42)/Locations).
+     * @param entity parent object of entities to retrieve
+     */
     async getFromEntity<D extends Entity<D>>(entity: Entity<D>): Promise<T[]> {
         return await this._service.httpClient
             .get([
