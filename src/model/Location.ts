@@ -10,8 +10,8 @@ export class Location extends Entity<Location> {
     public readonly encodingType: string;
     public location: Feature;
 
-    constructor(name: string, description: string) {
-        super();
+    constructor(name: string, description: string, service: SensorThingsService) {
+        super(service);
         this.name = name;
         this.description = description;
         this.encodingType = 'application/geo+json';
@@ -25,7 +25,7 @@ export class Location extends Entity<Location> {
         };
     }
 
-    getDao(service: SensorThingsService): BaseDao<Location> {
-        return new LocationDao(service);
+    get dao(): BaseDao<Location> {
+        return new LocationDao(this._service);
     }
 }

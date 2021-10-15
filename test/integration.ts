@@ -15,7 +15,7 @@ async function main() {
     }
 
     // Creating a new Thing
-    const newThing = new Thing('Test thing', 'Test description');
+    const newThing = new Thing('Test thing', 'Test description', service);
     await service.things.create(newThing);
 
     // Retrieving Thing from API

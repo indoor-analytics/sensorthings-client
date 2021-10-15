@@ -53,14 +53,15 @@ describe('SensorThingsService', () => {
             const service = new SensorThingsService(new URL(endpoint));
             const payload = new DumbEntity(
                 'Hello there',
-                'This is a test entity.'
+                'This is a test entity.',
+                service
             );
             mockInjector.injectMockCall(
                 service,
                 'https://example.org/DumbEntities',
                 'post',
                 (_data: DumbEntity) => {
-                    for (const attribute of payload.getDao(service).entityPublicAttributes) {
+                    for (const attribute of payload.dao.entityPublicAttributes) {
                         // @ts-ignore
                         expect(_data[attribute]).toEqual(payload[attribute]);
                     }
@@ -77,7 +78,6 @@ describe('SensorThingsService', () => {
                 }`);
                 }
             );
-            payload.setService(service);
 
             service.create(payload);
 
@@ -104,10 +104,10 @@ describe('SensorThingsService', () => {
             });
             const payload = new DumbEntity(
                 'Hello there',
-                'This is a test entity.'
+                'This is a test entity.',
+                service
             );
             payload.id = 42;
-            payload.setService(service);
 
             await service.delete(payload);
 
@@ -138,7 +138,8 @@ describe('SensorThingsService', () => {
             );
             const payload = new DumbEntity(
                 'Hello there',
-                'This is a test entity.'
+                'This is a test entity.',
+                service
             );
 
             await service.create(payload);
@@ -171,10 +172,10 @@ describe('SensorThingsService', () => {
             );
             const payload = new DumbEntity(
                 'Hello there',
-                'This is a test entity.'
+                'This is a test entity.',
+                service
             );
             payload.id = 42;
-            payload.setService(service);
 
             const newInfo = {
                 name: 'New name',

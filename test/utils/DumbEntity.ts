@@ -11,13 +11,13 @@ export class DumbEntity extends Entity<DumbEntity> {
     public name: string;
     public description: string;
 
-    constructor(name: string, description: string) {
-        super();
+    constructor(name: string, description: string, service: SensorThingsService) {
+        super(service);
         this.name = name;
         this.description = description;
     }
 
-    getDao(service: SensorThingsService): BaseDao<DumbEntity> {
-        return new DumbEntityDao(service);
+    get dao(): BaseDao<DumbEntity> {
+        return new DumbEntityDao(this._service);
     }
 }

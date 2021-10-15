@@ -23,7 +23,7 @@ export class Query<T extends Entity<T>> {
 
     protected get _endpoint (): string {
         const url = new URL(
-            [this._service.endpoint, this._dao.getEntityPathname()].join('/')
+            [this._service.endpoint, this._dao.entityPathname].join('/')
         );
 
         if (this._settings.select)

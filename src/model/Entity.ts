@@ -1,6 +1,5 @@
 import { BaseDao } from '../dao/BaseDao';
 import { SensorThingsService } from '../service/SensorThingsService';
-import {ServiceNotInitializedError} from "../error/ServiceNotInitializedError";
 
 /**
  * Abstract representation of a SensorThings entity.
@@ -8,7 +7,11 @@ import {ServiceNotInitializedError} from "../error/ServiceNotInitializedError";
  */
 export abstract class Entity<T extends Entity<T>> {
     private _id: number | undefined;
-    protected _service: SensorThingsService | undefined;
+    protected _service: SensorThingsService;
+
+    protected constructor(service: SensorThingsService) {
+        this._service = service;
+    }
 
     /**
      * Get the SensorThings id associated to this entity on the current service.
@@ -39,18 +42,16 @@ export abstract class Entity<T extends Entity<T>> {
 
     /**
      * Allows to retrieve DAO related to a given entity.
-     * @param service endpoint to use
      */
-    abstract getDao(service: SensorThingsService): BaseDao<T>;
+    abstract get dao(): BaseDao<T>;
 
     /**
      * Returns an URL containing the entity URL domain name and id of
      * the current entity.
      * @returns an url defining current entity
      */
-    public entityResourcePathname(): string {
-        if (!this._service) throw new ServiceNotInitializedError();
-        return `${this.getDao(this._service).getEntityPathname()}(${this.id})`;
+    public get instancePathname(): string {
+        return `${this.dao.entityPathname}(${this.id})`;
     }
 
 

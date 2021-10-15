@@ -7,12 +7,12 @@ import { DumbEntity } from './DumbEntity';
  */
 export class DumbEntityDao extends BaseDao<DumbEntity> {
     buildEntityFromSensorThingsAPI(data: any): DumbEntity {
-        const entity = new DumbEntity(data.name, data.description);
+        const entity = new DumbEntity(data.name, data.description, this._service);
         entity.id = data['@iot.id'];
         entity.setService(this._service);
         return entity;
     }
-    getEntityPathname(): string {
+    get entityPathname(): string {
         return 'DumbEntities';
     }
     get entityPublicAttributes(): string[] {

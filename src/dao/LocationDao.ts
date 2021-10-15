@@ -3,7 +3,7 @@ import {Location} from "../model/Location";
 
 export class LocationDao extends BaseDao<Location> {
     buildEntityFromSensorThingsAPI(data: Record<string, string>): Location {
-        const location = new Location(data.name, data.description);
+        const location = new Location(data.name, data.description, this._service);
         location.id = data['@iot.id'] as unknown as number;
         location.setService(this._service);
         return location;
@@ -11,7 +11,7 @@ export class LocationDao extends BaseDao<Location> {
     get entityPublicAttributes(): string[] {
         return ['name', 'description', 'properties'];
     }
-    getEntityPathname(): string {
+    get entityPathname(): string {
         return "Locations";
     }
 }

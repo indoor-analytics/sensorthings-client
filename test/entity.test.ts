@@ -2,9 +2,11 @@ import { SensorThingsService } from '../src';
 import { DumbEntity } from './utils/DumbEntity';
 import { HttpClientMock } from './utils/HttpClientMock';
 
+const service = new SensorThingsService('https://example.org');
+
 describe('Entity', () => {
     it("shouldn't return id when not created", () => {
-        const payload = new DumbEntity('name', 'description');
+        const payload = new DumbEntity('name', 'description', service);
         const getId = () => payload.id;
         expect(getId).toThrowError(
             new RangeError("Entity hasn't been created on a service yet.")
@@ -12,20 +14,16 @@ describe('Entity', () => {
     });
 
     it('should not return pathname when not created', () => {
-        const payload = new DumbEntity('name', 'description');
-        payload.setService(
-            new SensorThingsService('https://example.org')
-        );
-        const getLink = () => payload.entityResourcePathname();
+        const payload = new DumbEntity('name', 'description', service);
+        const getLink = () =>
+            payload.instancePathname;
         expect(getLink).toThrowError(
             new RangeError("Entity hasn't been created on a service yet.")
         );
     });
 
     it('should return id when created', async () => {
-        const payload = new DumbEntity('name', 'description');
-        const service = new SensorThingsService('https://example.org');
-        payload.setService(new SensorThingsService('https://example.org'));
+        const payload = new DumbEntity('name', 'description', service);
         const mockInjector = new HttpClientMock();
         const createdId = Math.ceil(Math.random() * 3000000);
         mockInjector.injectMockCall(
@@ -50,8 +48,6 @@ describe('Entity', () => {
         await service.create(payload);
 
         expect(payload.id).toEqual(createdId);
-        expect(
-            payload.entityResourcePathname()
-        ).toEqual(`DumbEntities(${createdId})`);
+        expect( payload.instancePathname ).toEqual(`DumbEntities(${createdId})`);
     });
 });
