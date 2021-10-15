@@ -3,7 +3,6 @@ import { BaseDao } from '../dao/BaseDao';
 import { ThingDao } from '../dao/ThingDao';
 import { SensorThingsService } from '../service/SensorThingsService';
 import {Location} from "./Location";
-import {ServiceNotInitializedError} from "../error/ServiceNotInitializedError";
 
 /**
  * Representation of a Thing SensorThings entity.
@@ -24,7 +23,6 @@ export class Thing extends Entity<Thing> {
     }
 
     get locations(): Promise<Location[]> {
-        if (!this._service) throw new ServiceNotInitializedError();
         return this._service.locations.getFromEntity(this);
     }
 }
