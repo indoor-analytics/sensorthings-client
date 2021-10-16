@@ -10,19 +10,12 @@ export class Location extends Entity<Location> {
     public readonly encodingType: string;
     public location: Feature;
 
-    constructor(name: string, description: string, service: SensorThingsService) {
+    constructor(name: string, description: string, location: Feature, service: SensorThingsService) {
         super(service);
         this.name = name;
         this.description = description;
         this.encodingType = 'application/geo+json';
-        this.location = { // TODO remove
-            "type": "Feature",
-            "properties": {},
-            "geometry": {
-                "type": "Point",
-                "coordinates": [-114.06, 51.05]
-            }
-        };
+        this.location = location;
     }
 
     get dao(): BaseDao<Location> {
