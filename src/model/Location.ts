@@ -10,7 +10,6 @@ export class Location extends Entity<Location> {
     public readonly encodingType: string;
     public location: Feature;
 
-    // TODO add builder
     constructor(name: string, description: string, service: SensorThingsService) {
         super(service);
         this.name = name;
