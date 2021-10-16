@@ -2,7 +2,7 @@ import {Entity} from "../Entity";
 import {SensorThingsService} from "../../service/SensorThingsService";
 
 /**
- * Entity independant implementation of an entity builder object.
+ * Entity independent implementation of an entity builder object.
  * It allows to create entity instances by injecting properties and associated
  * service reference.
  */
