@@ -1,12 +1,16 @@
 import {BaseDao} from "./BaseDao";
 import {Location} from "../model/Location";
+import {Feature} from "@turf/helpers";
 
 export class LocationDao extends BaseDao<Location> {
-    // TODO setup location position
-    buildEntityFromSensorThingsAPI(data: Record<string, string>): Location {
-        const location = new Location(data.name, data.description, this._service);
+    buildEntityFromSensorThingsAPI(data: Record<string, unknown>): Location {
+        const location = new Location(
+            data.name as string,
+            data.description as string,
+            data.location as Feature,
+            this._service
+        );
         location.id = data['@iot.id'] as unknown as number;
-        location.setService(this._service);
         return location;
     }
     get entityPublicAttributes(): string[] {
