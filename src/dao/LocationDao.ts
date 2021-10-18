@@ -14,7 +14,7 @@ export class LocationDao extends BaseDao<Location> {
         return location;
     }
     get entityPublicAttributes(): string[] {
-        return ['name', 'description', 'properties', 'location'];
+        return ['name', 'description', 'properties', 'location', 'encodingType'];
     }
     get entityPathname(): string {
         return "Locations";
