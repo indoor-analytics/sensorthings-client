@@ -9,12 +9,7 @@ export abstract class EntityList<P extends Entity<P>, T extends Entity<T>> {
         this._service = service;
     }
 
-    public async list(): Promise<T[]> {
-        return [];
-    }
+    public abstract list(): Promise<T[]>;
 
-    public async add(entity: T): Promise<void> {
-        console.log(entity);
-        return;
-    }
+    public abstract add(entity: T): Promise<void>;
 }
