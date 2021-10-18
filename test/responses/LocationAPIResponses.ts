@@ -1,3 +1,5 @@
+import {Location} from "../../src/model/Location";
+
 export class LocationAPIResponses {
     static getEmptyResponse(): Record<string, unknown> {
         return {
@@ -10,6 +12,24 @@ export class LocationAPIResponses {
             "@iot.count":1,
             "value":[
                 {"@iot.id":2708601,"@iot.selfLink":"https://scratchpad.sensorup.com/OGCSensorThings/v1.0/Locations(2708601)","description":"University of Calgary, CCIT building","name":"UofC CCIT","encodingType":"application/vnd.geo+json","location":{"coordinates":[-115.133,51.08],"type":"Point"},"Things@iot.navigationLink":"http://scratchpad.sensorup.com/OGCSensorThings/v1.0/Locations(2708601)/Things","HistoricalLocations@iot.navigationLink":"http://scratchpad.sensorup.com/OGCSensorThings/v1.0/Locations(2708601)/HistoricalLocations"}
+            ]
+        };
+    }
+
+    static getEntityLocationFrom(location: Location): Record<string, unknown> {
+        return {
+            "@iot.count":1,
+            "value":[
+                {
+                    "@iot.id":location.id,
+                    "@iot.selfLink":`https://scratchpad.sensorup.com/OGCSensorThings/v1.0/Locations(${location.id})`,
+                    "description":location.description,
+                    "name":location.name,
+                    "encodingType":location.encodingType,
+                    "location":location.location,
+                    "Things@iot.navigationLink":`http://scratchpad.sensorup.com/OGCSensorThings/v1.0/Locations(${location.id})/Things`,
+                    "HistoricalLocations@iot.navigationLink":`http://scratchpad.sensorup.com/OGCSensorThings/v1.0/Locations(${location.id})/HistoricalLocations`
+                }
             ]
         };
     }
