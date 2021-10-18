@@ -37,16 +37,18 @@ describe('Entity lists', () => {
         mockInjector.injectMockCall(service, 'https://example.org/DumbEntities(42)/Locations', 'post', (data: Location) => {
             postedLocation = data;
             postedLocation.id = 45224;
+            return {
+                // @ts-ignore
+                data: LocationAPIResponses.getEntityLocationFrom(postedLocation).value[0]
+            };
         });
         mockInjector.injectMockCall(service, 'https://example.org/DumbEntities(42)/Locations', 'get', () => {
-            if (!postedLocation) {
-                return {
+            return (postedLocation === null)
+                ? {
                     data: LocationAPIResponses.getEmptyResponse()
-                }
-            }
-            return {
-                data: LocationAPIResponses.getEntityLocationFrom(postedLocation)
-            }
+                } : {
+                    data: LocationAPIResponses.getEntityLocationFrom(postedLocation)
+                };
         });
 
         const locationsList = new DumbEntityLocationsList(mock, service);
