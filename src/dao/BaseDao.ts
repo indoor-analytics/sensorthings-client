@@ -178,7 +178,8 @@ export abstract class BaseDao<T extends Entity<T>> {
                 this.entityPathname
             ].join('/'),
                 this.getEntityNetworkObject(payload))
-            .then((_response: AxiosResponse<any>) => {
+            .then((response: AxiosResponse<any>) => {
+                payload.id = this._service.compatibility.getCreatedEntityIdFromResponse(response);
                 return ;
             })
             .catch((error: AxiosError) => {
