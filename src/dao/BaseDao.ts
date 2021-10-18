@@ -165,6 +165,13 @@ export abstract class BaseDao<T extends Entity<T>> {
             });
     }
 
+    /**
+     * Creates a entity attached to a given entity of another type.
+     * For example, LocationDao().createFromEntity(Thing(42), Location()) should create a location for the Thing with
+     * id=42 (would hit https://myservice.org/Things(42)/Locations).
+     * @param entity parent object of entity to create
+     * @param payload entity to create
+     */
     async createFromEntity<D extends Entity<D>>(entity: Entity<D>, payload: T): Promise<void> {
         return await this._service.httpClient
             .post([
