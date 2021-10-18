@@ -47,7 +47,7 @@
   },
   "size-limit": [
     {
-      "path": "dist/**/*.js",
+      "path": "dist/sensorthings-client.cjs.production.min.js",
       "limit": "20 KB"
     }
   ]
