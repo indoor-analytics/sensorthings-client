@@ -30,7 +30,9 @@ Thing[] things = await service.things.query()
     .list();
 ```
 
-## Errors handling
+## Notes
+
+### Errors handling
 
 This library will try to avoid making API calls it knows will fail.
 
@@ -42,5 +44,25 @@ Thing[] things = await service.things.query()
     .list();
 ```
 
-
 Instead of calling the service with this request, the library would directly raise a `NegativeValueError`.
+
+### Compatibility layer
+
+This library includes a compatibility package (located in `src/service/compatibility` folder) that enables the library to run against different
+SensorThings API implementations.
+
+We tested the library against following backends:
+* [FROST-Server](https://github.com/FraunhoferIOSB/FROST-Server)
+* [gost](https://github.com/gost/server)
+
+#### Location encoding type
+
+If you want to run this library against a backend only supporting `'application/vnd.geo+json'` encoding for Location entities, you can
+specify it in your service declaration:
+
+```typescript
+const service = new SensorThingsService(
+    'https://example.org',
+    { locationEncodingType: 'application/vnd.geo+json' }
+);
+```
