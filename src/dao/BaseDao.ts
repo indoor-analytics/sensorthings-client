@@ -171,14 +171,15 @@ export abstract class BaseDao<T extends Entity<T>> {
      * @param payload entity to create
      */
     async createFromEntity<D extends Entity<D>>(entity: Entity<D>, payload: T): Promise<void> {
-        return await this._service.httpClient
-            .post([
+        return await this._service.httpClient.post(
+            [
                 this._service.endpoint,
                 entity.instancePathname,
                 this.entityPathname
             ].join('/'),
-                this.getEntityNetworkObject(payload))
-            .then((response: AxiosResponse<any>) => {
+            this.getEntityNetworkObject(payload)
+        )
+            .then((response: AxiosResponse<Object>) => {
                 payload.id = this._service.compatibility.getCreatedEntityIdFromResponse(response);
                 return ;
             })
