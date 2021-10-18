@@ -19,10 +19,10 @@ export class LocationBuilder extends AbstractBuilder<Location> {
             throw new MissingArgumentError('"location" argument is required to build a Location.');
 
         return new Location(
+            this._service,
             '' + this._attributes.name,
             '' + this._attributes.description,
-            this._attributes.location as Feature<Geometry>,
-            this._service
+            this._attributes.location as Feature<Geometry>
         );
     }
 }

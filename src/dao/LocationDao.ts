@@ -5,10 +5,10 @@ import {Feature, Geometry} from "@turf/helpers";
 export class LocationDao extends BaseDao<Location> {
     buildEntityFromSensorThingsAPI(data: Record<string, unknown>): Location {
         const location = new Location(
+            this._service,
             data.name as string,
             data.description as string,
-            data.location as Feature<Geometry>,
-            this._service
+            data.location as Feature<Geometry>
         );
         location.id = data['@iot.id'] as unknown as number;
         return location;

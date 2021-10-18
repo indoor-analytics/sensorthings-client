@@ -9,13 +9,15 @@ export class Location extends Entity<Location> {
     public description: string;
     public readonly encodingType: string;
     public location: Feature<Geometry>;
+    public properties: Record<string, unknown>;
 
-    constructor(name: string, description: string, location: Feature<Geometry>, service: SensorThingsService) {
+    constructor(service: SensorThingsService, name: string, description: string, location: Feature<Geometry>, properties: Record<string, unknown> = {}) {
         super(service);
         this.name = name;
         this.description = description;
         this.encodingType = 'application/geo+json';
         this.location = location;
+        this.properties = properties;
     }
 
     get dao(): BaseDao<Location> {
