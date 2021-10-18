@@ -9,8 +9,7 @@ export class DumbEntityLocationsList extends EntityList<DumbEntity, Location>{
     }
 
     add(entity: Location): Promise<void> {
-        console.log(entity);
-        return Promise.resolve(undefined);
+        return this._service.locations.createFromEntity(this._parent, entity);
     }
 
     list(): Promise<Location[]> {
