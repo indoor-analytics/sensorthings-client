@@ -165,6 +165,25 @@ export abstract class BaseDao<T extends Entity<T>> {
             });
     }
 
+    async createFromEntity<D extends Entity<D>>(entity: Entity<D>, payload: T): Promise<void> {
+        return await this._service.httpClient
+            .post([
+                this._service.endpoint,
+                entity.instancePathname,
+                this.entityPathname
+            ].join('/'),
+                this.getEntityNetworkObject(payload))
+            .then((_response: AxiosResponse<any>) => {
+                return ;
+            })
+            .catch((error: AxiosError) => {
+                if (error.response?.status === 404) {
+                    throw new NotFoundError('Entity does not exist.');
+                }
+                throw error;
+            });
+    }
+
     /**
      * Returns a query object allowing data filtering on inferred-type entities.
      */
