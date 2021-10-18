@@ -97,7 +97,7 @@ export class Query<T extends Entity<T>> {
         )
             .then((response: AxiosResponse<{value: Record<string, string>[]}>) => {
                 return response.data.value.map((datum: Record<string, string>) => {
-                    return this._dao.buildEntityFromSensorThingsAPI(datum)
+                    return this._dao.buildEntityFromSensorThingsAPIRawData(datum)
                 });
             })
             .catch((error: AxiosError) => {

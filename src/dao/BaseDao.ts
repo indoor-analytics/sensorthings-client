@@ -25,8 +25,7 @@ export abstract class BaseDao<T extends Entity<T>> {
             [this._service.endpoint, this.entityPathname].join('/'),
             this.getEntityNetworkObject(entity)
         );
-        // @ts-ignore
-        entity.id = response.data['@iot.id'];
+        entity.id = this._service.compatibility.getCreatedEntityIdFromResponse(response);
         entity.setService(this._service);
         return;
     }
@@ -96,7 +95,8 @@ export abstract class BaseDao<T extends Entity<T>> {
      * Returns an instance of the type inferred in the current DAO (with the service id).
      * @param data entity body from service
      */
-    abstract buildEntityFromSensorThingsAPI(data: Record<string, string>): T;
+    abstract buildEntityFromSensorThingsAPIRawData(data: Record<string, string>): T;
+    abstract buildEntityFromSensorThingsAPIResponse(response: AxiosResponse): T;
 
     /**
      * Returns an object containing all entity public attributes.
@@ -127,9 +127,7 @@ export abstract class BaseDao<T extends Entity<T>> {
                 ].join('/')
             )
             .then((response: AxiosResponse) => {
-                return this.buildEntityFromSensorThingsAPI(
-                    response.data
-                );
+                return this.buildEntityFromSensorThingsAPIResponse(response);
             })
             .catch((error: AxiosError) => {
                 if (error.response?.status === 404) {
@@ -154,7 +152,7 @@ export abstract class BaseDao<T extends Entity<T>> {
             ].join('/'))
             .then((response: AxiosResponse<{value: Record<string, string>[]}>) => {
                 return response.data.value.map((datum: Record<string, string>) => {
-                    return this.buildEntityFromSensorThingsAPI(datum)
+                    return this.buildEntityFromSensorThingsAPIRawData(datum)
                 });
             })
             .catch((error: AxiosError) => {
