@@ -69,4 +69,10 @@ export abstract class Entity<T extends Entity<T>> {
             }).length === 0
         );
     }
+
+    public toString(): string {
+        // @ts-ignore
+        const object = this.dao.getEntityNetworkObject(this);
+        return JSON.stringify(object, null, 4);
+    }
 }
