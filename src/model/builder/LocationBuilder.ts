@@ -2,8 +2,13 @@ import {AbstractBuilder} from "./AbstractBuilder";
 import {Location} from "../Location";
 import {Feature} from "@turf/helpers";
 import {MissingArgumentError} from "../../error/MissingArgumentError";
+import {SensorThingsService} from "../../service/SensorThingsService";
 
 export class LocationBuilder extends AbstractBuilder<Location> {
+    constructor(service: SensorThingsService) {
+        super(service);
+    }
+
     setLocation(location: Feature): LocationBuilder {
         this._attributes.location = location;
         return this;
