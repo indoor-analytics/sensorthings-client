@@ -20,8 +20,8 @@ export class LocationBuilder extends AbstractBuilder<Location> {
 
         return new Location(
             this._service,
-            '' + this._attributes.name,
-            '' + this._attributes.description,
+            this._attributes.name ? '' + this._attributes.name : '',
+            this._attributes.description ? '' + this._attributes.description : '',
             this._attributes.location as Point
         );
     }
