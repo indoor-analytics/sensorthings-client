@@ -4,7 +4,6 @@ import {DumbEntityLocationsList} from "./utils/DumbEntityLocationsList";
 import {DumbEntityBuilder} from "./utils/DumbEntityBuilder";
 import {LocationAPIResponses} from "./responses/LocationAPIResponses";
 import {LocationBuilder} from "../src/model/builder/LocationBuilder";
-import {point} from "@turf/helpers";
 import {Location} from "../src/model/Location";
 
 let service = new SensorThingsService('https://example.org');
@@ -55,7 +54,7 @@ describe('Entity lists', () => {
         expect(locations.length).toEqual(0);
 
         const newCoordinates = [-115.133, 51.08];
-        const newLocation = new LocationBuilder(service).setLocation(point(newCoordinates).geometry).build();
+        const newLocation = new LocationBuilder(service).setLocation(newCoordinates).build();
         await locationsList.add(newLocation);
 
         locations = await locationsList.list();
