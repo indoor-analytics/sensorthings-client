@@ -9,7 +9,8 @@ export class LocationDao extends BaseDao<Location> {
             this._service,
             data.name as string,
             data.description as string,
-            data.location as Point
+            data.location as Point,
+            data.properties as Record<string, unknown>
         );
         location.id = data['@iot.id'] as unknown as number;
         return location;

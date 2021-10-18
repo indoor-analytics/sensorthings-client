@@ -37,6 +37,9 @@ async function main() {
     // Pushing a new location
     console.log('\n## Pushing a new location\n');
     const location = new LocationBuilder(service)
+        .setName('Test thing location')
+        .setDescription('Is... Is it moving?!')
+        .setProperties({"hello": "there"})
         .setLocation([50.6048862, 3.1498135])
         .build();
     await newThing.locations.add(location);
