@@ -4,7 +4,8 @@ import {SensorThingsService} from "../../service/SensorThingsService";
 export abstract class EntityList<P extends Entity<P>, T extends Entity<T>> {
     protected _service: SensorThingsService;
     protected _parent: P;
-    protected constructor(parent: P, service: SensorThingsService) {
+
+    public constructor(parent: P, service: SensorThingsService) {
         this._parent = parent;
         this._service = service;
     }
