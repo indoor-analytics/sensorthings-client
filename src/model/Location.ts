@@ -15,7 +15,7 @@ export class Location extends Entity<Location> {
         super(service);
         this.name = name;
         this.description = description;
-        this.encodingType = 'application/geo+json';
+        this.encodingType = this._service.compatibility.locationEncodingType;
         this.location = location;
         this.properties = properties;
     }

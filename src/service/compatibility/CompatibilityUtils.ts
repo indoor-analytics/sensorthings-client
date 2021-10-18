@@ -1,10 +1,16 @@
 import {AxiosResponse} from "axios";
+import {CompatibilityOptions} from "./CompatibilityOptions";
 
 /**
  * This class ensures the library works on several SensorThings API implementations by
  * handling differences between them.
  */
 export class CompatibilityUtils {
+    private _options: CompatibilityOptions;
+    constructor(options: CompatibilityOptions) {
+        this._options = options;
+    }
+
     /**
      * Some SensorThings API implementations return created entity id in request body,
      * others in location header.
@@ -24,5 +30,14 @@ export class CompatibilityUtils {
         }
 
         throw new RangeError();
+    }
+
+
+    /**
+     * Some SensorThings implementations support encoding types different than
+     * "application/geo+json" for Location types.
+     */
+    get locationEncodingType(): string {
+        return this._options.locationEncodingType;
     }
 }

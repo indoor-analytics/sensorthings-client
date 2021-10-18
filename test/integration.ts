@@ -3,9 +3,19 @@ import {Thing} from "../src/model/Thing";
 import {LocationBuilder} from "../src/model/builder/LocationBuilder";
 
 async function main() {
+    // FROST-Server SensorThings service
     const service = new SensorThingsService(
         'http://localhost:8080/FROST-Server/v1.0'
     );
+    // Gost SensorThings service
+    /*
+    const service = new SensorThingsService(
+        'http://localhost:8080/v1.0',
+        {
+            locationEncodingType: 'application/vnd.geo+json'
+        }
+    );
+     */
 
     // Getting non-existent Thing
     console.log('\n## Getting non-existent Thing\n');
@@ -31,6 +41,8 @@ async function main() {
         .build();
     await newThing.locations.add(location);
     console.log('' + await newThing.locations.list());
+
+    console.log('\n\nOK!')
 }
 
 main();

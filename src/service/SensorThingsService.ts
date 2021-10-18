@@ -2,7 +2,8 @@ import { Entity } from '../model/Entity';
 import axios, { AxiosInstance } from 'axios';
 import { ThingDao } from '../dao/ThingDao';
 import {LocationDao} from "../dao/LocationDao";
-import {CompatibilityUtils} from "./utils/CompatibilityUtils";
+import {CompatibilityUtils} from "./compatibility/CompatibilityUtils";
+import {CompatibilityOptions} from "./compatibility/CompatibilityOptions";
 
 /**
  * A SensorThingsService represents the service endpoint of a server.
@@ -12,13 +13,16 @@ export class SensorThingsService {
     public httpClient: AxiosInstance;
     public compatibility: CompatibilityUtils;
 
-    constructor(endpoint: URL | string) {
+    constructor(
+        endpoint: URL | string,
+        options: CompatibilityOptions = { locationEncodingType: "application/geo+json" }
+    ) {
         this._url =
             typeof endpoint === 'string' ? new URL(endpoint) : endpoint;
         this.httpClient = axios.create({
             url: this._url.href
         });
-        this.compatibility = new CompatibilityUtils();
+        this.compatibility = new CompatibilityUtils(options);
     }
 
     /**
