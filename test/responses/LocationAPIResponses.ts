@@ -1,4 +1,10 @@
 export class LocationAPIResponses {
+    static getEmptyResponse(): Record<string, unknown> {
+        return {
+            "@iot.count":0,
+            "value":[]
+        };
+    }
     static getEntityLocation(): Record<string, unknown> {
         return {
             "@iot.count":1,
