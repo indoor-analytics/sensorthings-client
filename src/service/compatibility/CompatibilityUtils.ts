@@ -18,7 +18,7 @@ export class CompatibilityUtils {
      */
     public getCreatedEntityIdFromResponse(response: AxiosResponse<Object>): number {
         // @ts-ignore
-        if (response.data['@iot.id'] !== undefined) return response.data['@iot.id'];
+        if (response.data && response.data['@iot.id'] !== undefined) return response.data['@iot.id'];
 
         if (response.headers.location !== undefined) {
             const header = response.headers.location;
