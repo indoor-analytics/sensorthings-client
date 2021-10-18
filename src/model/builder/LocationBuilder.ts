@@ -1,6 +1,6 @@
 import {AbstractBuilder} from "./AbstractBuilder";
 import {Location} from "../Location";
-import {Feature, Geometry} from "@turf/helpers";
+import {Point} from "@turf/helpers";
 import {MissingArgumentError} from "../../error/MissingArgumentError";
 import {SensorThingsService} from "../../service/SensorThingsService";
 
@@ -9,7 +9,7 @@ export class LocationBuilder extends AbstractBuilder<Location> {
         super(service);
     }
 
-    setLocation(location: Feature): LocationBuilder {
+    setLocation(location: Point): LocationBuilder {
         this._attributes.location = location;
         return this;
     }
@@ -22,7 +22,7 @@ export class LocationBuilder extends AbstractBuilder<Location> {
             this._service,
             '' + this._attributes.name,
             '' + this._attributes.description,
-            this._attributes.location as Feature<Geometry>
+            this._attributes.location as Point
         );
     }
 }

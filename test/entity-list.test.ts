@@ -55,12 +55,12 @@ describe('Entity lists', () => {
         expect(locations.length).toEqual(0);
 
         const newCoordinates = [-115.133, 51.08];
-        const newLocation = new LocationBuilder(service).setLocation(point(newCoordinates)).build();
+        const newLocation = new LocationBuilder(service).setLocation(point(newCoordinates).geometry).build();
         await locationsList.add(newLocation);
 
         locations = await locationsList.list();
         expect(locations.length).toEqual(1);
         const createdLocation = locations[0];
-        expect(createdLocation.location.geometry.coordinates).toEqual(newCoordinates);
+        expect(createdLocation.location.coordinates).toEqual(newCoordinates);
     });
 });

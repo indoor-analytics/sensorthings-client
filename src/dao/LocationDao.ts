@@ -1,6 +1,6 @@
 import {BaseDao} from "./BaseDao";
 import {Location} from "../model/Location";
-import {Feature, Geometry} from "@turf/helpers";
+import {Point} from "@turf/helpers";
 
 export class LocationDao extends BaseDao<Location> {
     buildEntityFromSensorThingsAPI(data: Record<string, unknown>): Location {
@@ -8,7 +8,7 @@ export class LocationDao extends BaseDao<Location> {
             this._service,
             data.name as string,
             data.description as string,
-            data.location as Feature<Geometry>
+            data.location as Point
         );
         location.id = data['@iot.id'] as unknown as number;
         return location;
