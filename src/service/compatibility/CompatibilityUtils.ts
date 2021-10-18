@@ -29,7 +29,7 @@ export class CompatibilityUtils {
             return +entityId;
         }
 
-        throw new RangeError();
+        throw new RangeError('Could not find entity id.');
     }
 
 
