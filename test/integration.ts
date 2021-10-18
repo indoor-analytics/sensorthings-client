@@ -45,6 +45,9 @@ async function main() {
     await newThing.locations.add(location);
     console.log('' + await newThing.locations.list());
 
+    // Retrieving thing from posted location
+    console.log('' + await location.things.list());
+
     console.log('\n\nOK!')
 }
 
