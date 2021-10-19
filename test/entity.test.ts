@@ -58,4 +58,9 @@ describe('HistoricalLocation', () => {
         const create = () => new HistoricalLocation(service, "azerty");
         expect(create).toThrowError(new RangeError('"azerty" is not a valid time value.'));
     });
+
+    it('should throw when created with empty input string', () => {
+        const create = () => new HistoricalLocation(service, "");
+        expect(create).toThrowError(new RangeError('"" is not a valid time value.'));
+    });
 });
