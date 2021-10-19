@@ -63,4 +63,10 @@ describe('HistoricalLocation', () => {
         const create = () => new HistoricalLocation(service, "");
         expect(create).toThrowError(new RangeError('"" is not a valid time value.'));
     });
+
+    it('should own a date matching input date', () => {
+        const dateString = "2021-10";
+        const location = new HistoricalLocation(service, dateString);
+        expect(new Date(dateString).toISOString()).toEqual(new Date(location.time).toISOString());
+    })
 });
