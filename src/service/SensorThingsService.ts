@@ -4,6 +4,7 @@ import { ThingDao } from '../dao/ThingDao';
 import {LocationDao} from "../dao/LocationDao";
 import {CompatibilityUtils} from "./compatibility/CompatibilityUtils";
 import {CompatibilityOptions} from "./compatibility/CompatibilityOptions";
+import { HistoricalLocationDao } from '../dao/HistoricalLocationDao';
 
 /**
  * A SensorThingsService represents the service endpoint of a server.
@@ -62,5 +63,9 @@ export class SensorThingsService {
 
     public get locations(): LocationDao {
         return new LocationDao(this);
+    }
+
+    public get historicalLocations(): HistoricalLocationDao {
+        return new HistoricalLocationDao(this);
     }
 }
