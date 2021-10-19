@@ -13,7 +13,11 @@ export class HistoricalLocation extends Entity<HistoricalLocation> {
 
     constructor(service: SensorThingsService, time: string) {
         super(service);
-        this.time = time;
+        try {
+            this.time = new Date(time).toISOString();
+        } catch (err) {
+            throw new RangeError(`"${time}" is not a valid time value.`);
+        }
         this.things = new HistoricalLocationThingsList(this, this._service);
         this.locations = new HistoricalLocationLocationsList(this, this._service);
     }

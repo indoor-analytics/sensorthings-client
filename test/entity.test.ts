@@ -54,7 +54,7 @@ describe('Entity', () => {
 });
 
 describe('HistoricalLocation', () => {
-    it ('should throw when creating object with random input', () => {
+    it ('should throw when created with random input string', () => {
         const create = () => new HistoricalLocation(service, "azerty");
         expect(create).toThrowError(new RangeError('"azerty" is not a valid time value.'));
     });
