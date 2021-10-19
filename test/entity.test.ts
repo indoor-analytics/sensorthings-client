@@ -1,6 +1,7 @@
 import { SensorThingsService } from '../src';
 import { DumbEntity } from './utils/DumbEntity';
 import { HttpClientMock } from './utils/HttpClientMock';
+import {HistoricalLocation} from "../src/model/HistoricalLocation";
 
 const service = new SensorThingsService('https://example.org');
 
@@ -49,5 +50,12 @@ describe('Entity', () => {
 
         expect(payload.id).toEqual(createdId);
         expect( payload.instancePathname ).toEqual(`DumbEntities(${createdId})`);
+    });
+});
+
+describe('HistoricalLocation', () => {
+    it ('should throw when creating object with random input', () => {
+        const create = () => new HistoricalLocation(service, "azerty");
+        expect(create).toThrowError(new RangeError('"azerty" is not a valid time value.'));
     });
 });
