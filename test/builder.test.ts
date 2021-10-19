@@ -63,4 +63,14 @@ describe('Model builders', () => {
         const build = () => builder.build();
         expect(build).toThrowError(new MissingArgumentError('"time" argument is required to build a HistoricalLocation.'));
     });
+
+    it('should not build HistoricalLocation with random string input', () => {
+        const builder = new HistoricalLocationBuilder( new SensorThingsService('https://example.org') );
+
+        const build = () => builder
+            .setTime("hello there")
+            .build();
+
+        expect(build).toThrowError(new RangeError('"hello there" is not a valid time value.'));
+    });
 });
