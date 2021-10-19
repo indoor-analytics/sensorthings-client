@@ -1,6 +1,7 @@
 import {SensorThingsService} from "../src";
 import {ThingBuilder} from "../src/model/builder/ThingBuilder";
 import {MissingArgumentError} from "../src/error/MissingArgumentError";
+import {HistoricalLocationBuilder} from "../src/model/builder/HistoricalLocationBuilder";
 
 describe('Model builders', () => {
     it('should build a Thing entity', () => {
@@ -46,7 +47,7 @@ describe('Model builders', () => {
             .setName('name1')
             .setDescription('description1')
             .build();
-        expect(thing1.name).toEqual('name1');    
+        expect(thing1.name).toEqual('name1');
 
         const build = () => builder
             .setName('name2')
@@ -55,5 +56,11 @@ describe('Model builders', () => {
         expect(build).toThrowError(
             new MissingArgumentError('"description" argument is required to build a Thing.')
         );
+    });
+
+    it('should not build HistoricalLocation with missing time', () => {
+        const builder = new HistoricalLocationBuilder( new SensorThingsService('https://example.org') );
+        const build = () => builder.build();
+        expect(build).toThrowError(new MissingArgumentError('"time" argument is required to build a HistoricalLocation.'));
     });
 });
