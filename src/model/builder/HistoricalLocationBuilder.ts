@@ -1,13 +1,8 @@
 import {AbstractBuilder} from "./AbstractBuilder";
 import {HistoricalLocation} from "../HistoricalLocation";
-import {SensorThingsService} from "../../service/SensorThingsService";
 import {MissingArgumentError} from "../../error/MissingArgumentError";
 
 export class HistoricalLocationBuilder extends AbstractBuilder<HistoricalLocation>{
-    constructor(service: SensorThingsService) {
-        super(service);
-    }
-
     setTime(time: string): HistoricalLocationBuilder {
         this._attributes.time = time;
         return this;
