@@ -49,12 +49,8 @@
   },
   "size-limit": [
     {
-      "path": "dist/**/*.js",
-      "limit": "20 KB"
-    },
-    {
       "path": "dist/bundle.js",
-      "limit": "50 KB"
+      "limit": "20 KB"
     }
   ]
 }
