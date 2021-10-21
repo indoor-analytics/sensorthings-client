@@ -4,6 +4,7 @@ import {SensorThingsService} from "../service/SensorThingsService";
 import {LocationDao} from "../dao/LocationDao";
 import {Point} from "@turf/helpers";
 import {LocationThingsList} from "./list/LocationThingsList";
+import {LocationHistoricalLocationsList} from "./list/LocationHistoricalLocationsList";
 
 export class Location extends Entity<Location> {
     public name: string;
@@ -13,6 +14,7 @@ export class Location extends Entity<Location> {
     public properties: Record<string, unknown>;
 
     public things: LocationThingsList;
+    public historicalLocations: LocationHistoricalLocationsList;
 
     constructor(service: SensorThingsService, name: string, description: string, location: Point, properties: Record<string, unknown> = {}) {
         super(service);
@@ -22,6 +24,7 @@ export class Location extends Entity<Location> {
         this.location = location;
         this.properties = properties;
         this.things = new LocationThingsList(this, this._service);
+        this.historicalLocations = new LocationHistoricalLocationsList(this, this._service);
     }
 
     get dao(): BaseDao<Location> {
