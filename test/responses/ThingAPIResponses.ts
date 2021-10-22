@@ -10,7 +10,6 @@ export class ThingAPIResponses {
         let things = this.things.value as Object[];
         return {
             "@iot.count":27590,
-            "@iot.nextLink":"https://scratchpad.sensorup.com/OGCSensorThings/v1.0/Things?$top=5&$skip=5",
             "value": things.filter((_value, index) => index < 5)
         };
     }
