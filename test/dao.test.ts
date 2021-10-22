@@ -342,8 +342,11 @@ describe('DAO', () => {
 
             let counter = 0;
             while (counter < 5) {
-                if (!await iterator.hasNext())
+                const hasItems = await iterator.hasNext();
+                if (!hasItems) {
                     fail('Iterator.failed returned false while collection still have items');
+                    return;
+                }
 
                 await iterator.next();
                 counter += 1;
