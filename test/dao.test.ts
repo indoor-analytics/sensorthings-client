@@ -330,5 +330,26 @@ describe('DAO', () => {
             const result = await iterator.hasNext();
             expect(result).toBeTruthy();
         });
+
+        it('should return 5 things one after one', async () => {
+            const dao = new DumbEntityDao(service);
+            const iterator = dao.iterator;
+            mockInjector.injectMockCall(service, 'https://example.org/DumbEntities', 'get', () => {
+                return {
+                    data: ThingAPIResponses.top5things
+                }
+            });
+
+            let counter = 0;
+            while (counter < 5) {
+                if (!await iterator.hasNext())
+                    fail('Iterator.failed returned false while collection still have items');
+
+                await iterator.next();
+                counter += 1;
+            }
+            expect(await iterator.hasNext()).toBeFalsy();
+            expect(counter).toEqual(4);
+        });
     });
 });
