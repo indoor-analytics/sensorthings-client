@@ -352,7 +352,6 @@ describe('DAO', () => {
                 counter += 1;
             }
             expect(await iterator.hasNext()).toBeFalsy();
-            expect(counter).toEqual(4);
         });
     });
 });
