@@ -8,6 +8,7 @@ import {ThingAPIResponses} from "./responses/ThingAPIResponses";
 import {DumbEntityBuilder} from "./utils/DumbEntityBuilder";
 import {LocationDao} from "../src/dao/LocationDao";
 import {LocationAPIResponses} from "./responses/LocationAPIResponses";
+import {EntityIterator} from "../src/dao/iterator/EntityIterator";
 
 const service = new SensorThingsService('https://example.org');
 let mockInjector: HttpClientMock;
@@ -302,5 +303,20 @@ describe('DAO', () => {
         const service = new SensorThingsService('https://example.org');
         const dao = new DumbEntityDao(service);
         expect(dao.entityPublicAttributes).toEqual(['name', 'description']);
+    });
+
+    describe('Iterator', () => {
+        it('should return false when querying empty collection', async () => {
+            const dao = new DumbEntityDao(service);
+            const iterator = dao.iterator;
+            mockInjector.injectMockCall(service, 'https://example.org/DumbEntities', 'get', () => {
+                return {
+                    data: ThingAPIResponses.getEmptyResponse()
+                }
+            });
+
+            const result = await iterator.hasNext();
+            expect(result).toBeFalsy();
+        });
     });
 });

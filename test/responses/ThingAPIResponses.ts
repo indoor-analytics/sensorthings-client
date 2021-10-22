@@ -1,4 +1,11 @@
 export class ThingAPIResponses {
+    static getEmptyResponse(): Record<string, unknown> {
+        return {
+            "@iot.count":0,
+            "value":[]
+        };
+    }
+
     static get top5things(): Object {
         let things = this.things.value as Object[];
         return {
