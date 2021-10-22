@@ -6,6 +6,8 @@ import { AxiosError } from 'axios';
 import { DumbEntityDao } from './utils/DumbEntityDao';
 import {ThingAPIResponses} from "./responses/ThingAPIResponses";
 import {DumbEntityBuilder} from "./utils/DumbEntityBuilder";
+import {LocationDao} from "../src/dao/LocationDao";
+import {LocationAPIResponses} from "./responses/LocationAPIResponses";
 
 const service = new SensorThingsService('https://example.org');
 let mockInjector: HttpClientMock;
@@ -100,6 +102,7 @@ describe('DAO', () => {
 
         it('should throw when updating non-existent entity', async () => {
             const service = new SensorThingsService('https://example.org');
+            const dao = new DumbEntityDao(service);
             mockInjector.injectMockCall(
                 service,
                 'https://example.org/DumbEntities(42)',
@@ -125,7 +128,8 @@ describe('DAO', () => {
             );
             const mock = builder.setName('name').setDescription('description').build();
             mock.id = 42;
-            const updateMock = () => service.things.update(mock);
+            mock.setService(service);
+            const updateMock = () => dao.update(mock);
             await expect(updateMock()).rejects.toThrow(
                 new NotFoundError('Entity does not exist.')
             );
@@ -259,6 +263,7 @@ describe('DAO', () => {
             );
             const mock = builder.setName('name').setDescription('description').build();
             mock.id = 42;
+            mock.setService(service);
             const deleteMock = () => new DumbEntityDao(service).delete(mock);
             await expect(deleteMock()).rejects.toThrow(
                 new NotFoundError('Entity does not exist.')
@@ -275,6 +280,21 @@ describe('DAO', () => {
             });
             const entitiesCount = await dao.count();
             expect(entitiesCount).toEqual(27590);
+        });
+
+        it('should return entity locations', async () => {
+            const service = new SensorThingsService('https://example.org');
+            const dao = new LocationDao(service);
+            const mock = builder.setName('mockName').setDescription('mockDescription').build();
+            mock.id = 42;
+            mockInjector.injectMockCall(service, 'https://example.org/DumbEntities(42)/Locations', 'get', () => {
+                return {
+                    data: LocationAPIResponses.getEntityLocation()
+                }
+            });
+
+            const locations = await dao.getFromEntity(mock);
+            expect(locations.length).toEqual(1);
         });
     });
 

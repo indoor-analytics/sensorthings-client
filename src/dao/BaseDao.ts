@@ -25,8 +25,7 @@ export abstract class BaseDao<T extends Entity<T>> {
             [this._service.endpoint, this.entityPathname].join('/'),
             this.getEntityNetworkObject(entity)
         );
-        // @ts-ignore
-        entity.id = response.data['@iot.id'];
+        entity.id = this._service.compatibility.getCreatedEntityIdFromResponse(response);
         entity.setService(this._service);
         return;
     }
@@ -96,7 +95,8 @@ export abstract class BaseDao<T extends Entity<T>> {
      * Returns an instance of the type inferred in the current DAO (with the service id).
      * @param data entity body from service
      */
-    abstract buildEntityFromSensorThingsAPI(data: Record<string, string>): T;
+    abstract buildEntityFromSensorThingsAPIRawData(data: Record<string, string>): T;
+    abstract buildEntityFromSensorThingsAPIResponse(response: AxiosResponse): T;
 
     /**
      * Returns an object containing all entity public attributes.
@@ -127,9 +127,61 @@ export abstract class BaseDao<T extends Entity<T>> {
                 ].join('/')
             )
             .then((response: AxiosResponse) => {
-                return this.buildEntityFromSensorThingsAPI(
-                    response.data
-                );
+                return this.buildEntityFromSensorThingsAPIResponse(response);
+            })
+            .catch((error: AxiosError) => {
+                if (error.response?.status === 404) {
+                    throw new NotFoundError('Entity does not exist.');
+                }
+                throw error;
+            });
+    }
+
+    /**
+     * Returns a collection of entities attached to a given entity of another type.
+     * For example, LocationDao().getFromEntity(Thing(42)) should return a list of Location entities (those listed on
+     * https://myservice.org/Things(42)/Locations).
+     * @param entity parent object of entities to retrieve
+     */
+    async getFromEntity<D extends Entity<D>>(entity: Entity<D>): Promise<T[]> {
+        return await this._service.httpClient
+            .get([
+                this._service.endpoint,
+                entity.instancePathname,
+                this.entityPathname
+            ].join('/'))
+            .then((response: AxiosResponse<{value: Record<string, string>[]}>) => {
+                return response.data.value.map((datum: Record<string, string>) => {
+                    return this.buildEntityFromSensorThingsAPIRawData(datum)
+                });
+            })
+            .catch((error: AxiosError) => {
+                if (error.response?.status === 404) {
+                    throw new NotFoundError('Entity does not exist.');
+                }
+                throw error;
+            });
+    }
+
+    /**
+     * Creates a entity attached to a given entity of another type.
+     * For example, LocationDao().createFromEntity(Thing(42), Location()) should create a location for the Thing with
+     * id=42 (would hit https://myservice.org/Things(42)/Locations).
+     * @param entity parent object of entity to create
+     * @param payload entity to create
+     */
+    async createFromEntity<D extends Entity<D>>(entity: Entity<D>, payload: T): Promise<void> {
+        return await this._service.httpClient.post(
+            [
+                this._service.endpoint,
+                entity.instancePathname,
+                this.entityPathname
+            ].join('/'),
+            this.getEntityNetworkObject(payload)
+        )
+            .then((response: AxiosResponse<Object>) => {
+                payload.id = this._service.compatibility.getCreatedEntityIdFromResponse(response);
+                return ;
             })
             .catch((error: AxiosError) => {
                 if (error.response?.status === 404) {
