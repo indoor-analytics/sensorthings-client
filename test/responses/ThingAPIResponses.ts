@@ -79,7 +79,7 @@ export class ThingAPIResponses {
     static getThingsSecondPage(): Object {
         const things = ThingAPIResponses.things;
         things['@iot.count'] = 200;
-        things['@iot.nextLink'] = `https://example.org/Things?$top=100&$skip=200`;
+        delete things['@iot.nextLink'];
         return things;
     }
 
