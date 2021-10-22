@@ -37,11 +37,15 @@ describe('Query', () => {
             const service = new SensorThingsService('https://example.org/v1.0');
             const query = new Query<DumbEntity>(service, new DumbEntityDao(service));
 
-            mockInjector.injectMockCall(service, 'https://example.org/v1.0/DumbEntities', 'get', () => {
-                return {
-                    data: ThingAPIResponses.things
+            mockInjector.injectMockCalls(service, [{
+                targetUrl: 'https://example.org/v1.0/DumbEntities',
+                method: 'get',
+                callback: () => {
+                    return {
+                        data: ThingAPIResponses.things
+                    }
                 }
-            });
+            }]);
 
             const result = await query.list();
             expect(result.length).toEqual(ThingAPIResponses.thingsLength);
@@ -49,11 +53,15 @@ describe('Query', () => {
 
         it('should return 100 items when called from service DAO', async () => {
             const service = new SensorThingsService('https://example.org/v1.0');
-            mockInjector.injectMockCall(service, 'https://example.org/v1.0/Things', 'get', () => {
-                return {
-                    data: ThingAPIResponses.things
+            mockInjector.injectMockCalls(service, [{
+                targetUrl: 'https://example.org/v1.0/Things',
+                method: 'get',
+                callback: () => {
+                    return {
+                        data: ThingAPIResponses.things
+                    }
                 }
-            });
+            }]);
             const result = await service.things.query().list();
             expect(result.length).toEqual(ThingAPIResponses.thingsLength);
         });
@@ -62,11 +70,15 @@ describe('Query', () => {
     describe('Query.top', () => {
         it('should return 5 items with top command', async () => {
             const service = new SensorThingsService('https://example.org/v1.0');
-            mockInjector.injectMockCall(service, 'https://example.org/v1.0/Things?$top=5', 'get', () => {
-                return {
-                    data: ThingAPIResponses.top5things
+            mockInjector.injectMockCalls(service, [{
+                targetUrl: 'https://example.org/v1.0/Things?$top=5',
+                method: 'get',
+                callback: () => {
+                    return {
+                        data: ThingAPIResponses.top5things
+                    }
                 }
-            });
+            }]);
             const result = await service.things.query()
                 .top(5)
                 .list();
@@ -97,11 +109,15 @@ describe('Query', () => {
     describe('Query.skip', () => {
         it('should skip 5 items', async () => {
             const service = new SensorThingsService('https://example.org/v1.0');
-            mockInjector.injectMockCall(service, 'https://example.org/v1.0/Things?$skip=5', 'get', () => {
-                return {
-                    data: ThingAPIResponses.skipNThings(5)
+            mockInjector.injectMockCalls(service, [{
+                targetUrl: 'https://example.org/v1.0/Things?$skip=5',
+                method: 'get',
+                callback: () => {
+                    return {
+                        data: ThingAPIResponses.skipNThings(5)
+                    }
                 }
-            });
+            }]);
             const result = await service.things.query()
                 .skip(5)
                 .list();
@@ -112,11 +128,15 @@ describe('Query', () => {
         it('should skip 2 items', async () => {
             const service = new SensorThingsService('https://example.org/v1.0');
             const skippedCount = 2;
-            mockInjector.injectMockCall(service, `https://example.org/v1.0/Things?$skip=${skippedCount}`, 'get', () => {
-                return {
-                    data: ThingAPIResponses.skipNThings(skippedCount)
+            mockInjector.injectMockCalls(service, [{
+                targetUrl: `https://example.org/v1.0/Things?$skip=${skippedCount}`,
+                method: 'get',
+                callback: () => {
+                    return {
+                        data: ThingAPIResponses.skipNThings(skippedCount)
+                    }
                 }
-            });
+            }]);
             const result = await service.things.query()
                 .skip(skippedCount)
                 .list();
@@ -147,11 +167,15 @@ describe('Query', () => {
         it('should skip with last argument passed when called multiple times', async () => {
             const service = new SensorThingsService('https://example.org/v1.0');
             const skipCount = 42;
-            mockInjector.injectMockCall(service, `https://example.org/v1.0/Things?$skip=${skipCount}`, 'get', () => {
-                return {
-                    data: ThingAPIResponses.skipNThings(skipCount)
+            mockInjector.injectMockCalls(service, [{
+                targetUrl: `https://example.org/v1.0/Things?$skip=${skipCount}`,
+                method: 'get',
+                callback: () => {
+                    return {
+                        data: ThingAPIResponses.skipNThings(skipCount)
+                    }
                 }
-            });
+            }]);
             const result = await service.things.query()
                 .skip(55)
                 .skip(skipCount)
@@ -165,11 +189,15 @@ describe('Query', () => {
         it ('should order by name', async () => {
             const service = new SensorThingsService('https://example.org/v1.0');
             const query = new DumbQuery<DumbEntity>(service, new DumbEntityDao(service));
-            mockInjector.injectMockCall(service, `https://example.org/v1.0/DumbEntities?$orderby=name`, 'get', () => {
-                return {
-                    data: ThingAPIResponses.getThingsOrderedBy("name")
+            mockInjector.injectMockCalls(service, [{
+                targetUrl: `https://example.org/v1.0/DumbEntities?$orderby=name`,
+                method: 'get',
+                callback: () => {
+                    return {
+                        data: ThingAPIResponses.getThingsOrderedBy("name")
+                    }
                 }
-            });
+            }]);
 
             const entities = await query
                 .orderBy('name')
@@ -188,11 +216,15 @@ describe('Query', () => {
         it ('should order by description', async () => {
             const service = new SensorThingsService('https://example.org/v1.0');
             const query = new DumbQuery<DumbEntity>(service, new DumbEntityDao(service));
-            mockInjector.injectMockCall(service, `https://example.org/v1.0/DumbEntities?$orderby=description`, 'get', () => {
-                return {
-                    data: ThingAPIResponses.getThingsOrderedBy("description")
+            mockInjector.injectMockCalls(service, [{
+                targetUrl: `https://example.org/v1.0/DumbEntities?$orderby=description`,
+                method: 'get',
+                callback: () => {
+                    return {
+                        data: ThingAPIResponses.getThingsOrderedBy("description")
+                    }
                 }
-            });
+            }]);
 
             const entities = await query
                 .orderBy('description')
@@ -211,11 +243,15 @@ describe('Query', () => {
         it ('should order by name with suffix "asc"', async () => {
             const service = new SensorThingsService('https://example.org/v1.0');
             const query = new DumbQuery<DumbEntity>(service, new DumbEntityDao(service));
-            mockInjector.injectMockCall(service, `https://example.org/v1.0/DumbEntities?$orderby=name+asc`, 'get', () => {
-                return {
-                    data: ThingAPIResponses.getThingsOrderedBy("name")
+            mockInjector.injectMockCalls(service, [{
+                targetUrl: `https://example.org/v1.0/DumbEntities?$orderby=name+asc`,
+                method: 'get',
+                callback: () => {
+                    return {
+                        data: ThingAPIResponses.getThingsOrderedBy("name")
+                    }
                 }
-            });
+            }]);
 
             const entities = await query
                 .orderBy('name asc')
@@ -234,11 +270,15 @@ describe('Query', () => {
         it ('should order by name with suffix "desc"', async () => {
             const service = new SensorThingsService('https://example.org/v1.0');
             const query = new DumbQuery<DumbEntity>(service, new DumbEntityDao(service));
-            mockInjector.injectMockCall(service, `https://example.org/v1.0/DumbEntities?$orderby=name+desc`, 'get', () => {
-                return {
-                    data: ThingAPIResponses.getThingsOrderedBy("name", true)
+            mockInjector.injectMockCalls(service, [{
+                targetUrl: `https://example.org/v1.0/DumbEntities?$orderby=name+desc`,
+                method: 'get',
+                callback: () => {
+                    return {
+                        data: ThingAPIResponses.getThingsOrderedBy("name", true)
+                    }
                 }
-            });
+            }]);
 
             const entities = await query
                 .orderBy('name desc')
@@ -257,11 +297,15 @@ describe('Query', () => {
         it('should order by description with several spaces between attribute and suffix', async () => {
             const service = new SensorThingsService('https://example.org/v1.0');
             const query = new DumbQuery<DumbEntity>(service, new DumbEntityDao(service));
-            mockInjector.injectMockCall(service, `https://example.org/v1.0/DumbEntities?$orderby=name+++asc`, 'get', () => {
-                return {
-                    data: ThingAPIResponses.getThingsOrderedBy("name")
+            mockInjector.injectMockCalls(service, [{
+                targetUrl: `https://example.org/v1.0/DumbEntities?$orderby=name+++asc`,
+                method: 'get',
+                callback: () => {
+                    return {
+                        data: ThingAPIResponses.getThingsOrderedBy("name")
+                    }
                 }
-            });
+            }]);
 
             const entities = await query
                 .orderBy('name   asc')
@@ -282,11 +326,15 @@ describe('Query', () => {
         it('should return entities names', async () => {
             const service = new SensorThingsService('https://example.org/v1.0');
             const query = new DumbQuery<DumbEntity>(service, new DumbEntityDao(service));
-            mockInjector.injectMockCall(service, `https://example.org/v1.0/DumbEntities?$select=name`, 'get', () => {
-                return {
-                    data: ThingAPIResponses.getThingsSelectedAttributes(['name'])
+            mockInjector.injectMockCalls(service, [{
+                targetUrl: `https://example.org/v1.0/DumbEntities?$select=name`,
+                method: 'get',
+                callback: () => {
+                    return {
+                        data: ThingAPIResponses.getThingsSelectedAttributes(['name'])
+                    }
                 }
-            });
+            }]);
 
             const entities = await query
                 .select('name')
@@ -304,11 +352,15 @@ describe('Query', () => {
         it('should return entities descriptions', async () => {
             const service = new SensorThingsService('https://example.org/v1.0');
             const query = new DumbQuery<DumbEntity>(service, new DumbEntityDao(service));
-            mockInjector.injectMockCall(service, `https://example.org/v1.0/DumbEntities?$select=description`, 'get', () => {
-                return {
-                    data: ThingAPIResponses.getThingsSelectedAttributes(['description'])
+            mockInjector.injectMockCalls(service, [{
+                targetUrl: `https://example.org/v1.0/DumbEntities?$select=description`,
+                method: 'get',
+                callback: () => {
+                    return {
+                        data: ThingAPIResponses.getThingsSelectedAttributes(['description'])
+                    }
                 }
-            });
+            }]);
 
             const entities = await query
                 .select('description')
@@ -326,11 +378,15 @@ describe('Query', () => {
         it('should return entities names and descriptions', async () => {
             const service = new SensorThingsService('https://example.org/v1.0');
             const query = new DumbQuery<DumbEntity>(service, new DumbEntityDao(service));
-            mockInjector.injectMockCall(service, `https://example.org/v1.0/DumbEntities?$select=name,description`, 'get', () => {
-                return {
-                    data: ThingAPIResponses.getThingsSelectedAttributes(['name', 'description'])
+            mockInjector.injectMockCalls(service, [{
+                targetUrl: `https://example.org/v1.0/DumbEntities?$select=name,description`,
+                method: 'get',
+                callback: () => {
+                    return {
+                        data: ThingAPIResponses.getThingsSelectedAttributes(['name', 'description'])
+                    }
                 }
-            });
+            }]);
 
             const entities = await query
                 .select('name', 'description')
@@ -400,11 +456,15 @@ describe('Query', () => {
                 .top(topCount);
             expect(query.endpoint).toEqual(expectedUrl);
 
-            mockInjector.injectMockCall(service, expectedUrl, 'get', () => {
-                return {
-                    data: ThingAPIResponses.skipAndTop(skippedCount, topCount)
+            mockInjector.injectMockCalls(service, [{
+                targetUrl: expectedUrl,
+                method: 'get',
+                callback: () => {
+                    return {
+                        data: ThingAPIResponses.skipAndTop(skippedCount, topCount)
+                    }
                 }
-            });
+            }]);
 
             const entities = await query.list();
             const entitiesIds = entities.map(entity => entity.id);
@@ -423,13 +483,15 @@ describe('Query', () => {
                 .top(topCount)
                 .skip(skippedCount)
 
-            expect(query.endpoint).toEqual(expectedUrl);
-
-            mockInjector.injectMockCall(service, expectedUrl, 'get', () => {
-                return {
-                    data: ThingAPIResponses.skipAndTop(skippedCount, topCount)
+            mockInjector.injectMockCalls(service, [{
+                targetUrl: expectedUrl,
+                method: 'get',
+                callback: () => {
+                    return {
+                        data: ThingAPIResponses.skipAndTop(skippedCount, topCount)
+                    }
                 }
-            });
+            }]);
 
             const entities = await query.list();
             const entitiesIds = entities.map(entity => entity.id);

@@ -27,24 +27,23 @@ describe('Entity', () => {
         const payload = new DumbEntity('name', 'description', service);
         const mockInjector = new HttpClientMock();
         const createdId = Math.ceil(Math.random() * 3000000);
-        mockInjector.injectMockCall(
-            service,
-            'https://example.org/DumbEntities',
-            'post',
-            () => {
+        mockInjector.injectMockCalls( service, [{
+            targetUrl: 'https://example.org/DumbEntities',
+            method: 'post',
+            callback: () => {
                 return JSON.parse(`{
-                "data": {
-                    "@iot.id": ${createdId},
-                    "@iot.selfLink": "https://example.org/Things(${createdId})",
-                    "description": "${payload.description}",
-                    "name": "${payload.name}",
-                    "Datastreams@iot.navigationLink": "https://example.org/Things(${createdId})/Datastreams",
-                    "HistoricalLocations@iot.navigationLink": "https://example.org/Things(${createdId})/HistoricalLocations",
-                    "Locations@iot.navigationLink": "https://example.org/Things(${createdId})/Locations"
-                }
-            }`);
+                    "data": {
+                        "@iot.id": ${createdId},
+                        "@iot.selfLink": "https://example.org/Things(${createdId})",
+                        "description": "${payload.description}",
+                        "name": "${payload.name}",
+                        "Datastreams@iot.navigationLink": "https://example.org/Things(${createdId})/Datastreams",
+                        "HistoricalLocations@iot.navigationLink": "https://example.org/Things(${createdId})/HistoricalLocations",
+                        "Locations@iot.navigationLink": "https://example.org/Things(${createdId})/Locations"
+                    }
+                }`);
             }
-        );
+        }]);
 
         await service.create(payload);
 

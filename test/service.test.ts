@@ -56,28 +56,27 @@ describe('SensorThingsService', () => {
                 'This is a test entity.',
                 service
             );
-            mockInjector.injectMockCall(
-                service,
-                'https://example.org/DumbEntities',
-                'post',
-                (_data: DumbEntity) => {
+            mockInjector.injectMockCalls( service, [{
+                targetUrl: 'https://example.org/DumbEntities',
+                method: 'post',
+                callback: (_data: DumbEntity) => {
                     for (const attribute of payload.dao.entityPublicAttributes) {
                         // @ts-ignore
                         expect(_data[attribute]).toEqual(payload[attribute]);
                     }
                     return JSON.parse(`{
-                    "data": {
-                        "@iot.id": 2708592,
-                        "@iot.selfLink": "https://example.org/Things(2708592)",
-                        "description": "This is a test entity.",
-                        "name": "Hello there",
-                        "Datastreams@iot.navigationLink": "https://example.org/Things(2708592)/Datastreams",
-                        "HistoricalLocations@iot.navigationLink": "https://example.org/Things(2708592)/HistoricalLocations",
-                        "Locations@iot.navigationLink": "https://example.org/Things(2708592)/Locations"
-                    }
-                }`);
+                        "data": {
+                            "@iot.id": 2708592,
+                            "@iot.selfLink": "https://example.org/Things(2708592)",
+                            "description": "This is a test entity.",
+                            "name": "Hello there",
+                            "Datastreams@iot.navigationLink": "https://example.org/Things(2708592)/Datastreams",
+                            "HistoricalLocations@iot.navigationLink": "https://example.org/Things(2708592)/HistoricalLocations",
+                            "Locations@iot.navigationLink": "https://example.org/Things(2708592)/Locations"
+                        }
+                    }`);
                 }
-            );
+            }]);
 
             service.create(payload);
 
@@ -92,16 +91,20 @@ describe('SensorThingsService', () => {
             const endpoint = 'https://example.org';
             const deleteUrl = 'https://example.org/DumbEntities(42)';
             const service = new SensorThingsService(new URL(endpoint));
-            mockInjector.injectMockCall(service, deleteUrl, 'delete', () => {
-                return JSON.parse(`{
-                    "data": {
-                        "readyState": 4,
-                        "responseText": "",
-                        "status": 200,
-                        "statusText": "OK"
-                    }
-                }`);
-            });
+            mockInjector.injectMockCalls(service, [{
+                targetUrl: deleteUrl,
+                method: 'delete',
+                callback: () => {
+                    return JSON.parse(`{
+                        "data": {
+                            "readyState": 4,
+                            "responseText": "",
+                            "status": 200,
+                            "statusText": "OK"
+                        }
+                    }`);
+                }
+            }]);
             const payload = new DumbEntity(
                 'Hello there',
                 'This is a test entity.',
@@ -118,23 +121,23 @@ describe('SensorThingsService', () => {
             const endpoint = 'https://example.org';
             const service = new SensorThingsService(new URL(endpoint));
             const createdId: number = Math.ceil(Math.random() * 3000000);
-            mockInjector.injectMockCall(
-                service,
-                'https://example.org/DumbEntities',
-                'post',
-                () => {
+            mockInjector.injectMockCalls( service, [{
+                targetUrl: 'https://example.org/DumbEntities',
+                method: 'post',
+                callback: () => {
                     return JSON.parse(`{
-                    "data": {
-                        "@iot.id": ${createdId},
-                        "@iot.selfLink": "https://example.org/Things(${createdId})",
-                        "description": "This is a test entity.",
-                        "name": "Hello there",
-                        "Datastreams@iot.navigationLink": "https://example.org/Things(${createdId})/Datastreams",
-                        "HistoricalLocations@iot.navigationLink": "https://example.org/Things(${createdId})/HistoricalLocations",
-                        "Locations@iot.navigationLink": "https://example.org/Things(${createdId})/Locations"
-                    }
-                }`);
+                        "data": {
+                            "@iot.id": ${createdId},
+                            "@iot.selfLink": "https://example.org/Things(${createdId})",
+                            "description": "This is a test entity.",
+                            "name": "Hello there",
+                            "Datastreams@iot.navigationLink": "https://example.org/Things(${createdId})/Datastreams",
+                            "HistoricalLocations@iot.navigationLink": "https://example.org/Things(${createdId})/HistoricalLocations",
+                            "Locations@iot.navigationLink": "https://example.org/Things(${createdId})/Locations"
+                        }
+                    }`);
                 }
+                }]
             );
             const payload = new DumbEntity(
                 'Hello there',
@@ -151,24 +154,24 @@ describe('SensorThingsService', () => {
             const endpoint = 'https://example.org';
             const service = new SensorThingsService(new URL(endpoint));
             const patchUrl = 'https://example.org/DumbEntities(42)';
-            mockInjector.injectMockCall(
-                service,
-                patchUrl,
-                'patch',
-                (_data: never) => {
+            mockInjector.injectMockCalls( service, [{
+                targetUrl: patchUrl,
+                method: 'patch',
+                callback: (_data: never) => {
                     expect(_data).toEqual(expect.objectContaining(newInfo));
                     return JSON.parse(`{
-                    "data": {
-                        "@iot.id": 42,
-                        "@iot.selfLink": "https://example.org/Things(42)",
-                        "description": "${newInfo.description}",
-                        "name": "${newInfo.name}",
-                        "Datastreams@iot.navigationLink": "https://example.org/Things(42)/Datastreams",
-                        "HistoricalLocations@iot.navigationLink": "https://example.org/Things(42)/HistoricalLocations",
-                        "Locations@iot.navigationLink": "https://example.org/Things(42)/Locations"
-                    }
-                }`);
+                        "data": {
+                            "@iot.id": 42,
+                            "@iot.selfLink": "https://example.org/Things(42)",
+                            "description": "${newInfo.description}",
+                            "name": "${newInfo.name}",
+                            "Datastreams@iot.navigationLink": "https://example.org/Things(42)/Datastreams",
+                            "HistoricalLocations@iot.navigationLink": "https://example.org/Things(42)/HistoricalLocations",
+                            "Locations@iot.navigationLink": "https://example.org/Things(42)/Locations"
+                        }
+                    }`);
                 }
+                }]
             );
             const payload = new DumbEntity(
                 'Hello there',
