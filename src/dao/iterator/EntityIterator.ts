@@ -10,12 +10,15 @@ export class EntityIterator<T extends Entity<T>> {
     private readonly _entities: Array<T>;
     private _apiParsed: boolean;
     private _index: number;
+    private _nextLink: string;
+
     public constructor (dao: BaseDao<T>, service: SensorThingsService) {
         this._dao = dao;
         this._service = service;
         this._entities = new Array<T>();
         this._index = 0;
         this._apiParsed = false;
+        this._nextLink = '';
     }
 
     public async hasNext(): Promise<boolean> {
@@ -23,6 +26,11 @@ export class EntityIterator<T extends Entity<T>> {
             await this._loadUpEntities();
         if (this._entities.length === 0)
             return false;
+
+        if (this._index === this._entities.length)
+            if (this._nextLink !== '')
+                await this._loadUpEntities(true);
+
         return this._index < this._entities.length;
     }
 
@@ -33,15 +41,24 @@ export class EntityIterator<T extends Entity<T>> {
         return this._entities[this._index-1];
     }
 
-    private async _loadUpEntities(): Promise<void> {
-        this._entities.length = 0;
+    private async _loadUpEntities(useNextLink: boolean = false): Promise<void> {
+        if (!useNextLink) this._entities.length = 0;
+        const endpoint = useNextLink
+            ? this._nextLink
+            : [
+                this._service.endpoint,
+                this._dao.entityPathname
+            ].join('/');
+
         return await this._service.httpClient
-            .get(
-                [
-                    this._service.endpoint,
-                    this._dao.entityPathname
-                ].join('/'))
-            .then((response: AxiosResponse<{value: Record<string, string>[]}>) => {
+            .get( endpoint )
+            .then((response: AxiosResponse<{'@iot.nextLink'?: string, value: Record<string, string>[]}>) => {
+                if (response.data["@iot.nextLink"] !== undefined) {
+                    this._nextLink = response.data["@iot.nextLink"];
+                } else if (useNextLink) {
+                    this._nextLink = '';
+                }
+
                 response.data.value.map((datum: Record<string, string>) => {
                     this._entities.push(
                         this._dao.buildEntityFromSensorThingsAPIRawData(datum)
