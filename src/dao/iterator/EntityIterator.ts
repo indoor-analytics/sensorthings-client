@@ -41,7 +41,7 @@ export class EntityIterator<T extends Entity<T>> {
         return this._entities[this._index-1];
     }
 
-    private async _loadUpEntities(useNextLink: boolean = false): Promise<void> {
+    private async _loadUpEntities(useNextLink = false): Promise<void> {
         if (!useNextLink) this._entities.length = 0;
         const endpoint = useNextLink
             ? this._nextLink
