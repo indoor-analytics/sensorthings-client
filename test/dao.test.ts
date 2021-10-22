@@ -8,7 +8,6 @@ import {ThingAPIResponses} from "./responses/ThingAPIResponses";
 import {DumbEntityBuilder} from "./utils/DumbEntityBuilder";
 import {LocationDao} from "../src/dao/LocationDao";
 import {LocationAPIResponses} from "./responses/LocationAPIResponses";
-import {EntityIterator} from "../src/dao/iterator/EntityIterator";
 
 const service = new SensorThingsService('https://example.org');
 let mockInjector: HttpClientMock;
