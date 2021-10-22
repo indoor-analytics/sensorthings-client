@@ -15,7 +15,7 @@ export abstract class BaseDao<T extends Entity<T>> {
 
     constructor(service: SensorThingsService) {
         this._service = service;
-        this.iterator = new EntityIterator<T>(this);
+        this.iterator = new EntityIterator<T>(this, service);
     }
 
     /**
