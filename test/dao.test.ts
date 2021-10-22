@@ -8,6 +8,7 @@ import {ThingAPIResponses} from "./responses/ThingAPIResponses";
 import {DumbEntityBuilder} from "./utils/DumbEntityBuilder";
 import {LocationDao} from "../src/dao/LocationDao";
 import {LocationAPIResponses} from "./responses/LocationAPIResponses";
+import {InitialisationError} from "../src/error/InitialisationError";
 
 const service = new SensorThingsService('https://example.org');
 let mockInjector: HttpClientMock;
@@ -352,6 +353,15 @@ describe('DAO', () => {
                 counter += 1;
             }
             expect(await iterator.hasNext()).toBeFalsy();
+        });
+
+        it('should not allow next() call before hasNext() call', async () => {
+            const dao = new DumbEntityDao(service);
+            const iterator = dao.iterator;
+            const getNextEntity = async () => await iterator.next();
+            await expect(getNextEntity()).rejects.toThrow(
+                new InitialisationError('hasNext() must be called before next() calls.')
+            );
         });
     });
 });
