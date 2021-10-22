@@ -321,11 +321,15 @@ describe('DAO', () => {
         it('should return false when querying empty collection', async () => {
             const dao = new DumbEntityDao(service);
             const iterator = dao.iterator;
-            mockInjector.injectMockCall(service, 'https://example.org/DumbEntities', 'get', () => {
-                return {
-                    data: ThingAPIResponses.getEmptyResponse()
+            mockInjector.injectMockCalls(service, [{
+                targetUrl: 'https://example.org/DumbEntities',
+                method: 'get',
+                callback: () => {
+                    return {
+                        data: ThingAPIResponses.getEmptyResponse()
+                    }
                 }
-            });
+            }]);
 
             const result = await iterator.hasNext();
             expect(result).toBeFalsy();
@@ -334,11 +338,15 @@ describe('DAO', () => {
         it('should return true when querying not-empty collection', async () => {
             const dao = new DumbEntityDao(service);
             const iterator = dao.iterator;
-            mockInjector.injectMockCall(service, 'https://example.org/DumbEntities', 'get', () => {
-                return {
-                    data: ThingAPIResponses.things
+            mockInjector.injectMockCalls(service, [{
+                targetUrl: 'https://example.org/DumbEntities',
+                method: 'get',
+                callback: () => {
+                    return {
+                        data: ThingAPIResponses.things
+                    }
                 }
-            });
+            }]);
 
             const result = await iterator.hasNext();
             expect(result).toBeTruthy();
@@ -347,11 +355,15 @@ describe('DAO', () => {
         it('should return 5 things one after one', async () => {
             const dao = new DumbEntityDao(service);
             const iterator = dao.iterator;
-            mockInjector.injectMockCall(service, 'https://example.org/DumbEntities', 'get', () => {
-                return {
-                    data: ThingAPIResponses.top5things
+            mockInjector.injectMockCalls(service, [{
+                targetUrl: 'https://example.org/DumbEntities',
+                method: 'get',
+                callback: () => {
+                    return {
+                        data: ThingAPIResponses.top5things
+                    }
                 }
-            });
+            }]);
 
             let counter = 0;
             while (counter < 5) {
@@ -377,16 +389,23 @@ describe('DAO', () => {
         });
 
         it('should parse entities over several pages', async () => {
-            mockInjector.injectMockCall(service, 'https://example.org/DumbEntities', 'get', () => {
-                return {
-                    data: ThingAPIResponses.getThingsFirstPage
+            mockInjector.injectMockCalls(service, [{
+                targetUrl: 'https://example.org/DumbEntities',
+                method: 'get',
+                callback: () => {
+                    return {
+                        data: ThingAPIResponses.getThingsFirstPage
+                    }
                 }
-            });
-            mockInjector.injectMockCall(service, 'https://example.org/Things?$top=100&$skip=100', 'get', () => {
-                return {
-                    data: ThingAPIResponses.getThingsSecondPage()
+            }, {
+                targetUrl: 'https://example.org/Things?$top=100&$skip=100',
+                method: 'get',
+                callback: () => {
+                    return {
+                        data: ThingAPIResponses.getThingsSecondPage()
+                    }
                 }
-            });
+            }]);
             const dao = new DumbEntityDao(service);
             const iterator = dao.iterator;
 
