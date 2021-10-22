@@ -317,5 +317,18 @@ describe('DAO', () => {
             const result = await iterator.hasNext();
             expect(result).toBeFalsy();
         });
+
+        it('should return true when querying not-empty collection', async () => {
+            const dao = new DumbEntityDao(service);
+            const iterator = dao.iterator;
+            mockInjector.injectMockCall(service, 'https://example.org/DumbEntities', 'get', () => {
+                return {
+                    data: ThingAPIResponses.things
+                }
+            });
+
+            const result = await iterator.hasNext();
+            expect(result).toBeTruthy();
+        });
     });
 });
