@@ -17,11 +17,15 @@ describe('Entity lists', () => {
     it('should list entities\' locations', async () => {
         const entity = new DumbEntityBuilder(service).setName('name').setDescription('description').build();
         entity.id = 42;
-        mockInjector.injectMockCall(service, 'https://example.org/DumbEntities(42)/Locations', 'get', () => {
-            return {
-                data: LocationAPIResponses.getEntityLocation()
+        mockInjector.injectMockCalls(service, [{
+            targetUrl: 'https://example.org/DumbEntities(42)/Locations',
+            method: 'get',
+            callback: () => {
+                return {
+                    data: LocationAPIResponses.getEntityLocation()
+                }
             }
-        });
+        }]);
 
         const locationsList = new DumbEntityLocationsList(entity, service);
         const locations = await locationsList.list();
@@ -34,22 +38,29 @@ describe('Entity lists', () => {
         let postedLocation = null as unknown as Location;
 
         // on entity creation, we save payload to send it back on further list call
-        mockInjector.injectMockCall(service, 'https://example.org/DumbEntities(42)/Locations', 'post', (data: Location) => {
-            postedLocation = data;
-            postedLocation.id = 45224;
-            return {
-                // @ts-ignore
-                data: LocationAPIResponses.getEntityLocationFrom(postedLocation).value[0]
-            };
-        });
-        mockInjector.injectMockCall(service, 'https://example.org/DumbEntities(42)/Locations', 'get', () => {
-            return (postedLocation === null)
-                ? {
-                    data: LocationAPIResponses.getEmptyResponse()
-                } : {
-                    data: LocationAPIResponses.getEntityLocationFrom(postedLocation)
+        mockInjector.injectMockCalls(service, [{
+            targetUrl: 'https://example.org/DumbEntities(42)/Locations',
+            method: 'post',
+            callback: (data: Location) => {
+                postedLocation = data;
+                postedLocation.id = 45224;
+                return {
+                    // @ts-ignore
+                    data: LocationAPIResponses.getEntityLocationFrom(postedLocation).value[0]
                 };
-        });
+            }
+        }, {
+            targetUrl: 'https://example.org/DumbEntities(42)/Locations',
+            method: 'get',
+            callback: () => {
+                return (postedLocation === null)
+                    ? {
+                        data: LocationAPIResponses.getEmptyResponse()
+                    } : {
+                        data: LocationAPIResponses.getEntityLocationFrom(postedLocation)
+                    };
+            }
+        }]);
 
         const locationsList = new DumbEntityLocationsList(mock, service);
         let locations = await locationsList.list();

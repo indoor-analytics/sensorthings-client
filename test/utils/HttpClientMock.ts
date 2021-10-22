@@ -16,60 +16,78 @@ export class HttpClientMock {
         this._calledUrls[url] += 1;
     }
 
-    public injectMockCall(
+    public injectMockCalls(
         service: SensorThingsService,
-        targetUrl: string,
-        method: 'get' | 'post' | 'patch' | 'delete',
-        callback: Function
+        callbacks: {
+            targetUrl: string,
+            method: 'get' | 'post' | 'patch' | 'delete',
+            callback: Function
+        }[]
     ) {
-        switch (method) {
-            case 'get':
-                service.httpClient.get = async (
-                    url: string,
-                    _config?: AxiosRequestConfig
-                ): Promise<any> => {
-                    return new Promise<any>(async (resolve, reject) => {
-                        this._setUrlAsCalled(url);
-                        if (url === targetUrl) {
-                            try {
-                                resolve(await callback());
-                            } catch (err) {
-                                reject(err);
-                            }
+        const getCallbacks = callbacks.filter((callback) => callback.method === 'get');
+        const postCallbacks = callbacks.filter((callback) => callback.method === 'post');
+        const patchCallbacks = callbacks.filter((callback) => callback.method === 'patch');
+        const deleteCallbacks = callbacks.filter((callback) => callback.method === 'delete');
+
+        if (getCallbacks.length !== 0) {
+            service.httpClient.get = async (
+                url: string,
+                _config?: AxiosRequestConfig
+            ): Promise<any> => {
+                return new Promise<any>(async (resolve, reject) => {
+                    this._setUrlAsCalled(url);
+                    const matchingCallbacks = getCallbacks.filter(callback => callback.targetUrl === url);
+                    if (matchingCallbacks.length === 1) {
+                        try {
+                            resolve(await matchingCallbacks[0].callback());
+                        } catch (err) {
+                            reject(err);
                         }
-                    });
-                };
-                break;
-            case 'post':
-                service.httpClient.post = async (
-                    url: string,
-                    _data?: any,
-                    _config?: AxiosRequestConfig
-                ): Promise<any> => {
-                    this._setUrlAsCalled(url);
-                    if (url === targetUrl) return callback(_data);
-                };
-                break;
-            case 'patch':
-                service.httpClient.patch = async (
-                    url: string,
-                    _data?: any,
-                    _config?: AxiosRequestConfig
-                ): Promise<any> => {
-                    this._setUrlAsCalled(url);
-                    if (url === targetUrl) return callback(_data);
-                };
-                break;
-            case 'delete':
-                service.httpClient.delete = async (
-                    url: string,
-                    _data?: any,
-                    _config?: AxiosRequestConfig
-                ): Promise<any> => {
-                    this._setUrlAsCalled(url);
-                    if (url === targetUrl) return callback();
-                };
-                break;
+                    }
+                });
+            };
+        }
+
+        if (postCallbacks.length !== 0) {
+            service.httpClient.post = async (
+                url: string,
+                _data?: any,
+                _config?: AxiosRequestConfig
+            ): Promise<any> => {
+                this._setUrlAsCalled(url);
+                const matchingCallbacks = postCallbacks.filter(callback => callback.targetUrl === url);
+                if (matchingCallbacks.length === 1) {
+                    return matchingCallbacks[0].callback(_data);
+                }
+            };
+        }
+
+        if (patchCallbacks.length !== 0) {
+            service.httpClient.patch = async (
+                url: string,
+                _data?: any,
+                _config?: AxiosRequestConfig
+            ): Promise<any> => {
+                this._setUrlAsCalled(url);
+                const matchingCallbacks = patchCallbacks.filter(callback => callback.targetUrl === url);
+                if (matchingCallbacks.length === 1) {
+                    return matchingCallbacks[0].callback(_data);
+                }
+            };
+        }
+
+        if (deleteCallbacks.length !== 0) {
+            service.httpClient.delete = async (
+                url: string,
+                _data?: any,
+                _config?: AxiosRequestConfig
+            ): Promise<any> => {
+                this._setUrlAsCalled(url);
+                const matchingCallbacks = deleteCallbacks.filter(callback => callback.targetUrl === url);
+                if (matchingCallbacks.length === 1) {
+                    return matchingCallbacks[0].callback(_data);
+                }
+            };
         }
     }
 

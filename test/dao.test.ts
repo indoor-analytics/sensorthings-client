@@ -50,17 +50,15 @@ describe('DAO', () => {
                     }
                 }`);
             };
-            mockInjector.injectMockCall(
-                service,
-                'https://example.org/DumbEntities',
-                'post',
-                getMockObject
-            );
-            mockInjector.injectMockCall(
-                service,
-                `https://example.org/DumbEntities(${randomMockId})`,
-                'get',
-                getMockObject
+            mockInjector.injectMockCalls( service, [{
+                    targetUrl: 'https://example.org/DumbEntities',
+                    method: 'post',
+                    callback: getMockObject
+                }, {
+                    targetUrl: `https://example.org/DumbEntities(${randomMockId})`,
+                    method: 'get',
+                    callback: getMockObject
+                }]
             );
 
             const dao = new DumbEntityDao(service);
@@ -72,11 +70,10 @@ describe('DAO', () => {
 
         it('should throw when getting non-existent entity', async () => {
             const service = new SensorThingsService('https://example.org');
-            mockInjector.injectMockCall(
-                service,
-                'https://example.org/DumbEntities(42)',
-                'get',
-                async () => {
+            mockInjector.injectMockCalls( service, [{
+                targetUrl: 'https://example.org/DumbEntities(42)',
+                method: 'get',
+                callback: async () => {
                     const error: Error = new Error() as AxiosError;
                     // @ts-ignore
                     error.response = {
@@ -94,6 +91,7 @@ describe('DAO', () => {
                     };
                     throw error;
                 }
+            }]
             );
             const getMock = () => new DumbEntityDao(service).get(42);
             await expect(getMock()).rejects.toThrow(
@@ -104,11 +102,10 @@ describe('DAO', () => {
         it('should throw when updating non-existent entity', async () => {
             const service = new SensorThingsService('https://example.org');
             const dao = new DumbEntityDao(service);
-            mockInjector.injectMockCall(
-                service,
-                'https://example.org/DumbEntities(42)',
-                'patch',
-                async () => {
+            mockInjector.injectMockCalls( service, [{
+                targetUrl: 'https://example.org/DumbEntities(42)',
+                method: 'patch',
+                callback: async () => {
                     const error: Error = new Error() as AxiosError;
                     // @ts-ignore
                     error.response = {
@@ -126,7 +123,7 @@ describe('DAO', () => {
                     };
                     throw error;
                 }
-            );
+            }]);
             const mock = builder.setName('name').setDescription('description').build();
             mock.id = 42;
             mock.setService(service);
@@ -139,11 +136,10 @@ describe('DAO', () => {
         it('should update an entity', async () => {
             const service = new SensorThingsService('https://example.org');
             const randomMockId = Math.ceil(Math.random() * 3000000);
-            mockInjector.injectMockCall(
-                service,
-                `https://example.org/DumbEntities(${randomMockId})`,
-                'get',
-                () => {
+            mockInjector.injectMockCalls( service, [{
+                targetUrl: `https://example.org/DumbEntities(${randomMockId})`,
+                method: 'get',
+                callback: () => {
                     return {
                         data: {
                             '@iot.id': randomMockId,
@@ -156,12 +152,10 @@ describe('DAO', () => {
                         },
                     };
                 }
-            );
-            mockInjector.injectMockCall(
-                service,
-                `https://example.org/DumbEntities(${randomMockId})`,
-                'patch',
-                (_data: Record<string, unknown>) => {
+                }, {
+                targetUrl: `https://example.org/DumbEntities(${randomMockId})`,
+                method: 'patch',
+                callback: (_data: Record<string, unknown>) => {
                     return {
                         data: {
                             '@iot.id': randomMockId,
@@ -174,6 +168,7 @@ describe('DAO', () => {
                         },
                     };
                 }
+                }]
             );
 
             const dao = new DumbEntityDao(service);
@@ -191,41 +186,48 @@ describe('DAO', () => {
             const randomMockId = Math.ceil(Math.random() * 3000000);
             const targetUrl = `https://example.org/DumbEntities(${randomMockId})`;
             let calledOnce = false;
-            mockInjector.injectMockCall(service, targetUrl, 'get', () => {
-                if (calledOnce) {
-                    const error: Error = new Error() as AxiosError;
-                    // @ts-ignore
-                    error.response = {
-                        config: undefined,
-                        headers: undefined,
-                        request: undefined,
-                        statusText: '',
-                        status: 404,
+            mockInjector.injectMockCalls(service, [{
+                targetUrl,
+                method: 'get',
+                callback: () => {
+                    if (calledOnce) {
+                        const error: Error = new Error() as AxiosError;
+                        // @ts-ignore
+                        error.response = {
+                            config: undefined,
+                            headers: undefined,
+                            request: undefined,
+                            statusText: '',
+                            status: 404,
+                            data: {
+                                errorId: '46a645cc-d40f-4ae5-92ee-b5d532ddfaec',
+                                code: 'INVALID_ID',
+                                message: 'Entity not found',
+                                baseURL: 'https://example.org',
+                            },
+                        };
+                        throw error;
+                    }
+                    calledOnce = true;
+                    return {
                         data: {
-                            errorId: '46a645cc-d40f-4ae5-92ee-b5d532ddfaec',
-                            code: 'INVALID_ID',
-                            message: 'Entity not found',
-                            baseURL: 'https://example.org',
+                            '@iot.id': randomMockId,
+                            '@iot.selfLink': `https://example.org/DumbEntities(${randomMockId})`,
+                            description: 'This is a test object.',
+                            name: 'Test object',
+                            'Datastreams@iot.navigationLink': `https://example.org/DumbEntities(${randomMockId})/Datastreams`,
+                            'HistoricalLocations@iot.navigationLink': `https://example.org/DumbEntities(${randomMockId})/HistoricalLocations`,
+                            'Locations@iot.navigationLink': `https://example.org/DumbEntities(${randomMockId})/Locations`,
                         },
                     };
-                    throw error;
                 }
-                calledOnce = true;
-                return {
-                    data: {
-                        '@iot.id': randomMockId,
-                        '@iot.selfLink': `https://example.org/DumbEntities(${randomMockId})`,
-                        description: 'This is a test object.',
-                        name: 'Test object',
-                        'Datastreams@iot.navigationLink': `https://example.org/DumbEntities(${randomMockId})/Datastreams`,
-                        'HistoricalLocations@iot.navigationLink': `https://example.org/DumbEntities(${randomMockId})/HistoricalLocations`,
-                        'Locations@iot.navigationLink': `https://example.org/DumbEntities(${randomMockId})/Locations`,
-                    },
-                };
-            });
-            mockInjector.injectMockCall(service, targetUrl, 'delete', () => {
-                return;
-            });
+            }, {
+                targetUrl,
+                method: 'delete',
+                callback: () => {
+                    return;
+                }
+            }]);
 
             const getMock = async () => await dao.get(randomMockId);
             const mock = await getMock();
@@ -239,11 +241,12 @@ describe('DAO', () => {
 
         it('should throw when deleting non-existent entity', async () => {
             const service = new SensorThingsService('https://example.org');
-            mockInjector.injectMockCall(
+            mockInjector.injectMockCalls(
                 service,
-                'https://example.org/DumbEntities(42)',
-                'delete',
-                async () => {
+                [{
+                    targetUrl: 'https://example.org/DumbEntities(42)',
+                    method: 'delete',
+                   callback:  async() => {
                     const error: Error = new Error() as AxiosError;
                     // @ts-ignore
                     error.response = {
@@ -261,6 +264,7 @@ describe('DAO', () => {
                     };
                     throw error;
                 }
+            }]
             );
             const mock = builder.setName('name').setDescription('description').build();
             mock.id = 42;
@@ -274,11 +278,15 @@ describe('DAO', () => {
         it('should return entities count', async () => {
             const service = new SensorThingsService('https://example.org');
             const dao = new DumbEntityDao(service);
-            mockInjector.injectMockCall(service, 'https://example.org/DumbEntities?$count=true', 'get', () => {
-                return {
-                    data: ThingAPIResponses.things
+            mockInjector.injectMockCalls(service, [{
+                targetUrl: 'https://example.org/DumbEntities?$count=true',
+                method: 'get',
+                callback: () => {
+                    return {
+                        data: ThingAPIResponses.things
+                    }
                 }
-            });
+            }]);
             const entitiesCount = await dao.count();
             expect(entitiesCount).toEqual(27590);
         });
@@ -288,11 +296,15 @@ describe('DAO', () => {
             const dao = new LocationDao(service);
             const mock = builder.setName('mockName').setDescription('mockDescription').build();
             mock.id = 42;
-            mockInjector.injectMockCall(service, 'https://example.org/DumbEntities(42)/Locations', 'get', () => {
-                return {
-                    data: LocationAPIResponses.getEntityLocation()
+            mockInjector.injectMockCalls(service, [{
+                targetUrl: 'https://example.org/DumbEntities(42)/Locations',
+                method: 'get',
+                callback: () => {
+                    return {
+                        data: LocationAPIResponses.getEntityLocation()
+                    }
                 }
-            });
+            }]);
 
             const locations = await dao.getFromEntity(mock);
             expect(locations.length).toEqual(1);
