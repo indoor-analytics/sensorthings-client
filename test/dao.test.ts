@@ -394,7 +394,7 @@ describe('DAO', () => {
                 method: 'get',
                 callback: () => {
                     return {
-                        data: ThingAPIResponses.getThingsFirstPage
+                        data: ThingAPIResponses.getThingsFirstPage()
                     }
                 }
             }, {
