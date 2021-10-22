@@ -363,5 +363,26 @@ describe('DAO', () => {
                 new InitialisationError('hasNext() must be called before next() calls.')
             );
         });
+
+        it('should parse entities over several pages', async () => {
+            mockInjector.injectMockCall(service, 'https://example.org/DumbEntities', 'get', () => {
+                return {
+                    data: ThingAPIResponses.getThingsFirstPage
+                }
+            });
+            mockInjector.injectMockCall(service, 'https://example.org/Things?$top=100&$skip=100', 'get', () => {
+                return {
+                    data: ThingAPIResponses.getThingsSecondPage()
+                }
+            });
+            const dao = new DumbEntityDao(service);
+            const iterator = dao.iterator;
+
+            let things = [];
+            while (await iterator.hasNext()) {
+                things.push(iterator.next());
+            }
+            expect(things.length).toEqual(200);
+        });
     });
 });

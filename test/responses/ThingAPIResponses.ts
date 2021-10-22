@@ -69,6 +69,21 @@ export class ThingAPIResponses {
         };
     }
 
+    static getThingsFirstPage(): Object {
+        const things = ThingAPIResponses.things;
+        things['@iot.count'] = 200;
+        things['@iot.nextLink'] = `https://example.org/Things?$top=100&$skip=100`;
+        return things;
+    }
+
+    static getThingsSecondPage(): Object {
+        const things = ThingAPIResponses.things;
+        things['@iot.count'] = 200;
+        things['@iot.nextLink'] = `https://example.org/Things?$top=100&$skip=200`;
+        return things;
+    }
+
+
     static get things(): Record<string, unknown> {
         return {
             "@iot.count":27590,
