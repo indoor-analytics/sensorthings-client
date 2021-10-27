@@ -4,6 +4,7 @@ import {Polygon} from "@turf/helpers";
 import {SensorThingsService} from "../service/SensorThingsService";
 import {ObservationType} from "./utils/ObservationType";
 import {UnitOfMeasurement} from "./utils/UnitOfMeasurement";
+import {DatastreamDao} from "../dao/DatastreamDao";
 
 export class Datastream extends Entity<Datastream> {
     public name: string;
@@ -39,6 +40,6 @@ export class Datastream extends Entity<Datastream> {
     }
 
     get dao(): BaseDao<Datastream> {
-        return undefined;
+        return new DatastreamDao(this._service);
     }
 }
