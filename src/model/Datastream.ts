@@ -3,11 +3,12 @@ import {BaseDao} from "../dao/BaseDao";
 import {Polygon} from "@turf/helpers";
 import {SensorThingsService} from "../service/SensorThingsService";
 import {ObservationType} from "./utils/ObservationType";
+import {UnitOfMeasurement} from "./utils/UnitOfMeasurement";
 
 export class Datastream extends Entity<Datastream> {
     public name: string;
     public description: string;
-    public unitOfMeasurement: {name: string, symbol: string, definition: string};
+    public unitOfMeasurement: UnitOfMeasurement;
     public observationType: ObservationType;
     public observedArea: Polygon;
     public phenomenonTime: string;
@@ -21,7 +22,7 @@ export class Datastream extends Entity<Datastream> {
 
     constructor(
         service: SensorThingsService, name: string, description: string,
-        unitOfMeasurement: {name: string, symbol: string, definition: string},
+        unitOfMeasurement: UnitOfMeasurement,
         observationType: ObservationType,
         observedArea: Polygon,
         phenomenonTime: string,
