@@ -20,6 +20,6 @@ export class ThingDao extends BaseDao<Thing> {
         return thing;
     }
     get entityPublicAttributes(): string[] {
-        return ['name', 'description'];
+        return ['name', 'properties', 'description'];
     }
 }
