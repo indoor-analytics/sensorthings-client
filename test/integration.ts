@@ -44,7 +44,6 @@ describe('Integration tests', () => {
         const newLocation = new LocationBuilder(service)
             .setName('Test thing location')
             .setDescription('Is... Is it moving?!')
-            .setProperties({"hello": "there"})
             .setLocation([50.6048862, 3.1498135])
             .build();
         await thing.locations.add(newLocation);
