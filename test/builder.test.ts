@@ -13,8 +13,26 @@ describe('Model builders', () => {
             .setName(name)
             .setDescription(description)
             .build();
+
         expect(thing.name).toEqual(name);
         expect(thing.description).toEqual(description);
+    });
+
+    it('should build a Thing entity with additional properties', () => {
+        const builder = new ThingBuilder( new SensorThingsService('https://example.org') );
+        const name = 'Thingything';
+        const description = 'This is a test description';
+        const properties = {"hello": "there"};
+
+        const thing = builder
+            .setName(name)
+            .setDescription(description)
+            .setProperties(properties)
+            .build();
+
+        expect(thing.name).toEqual(name);
+        expect(thing.description).toEqual(description);
+        expect(thing.properties).toEqual(properties);
     });
 
     it('should not build with missing name', () => {
