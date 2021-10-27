@@ -4,7 +4,7 @@ import { HistoricalLocation } from "../model/HistoricalLocation";
 
 export class HistoricalLocationDao extends BaseDao<HistoricalLocation> {
     get entityPathname(): string {
-        throw new Error("HistoricalLocations");
+        return "HistoricalLocations";
     }
     get entityPublicAttributes(): string[] {
         return ['time'];
@@ -26,5 +26,5 @@ export class HistoricalLocationDao extends BaseDao<HistoricalLocation> {
         location.id = this._service.compatibility.getCreatedEntityIdFromResponse(response);
         return location;
     }
-    
+
 }
