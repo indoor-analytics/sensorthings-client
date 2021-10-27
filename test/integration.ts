@@ -30,7 +30,7 @@ describe('Integration tests', () => {
     });
 
     it('should create a thing', async () => {
-        thing = new Thing('Test thing', 'Test description', service);
+        thing = new Thing(service, 'Test thing', 'Test description');
         await service.things.create(thing);
         expect(thing.id).not.toBeUndefined();
     });

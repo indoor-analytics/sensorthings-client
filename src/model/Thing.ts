@@ -15,7 +15,7 @@ export class Thing extends Entity<Thing> {
     public locations: ThingLocationsList;
     public historicalLocations: ThingHistoricalLocationsList;
 
-    constructor(name: string, description: string, service: SensorThingsService) {
+    constructor(service: SensorThingsService, name: string, description: string) {
         super(service);
         this.name = name;
         this.description = description;
