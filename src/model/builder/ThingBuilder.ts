@@ -11,6 +11,10 @@ export class ThingBuilder extends AbstractBuilder<Thing> {
         this._attributes.description = description;
         return this;
     }
+    public setProperties(properties: Object): ThingBuilder {
+        this._attributes.properties = properties;
+        return this;
+    }
 
     protected buildEntity(): Thing {
         if (!this._attributes.name)
@@ -18,6 +22,13 @@ export class ThingBuilder extends AbstractBuilder<Thing> {
         if (!this._attributes.description)
             throw new MissingArgumentError('"description" argument is required to build a Thing.');
 
-        return new Thing(this._service, '' + this._attributes.name, '' + this._attributes.description);
+        const properties = this._attributes.properties as Record<string, unknown>;
+
+        return new Thing(
+            this._service,
+            '' + this._attributes.name,
+            '' + this._attributes.description,
+            properties ? properties : {}
+        );
     }
 }
