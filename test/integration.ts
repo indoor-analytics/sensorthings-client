@@ -30,7 +30,7 @@ describe('Integration tests', () => {
     });
 
     it('should create a thing', async () => {
-        thing = new Thing('Test thing', 'Test description', service);
+        thing = new Thing(service, 'Test thing', 'Test description');
         await service.things.create(thing);
         expect(thing.id).not.toBeUndefined();
     });
@@ -44,7 +44,6 @@ describe('Integration tests', () => {
         const newLocation = new LocationBuilder(service)
             .setName('Test thing location')
             .setDescription('Is... Is it moving?!')
-            .setProperties({"hello": "there"})
             .setLocation([50.6048862, 3.1498135])
             .build();
         await thing.locations.add(newLocation);

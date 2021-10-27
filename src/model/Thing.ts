@@ -12,13 +12,20 @@ import {ThingHistoricalLocationsList} from "./list/ThingHistoricalLocationsList"
 export class Thing extends Entity<Thing> {
     public name: string;
     public description: string;
+    public properties: Record<string, unknown>;
+
     public locations: ThingLocationsList;
     public historicalLocations: ThingHistoricalLocationsList;
+    // TODO datastreams
 
-    constructor(name: string, description: string, service: SensorThingsService) {
+    constructor(
+        service: SensorThingsService, name: string, description: string,
+        properties: Record<string, unknown> = {}
+    ) {
         super(service);
         this.name = name;
         this.description = description;
+        this.properties = properties;
         this.locations = new ThingLocationsList(this, this._service);
         this.historicalLocations = new ThingHistoricalLocationsList(this, this._service);
     }
