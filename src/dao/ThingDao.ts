@@ -7,14 +7,14 @@ export class ThingDao extends BaseDao<Thing> {
         return 'Things';
     }
     buildEntityFromSensorThingsAPIRawData(data: Record<string, string>): Thing {
-        const thing = new Thing(data.name, data.description, this._service);
+        const thing = new Thing(this._service, data.name, data.description);
         thing.id = data['@iot.id'] as unknown as number;
         thing.setService(this._service);
         return thing;
     }
     buildEntityFromSensorThingsAPIResponse(response: AxiosResponse): Thing {
         const data = response.data as Record<string, string>;
-        const thing = new Thing(data.name, data.description, this._service);
+        const thing = new Thing(this._service, data.name, data.description);
         thing.id = this._service.compatibility.getCreatedEntityIdFromResponse(response);
         thing.setService(this._service);
         return thing;

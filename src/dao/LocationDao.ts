@@ -9,8 +9,7 @@ export class LocationDao extends BaseDao<Location> {
             this._service,
             data.name as string,
             data.description as string,
-            data.location as Point,
-            data.properties as Record<string, unknown>
+            data.location as Point
         );
         location.id = data['@iot.id'] as unknown as number;
         return location;
@@ -27,7 +26,7 @@ export class LocationDao extends BaseDao<Location> {
         return location;
     }
     get entityPublicAttributes(): string[] {
-        return ['name', 'description', 'properties', 'location', 'encodingType'];
+        return ['name', 'description', 'location', 'encodingType'];
     }
     get entityPathname(): string {
         return "Locations";

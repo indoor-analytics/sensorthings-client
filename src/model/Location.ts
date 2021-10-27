@@ -11,18 +11,16 @@ export class Location extends Entity<Location> {
     public description: string;
     public readonly encodingType: string;
     public location: Point;
-    public properties: Record<string, unknown>;
 
     public things: LocationThingsList;
     public historicalLocations: LocationHistoricalLocationsList;
 
-    constructor(service: SensorThingsService, name: string, description: string, location: Point, properties: Record<string, unknown> = {}) {
+    constructor(service: SensorThingsService, name: string, description: string, location: Point) {
         super(service);
         this.name = name;
         this.description = description;
         this.encodingType = this._service.compatibility.locationEncodingType;
         this.location = location;
-        this.properties = properties;
         this.things = new LocationThingsList(this, this._service);
         this.historicalLocations = new LocationHistoricalLocationsList(this, this._service);
     }
