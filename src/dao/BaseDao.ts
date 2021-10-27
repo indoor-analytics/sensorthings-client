@@ -92,11 +92,31 @@ export abstract class BaseDao<T extends Entity<T>> {
     abstract get entityPublicAttributes(): string[];
 
     /**
-     * Returns an instance of the type inferred in the current DAO (with the service id).
+     * Returns an instance of the type inferred in the current DAO (with service id).
      * @param data entity body from service
      */
-    abstract buildEntityFromSensorThingsAPIRawData(data: Record<string, string>): T;
-    abstract buildEntityFromSensorThingsAPIResponse(response: AxiosResponse): T;
+    public buildEntityFromSensorThingsAPIRawData(data: Record<string, string>): T {
+        const entity = this.buildEntity(data);
+        entity.id = data['@iot.id'] as unknown as number;
+        return entity;
+    }
+
+    /**
+     * Returns an instance of the type inferred in the current DAO (with service id).
+     * @param response HTTP response from service
+     */
+    public buildEntityFromSensorThingsAPIResponse(response: AxiosResponse): T {
+        const data = response.data as Record<string, unknown>;
+        const entity = this.buildEntity(data);
+        entity.id = this._service.compatibility.getCreatedEntityIdFromResponse(response);
+        return entity;
+    }
+
+    /**
+     * Returns an instance of the type inferred in the current DAO.
+     * @param data entity body from service
+     */
+    abstract buildEntity(data: Record<string, unknown>): T;
 
     /**
      * Returns an object containing all entity public attributes.
