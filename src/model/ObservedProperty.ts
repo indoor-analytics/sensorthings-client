@@ -1,6 +1,6 @@
 import {Entity} from "./Entity";
-import {BaseDao} from "../dao/BaseDao";
 import {SensorThingsService} from "../service/SensorThingsService";
+import {ObservedPropertyDao} from "../dao/ObservedPropertyDao";
 
 export class ObservedProperty extends Entity<ObservedProperty> {
     public name: string;
@@ -19,7 +19,7 @@ export class ObservedProperty extends Entity<ObservedProperty> {
         this.description = description;
     }
 
-    get dao(): BaseDao<ObservedProperty> {
-        return undefined;
+    get dao(): ObservedPropertyDao {
+        return new ObservedPropertyDao(this._service);
     }
 }
