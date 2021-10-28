@@ -1,7 +1,10 @@
-import { SensorThingsService } from '../src';
-import { DumbEntity } from './utils/DumbEntity';
-import { HttpClientMock } from './utils/HttpClientMock';
+import {SensorThingsService} from '../src';
+import {DumbEntity} from './utils/DumbEntity';
+import {HttpClientMock} from './utils/HttpClientMock';
 import {HistoricalLocation} from "../src/model/HistoricalLocation";
+import {Datastream} from "../src/model/Datastream";
+import {ObservationType} from "../src/model/utils/ObservationType";
+import {polygon} from "@turf/helpers";
 
 const service = new SensorThingsService('https://example.org');
 
@@ -68,4 +71,19 @@ describe('HistoricalLocation', () => {
         const location = new HistoricalLocation(service, dateString);
         expect(new Date(dateString).toISOString()).toEqual(new Date(location.time).toISOString());
     })
+});
+
+describe('Datastream', () => {
+    const unitOfMeasurement = {name: 'name', definition: 'def', symbol: 'S'}
+    const area = polygon([[[0, 1], [1, 2], [2, 3], [0, 1]]]).geometry;
+
+    it('should throw when created with wrong phenomenon time', () => {
+        const create = () => new Datastream(
+            service, 'name', 'description',
+            unitOfMeasurement, ObservationType.OM_CategoryObservation, area,
+            "2014-03-01T13:00:00Z",
+            "2014-03-01T13:00:00Z/2015-05-11T15:30:00Z"
+        );
+        expect(create).toThrowError(new RangeError('"2014-03-01T13:00:00Z" is not a valid phenomenonTime value.'));
+    });
 });
