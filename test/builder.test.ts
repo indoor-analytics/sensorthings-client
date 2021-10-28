@@ -2,6 +2,7 @@ import {SensorThingsService} from "../src";
 import {ThingBuilder} from "../src/model/builder/ThingBuilder";
 import {MissingArgumentError} from "../src/error/MissingArgumentError";
 import {HistoricalLocationBuilder} from "../src/model/builder/HistoricalLocationBuilder";
+import {ObservedPropertyBuilder} from "../src/model/builder/ObservedPropertyBuilder";
 
 describe('Model builders', () => {
     it('should build a Thing entity', () => {
@@ -90,5 +91,14 @@ describe('Model builders', () => {
             .build();
 
         expect(build).toThrowError(new RangeError('"hello there" is not a valid time value.'));
+    });
+
+    it('should not build ObservedProperty without name', () => {
+        const builder = new ObservedPropertyBuilder( new SensorThingsService('https://example.org') );
+        const build = () => builder
+            .setDescription('desc')
+            .setDefinition('def')
+            .build();
+        expect(build).toThrowError(new MissingArgumentError('"name" argument is required to build an ObservedProperty.'));
     });
 });
