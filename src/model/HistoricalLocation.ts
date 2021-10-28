@@ -5,6 +5,10 @@ import { Entity } from "./Entity";
 import { HistoricalLocationLocationsList } from "./list/HistoricalLocationLocationsList";
 import { HistoricalLocationThingsList } from "./list/HistoricalLocationThingsList";
 
+/**
+ * Representation of a SensorThings HistoricalLocation entity.
+ * https://docs.opengeospatial.org/is/15-078r6/15-078r6.html#27
+ */
 export class HistoricalLocation extends Entity<HistoricalLocation> {
     public time: string;
 

@@ -6,6 +6,10 @@ import {Point} from "@turf/helpers";
 import {LocationThingsList} from "./list/LocationThingsList";
 import {LocationHistoricalLocationsList} from "./list/LocationHistoricalLocationsList";
 
+/**
+ * Representation of a SensorThings Location entity.
+ * https://docs.opengeospatial.org/is/15-078r6/15-078r6.html#26
+ */
 export class Location extends Entity<Location> {
     public name: string;
     public description: string;

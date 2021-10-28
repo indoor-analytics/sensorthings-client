@@ -6,6 +6,10 @@ import {ObservationType} from "./utils/ObservationType";
 import {UnitOfMeasurement} from "./utils/UnitOfMeasurement";
 import {DatastreamDao} from "../dao/DatastreamDao";
 
+/**
+ * Representation of a SensorThings Datastream entity.
+ * http://docs.opengeospatial.org/is/15-078r6/15-078r6.html#28
+ */
 export class Datastream extends Entity<Datastream> {
     public name: string;
     public description: string;

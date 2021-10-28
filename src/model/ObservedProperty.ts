@@ -3,6 +3,10 @@ import {SensorThingsService} from "../service/SensorThingsService";
 import {ObservedPropertyDao} from "../dao/ObservedPropertyDao";
 import {ObservedPropertyDatastreamsLists} from "./list/ObservedPropertyDatastreamsLists";
 
+/**
+ * Representation of a SensorThings ObservedProperty entity.
+ * https://docs.opengeospatial.org/is/15-078r6/15-078r6.html#30
+ */
 export class ObservedProperty extends Entity<ObservedProperty> {
     public name: string;
     public definition: string;
