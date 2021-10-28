@@ -4,6 +4,7 @@ import { ThingDao } from '../dao/ThingDao';
 import { SensorThingsService } from '../service/SensorThingsService';
 import {ThingLocationsList} from "./list/ThingLocationsList";
 import {ThingHistoricalLocationsList} from "./list/ThingHistoricalLocationsList";
+import {ThingDatastreamsList} from "./list/ThingDatastreamsList";
 
 /**
  * Representation of a Thing SensorThings entity.
@@ -16,7 +17,7 @@ export class Thing extends Entity<Thing> {
 
     public locations: ThingLocationsList;
     public historicalLocations: ThingHistoricalLocationsList;
-    // TODO datastreams
+    public datastreams: ThingDatastreamsList;
 
     constructor(
         service: SensorThingsService, name: string, description: string,
@@ -28,6 +29,7 @@ export class Thing extends Entity<Thing> {
         this.properties = properties;
         this.locations = new ThingLocationsList(this, this._service);
         this.historicalLocations = new ThingHistoricalLocationsList(this, this._service);
+        this.datastreams = new ThingDatastreamsList(this, this._service);
     }
 
     get dao(): BaseDao<Thing> {
