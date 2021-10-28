@@ -101,4 +101,13 @@ describe('Model builders', () => {
             .build();
         expect(build).toThrowError(new MissingArgumentError('"name" argument is required to build an ObservedProperty.'));
     });
+
+    it('should not build ObservedProperty without description', () => {
+        const builder = new ObservedPropertyBuilder( new SensorThingsService('https://example.org') );
+        const build = () => builder
+            .setName('name')
+            .setDefinition('def')
+            .build();
+        expect(build).toThrowError(new MissingArgumentError('"description" argument is required to build an ObservedProperty.'));
+    });
 });
