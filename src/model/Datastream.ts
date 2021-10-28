@@ -35,11 +35,20 @@ export class Datastream extends Entity<Datastream> {
         this.unitOfMeasurement = unitOfMeasurement;
         this.observationType = observationType;
         this.observedArea = observedArea;
+
+        Datastream._checkTimeRange(phenomenonTime, 'phenomenonTime');
         this.phenomenonTime = phenomenonTime;
+        Datastream._checkTimeRange(resultTime, 'resultTime');
         this.resultTime = resultTime;
     }
 
     get dao(): BaseDao<Datastream> {
         return new DatastreamDao(this._service);
+    }
+
+    private static _checkTimeRange(range: string, attributeName: string): void {
+        const dates = range.split('/');
+        if (dates.length !== 2)
+            throw new RangeError(`"${range}" is not a valid ${attributeName} value.`);
     }
 }
