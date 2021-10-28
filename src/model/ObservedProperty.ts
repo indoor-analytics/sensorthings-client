@@ -1,13 +1,14 @@
 import {Entity} from "./Entity";
 import {SensorThingsService} from "../service/SensorThingsService";
 import {ObservedPropertyDao} from "../dao/ObservedPropertyDao";
+import {ObservedPropertyDatastreamsLists} from "./list/ObservedPropertyDatastreamsLists";
 
 export class ObservedProperty extends Entity<ObservedProperty> {
     public name: string;
     public definition: string;
     public description: string;
 
-    // TODO datastreams
+    public datastreams: ObservedPropertyDatastreamsLists;
 
     constructor(
         service: SensorThingsService,
@@ -17,6 +18,7 @@ export class ObservedProperty extends Entity<ObservedProperty> {
         this.name = name;
         this.definition = definition;
         this.description = description;
+        this.datastreams = new ObservedPropertyDatastreamsLists(this, this._service);
     }
 
     get dao(): ObservedPropertyDao {
