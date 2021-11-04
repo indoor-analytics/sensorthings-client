@@ -1,4 +1,4 @@
-import { Feature, Geometry } from "@turf/helpers";
+import { Feature } from "@turf/helpers";
 import { FeatureOfInterest } from "../model/FeatureOfInterest";
 import { BaseDao } from "./BaseDao";
 
@@ -14,7 +14,7 @@ export class FeatureOfInterestDao extends BaseDao<FeatureOfInterest> {
             this._service,
             data.name as string,
             data.description as string,
-            data.feature as Feature<Geometry>
+            data.feature as Feature
         )
     }
 }

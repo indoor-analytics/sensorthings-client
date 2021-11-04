@@ -1,4 +1,4 @@
-import { Feature, Geometry } from "@turf/helpers";
+import { Feature } from "@turf/helpers";
 import { SensorThingsService } from "..";
 import { BaseDao } from "../dao/BaseDao";
 import { FeatureOfInterestDao } from "../dao/FeatureOfInterestDao";
@@ -12,19 +12,19 @@ export class FeatureOfInterest extends Entity<FeatureOfInterest> {
     public name: string;
     public description: string;
     public readonly encodingType: string;
-    public feature: Geometry;
+    public feature: Feature;
 
     constructor(
         service: SensorThingsService, 
         name: string, 
         description: string, 
-        feature: Feature<Geometry>
+        feature: Feature
     ) {
         super(service);
         this.name = name;
         this.description = description;
         this.encodingType = this._service.compatibility.locationEncodingType;
-        this.feature = feature.geometry;
+        this.feature = feature;
     }
 
     get dao(): BaseDao<FeatureOfInterest> {
