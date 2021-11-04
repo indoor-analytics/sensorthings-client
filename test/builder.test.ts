@@ -3,6 +3,8 @@ import {ThingBuilder} from "../src/model/builder/ThingBuilder";
 import {MissingArgumentError} from "../src/error/MissingArgumentError";
 import {HistoricalLocationBuilder} from "../src/model/builder/HistoricalLocationBuilder";
 import {ObservedPropertyBuilder} from "../src/model/builder/ObservedPropertyBuilder";
+import {FeatureOfInterestBuilder} from "../src/model/builder/FeatureOfInterestBuilder";
+import { point } from "@turf/helpers";
 
 describe('Model builders', () => {
     it('should build a Thing entity', () => {
@@ -118,5 +120,18 @@ describe('Model builders', () => {
             .setDescription('desc')
             .build();
         expect(build).toThrowError(new MissingArgumentError('"definition" argument is required to build an ObservedProperty.'));
+    });
+
+    describe ('FeaturesOfInterest', () => {
+        const service = new SensorThingsService('https://example.org');
+        
+        it ('should not build instance without name', () => {
+            const builder = new FeatureOfInterestBuilder(service);
+            const build = () => builder
+                .setDescription('description')
+                .setFeature(point([-75.343, 39.984]))
+                .build();
+            expect(build).toThrowError(new MissingArgumentError('"name" argument is required to build a FeatureOfInterest.'));
+        });
     });
 });
