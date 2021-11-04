@@ -1,6 +1,7 @@
 import { Feature, Geometry } from "@turf/helpers";
 import { SensorThingsService } from "..";
 import { BaseDao } from "../dao/BaseDao";
+import { FeatureOfInterestDao } from "../dao/FeatureOfInterestDao";
 import { Entity } from "./Entity";
 
 /**
@@ -27,6 +28,6 @@ export class FeatureOfInterest extends Entity<FeatureOfInterest> {
     }
 
     get dao(): BaseDao<FeatureOfInterest> {
-        throw new Error("Method not implemented.");
+        return new FeatureOfInterestDao(this._service);
     }
 }
