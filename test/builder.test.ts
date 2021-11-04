@@ -4,7 +4,6 @@ import {MissingArgumentError} from "../src/error/MissingArgumentError";
 import {HistoricalLocationBuilder} from "../src/model/builder/HistoricalLocationBuilder";
 import {ObservedPropertyBuilder} from "../src/model/builder/ObservedPropertyBuilder";
 import {FeatureOfInterestBuilder} from "../src/model/builder/FeatureOfInterestBuilder";
-import { point } from "@turf/helpers";
 
 describe('Model builders', () => {
     it('should build a Thing entity', () => {
@@ -129,7 +128,7 @@ describe('Model builders', () => {
             const builder = new FeatureOfInterestBuilder(service);
             const build = () => builder
                 .setDescription('description')
-                .setFeature(point([-75.343, 39.984]))
+                .setFeatureFromCoordinates([-75.343, 39.984])
                 .build();
             expect(build).toThrowError(new MissingArgumentError('"name" argument is required to build a FeatureOfInterest.'));
         });

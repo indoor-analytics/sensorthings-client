@@ -1,4 +1,4 @@
-import { Feature } from "@turf/helpers";
+import { Feature, point, polygon, Position } from "@turf/helpers";
 import { MissingArgumentError } from "../../error/MissingArgumentError";
 import { FeatureOfInterest } from "../FeatureOfInterest";
 import { AbstractBuilder } from "./AbstractBuilder";
@@ -14,6 +14,17 @@ export class FeatureOfInterestBuilder extends AbstractBuilder<FeatureOfInterest>
     }
     public setFeature(feature: Feature): FeatureOfInterestBuilder {
         this._attributes.feature = feature;
+        return this;
+    }
+    public setFeatureFromCoordinates(...coordinates: Position[]): FeatureOfInterestBuilder {
+        switch(coordinates.length) {
+            case 1:
+                this._attributes.feature = point(coordinates[0]);
+                break;
+            default:
+                this._attributes.feature = polygon([coordinates]);
+                break;
+        }
         return this;
     }
     protected buildEntity(): FeatureOfInterest {
