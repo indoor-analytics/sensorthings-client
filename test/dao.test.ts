@@ -9,6 +9,7 @@ import {DumbEntityBuilder} from "./utils/DumbEntityBuilder";
 import {LocationDao} from "../src/dao/LocationDao";
 import {LocationAPIResponses} from "./responses/LocationAPIResponses";
 import { FeatureOfInterestDao } from '../src/dao/FeatureOfInterestDao';
+import { FeatureOfInterestAPIResponses } from './responses/FeatureOfInterestAPIResponses';
 
 let service = new SensorThingsService('https://example.org');
 let mockInjector: HttpClientMock;
@@ -316,6 +317,16 @@ describe('DAO', () => {
                 const publicAttributes = dao.entityPublicAttributes;
                 const expectedAttributes = ['name', 'description', 'encodingType', 'feature'];
                 expect(publicAttributes).toStrictEqual(expectedAttributes);
+            });
+
+            it ('should build feature of interest (point) from API response', async () => {
+                const dao = new FeatureOfInterestDao(service);
+                const rawData = (FeatureOfInterestAPIResponses.featuresOfInterest.value as Record<string, unknown>[])[0];
+                
+                const entity = dao.buildEntity(rawData);
+                expect(entity.name).toEqual('UofC CCIT');
+                expect(entity.description).toEqual('University of Calgary, CCIT building');
+                expect(entity.feature.type).toEqual('Point');
             });
         });
     });
