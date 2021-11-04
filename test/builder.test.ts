@@ -169,5 +169,24 @@ describe('Model builders', () => {
             expect((foi.feature.geometry as Geometry).type).toEqual('Point');
             expect((foi.feature.geometry as Geometry).coordinates).toEqual(position);
         });
+
+        it ('should build instance with polygon feature', () => {
+            const builder = new FeatureOfInterestBuilder(service);
+            const name = 'name';
+            const desc = 'description';
+            const coordinates = [[-75.343, 39.984], [-78.515, 39.981], [-77.611, 39.983], [-75.343, 39.984]];
+
+            const foi = builder
+                .setName(name)
+                .setDescription(desc)
+                .setFeatureFromCoordinates(...coordinates)
+                .build();
+
+            expect(foi.name).toEqual(name);
+            expect(foi.description).toEqual(desc);
+            expect((foi.feature.geometry as Geometry).type).toEqual('Polygon');
+            expect((foi.feature.geometry as Geometry).coordinates).toEqual([coordinates]);
+        
+        });
     });
 });
