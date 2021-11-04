@@ -141,5 +141,14 @@ describe('Model builders', () => {
                 .build();
             expect(build).toThrowError(new MissingArgumentError('"description" argument is required to build a FeatureOfInterest.'));
         });
+
+        it ('should not build instance without feature', () => {
+            const builder = new FeatureOfInterestBuilder(service);
+            const build = () => builder
+                .setName('name')
+                .setDescription('description')
+                .build();
+            expect(build).toThrowError(new MissingArgumentError('"feature" argument is required to build a FeatureOfInterest.'));
+        });
     });
 });
