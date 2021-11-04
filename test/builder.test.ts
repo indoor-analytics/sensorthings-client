@@ -4,6 +4,7 @@ import {MissingArgumentError} from "../src/error/MissingArgumentError";
 import {HistoricalLocationBuilder} from "../src/model/builder/HistoricalLocationBuilder";
 import {ObservedPropertyBuilder} from "../src/model/builder/ObservedPropertyBuilder";
 import {FeatureOfInterestBuilder} from "../src/model/builder/FeatureOfInterestBuilder";
+import { Geometry } from "@turf/helpers";
 
 describe('Model builders', () => {
     it('should build a Thing entity', () => {
@@ -149,6 +150,24 @@ describe('Model builders', () => {
                 .setDescription('description')
                 .build();
             expect(build).toThrowError(new MissingArgumentError('"feature" argument is required to build a FeatureOfInterest.'));
+        });
+
+        it ('should build instance with point feature', () => {
+            const builder = new FeatureOfInterestBuilder(service);
+            const name = 'name';
+            const desc = 'description';
+            const position = [-75.343, 39.984];
+
+            const foi = builder
+                .setName(name)
+                .setDescription(desc)
+                .setFeatureFromCoordinates(position)
+                .build();
+
+            expect(foi.name).toEqual(name);
+            expect(foi.description).toEqual(desc);
+            expect((foi.feature.geometry as Geometry).type).toEqual('Point');
+            expect((foi.feature.geometry as Geometry).coordinates).toEqual(position);
         });
     });
 });
