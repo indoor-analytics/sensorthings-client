@@ -57,12 +57,11 @@ We tested the library against following backends:
 
 #### Location encoding type
 
-If you want to run this library against a backend only supporting `'application/vnd.geo+json'` encoding for Location entities, you can
-specify it in your service declaration:
+If you want to run this library against a backend only supporting `'application/vnd.geo+json'` encoding for FeatureOfInterest/Location entities, you can specify it in your service declaration:
 
 ```typescript
 const service = new SensorThingsService(
     'https://example.org',
-    { locationEncodingType: 'application/vnd.geo+json' }
+    { encodingType: 'application/vnd.geo+json' }
 );
 ```

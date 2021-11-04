@@ -35,9 +35,9 @@ export class CompatibilityUtils {
 
     /**
      * Some SensorThings implementations support encoding types different than
-     * "application/geo+json" for Location types.
+     * "application/geo+json" for FeatureOfInterest and Location types.
      */
-    get locationEncodingType(): string {
-        return this._options.locationEncodingType;
+    get encodingType(): string {
+        return this._options.encodingType;
     }
 }

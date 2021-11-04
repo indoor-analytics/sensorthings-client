@@ -23,7 +23,7 @@ export class FeatureOfInterest extends Entity<FeatureOfInterest> {
         super(service);
         this.name = name;
         this.description = description;
-        this.encodingType = this._service.compatibility.locationEncodingType;
+        this.encodingType = this._service.compatibility.encodingType;
         this.feature = feature;
     }
 
