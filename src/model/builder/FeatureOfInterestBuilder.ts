@@ -16,7 +16,7 @@ export class FeatureOfInterestBuilder extends AbstractBuilder<FeatureOfInterest>
         this._attributes.feature = feature;
         return this;
     }
-    public setFeatureFromCoordinates(...coordinates: Position[]): FeatureOfInterestBuilder {
+    public setFeatureFromCoordinates(coordinates: Position[]): FeatureOfInterestBuilder {
         switch(coordinates.length) {
         case 1:
             this._attributes.feature = point(coordinates[0]);

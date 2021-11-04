@@ -129,7 +129,7 @@ describe('Model builders', () => {
             const builder = new FeatureOfInterestBuilder(service);
             const build = () => builder
                 .setDescription('description')
-                .setFeatureFromCoordinates([-75.343, 39.984])
+                .setFeatureFromCoordinates([[-75.343, 39.984]])
                 .build();
             expect(build).toThrowError(new MissingArgumentError('"name" argument is required to build a FeatureOfInterest.'));
         });
@@ -138,7 +138,7 @@ describe('Model builders', () => {
             const builder = new FeatureOfInterestBuilder(service);
             const build = () => builder
                 .setName('name')
-                .setFeatureFromCoordinates([-75.343, 39.984])
+                .setFeatureFromCoordinates([[-75.343, 39.984]])
                 .build();
             expect(build).toThrowError(new MissingArgumentError('"description" argument is required to build a FeatureOfInterest.'));
         });
@@ -161,7 +161,7 @@ describe('Model builders', () => {
             const foi = builder
                 .setName(name)
                 .setDescription(desc)
-                .setFeatureFromCoordinates(position)
+                .setFeatureFromCoordinates([position])
                 .build();
 
             expect(foi.name).toEqual(name);
@@ -179,7 +179,7 @@ describe('Model builders', () => {
             const foi = builder
                 .setName(name)
                 .setDescription(desc)
-                .setFeatureFromCoordinates(...coordinates)
+                .setFeatureFromCoordinates(coordinates)
                 .build();
 
             expect(foi.name).toEqual(name);
