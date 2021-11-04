@@ -328,6 +328,16 @@ describe('DAO', () => {
                 expect(entity.description).toEqual('University of Calgary, CCIT building');
                 expect(entity.feature.type).toEqual('Point');
             });
+
+            it ('should build feature of interest (with feature collection) from API response', () => {
+                const dao = new FeatureOfInterestDao(service);
+                const rawData = (FeatureOfInterestAPIResponses.featuresOfInterest.value as Record<string, unknown>[])[22];
+
+                const entity = dao.buildEntity(rawData);
+                expect(entity.name).toEqual('TFI');
+                expect(entity.description).toEqual('TFI');
+                expect(entity.feature.type).toEqual('FeatureCollection');
+            });
         });
     });
 });
