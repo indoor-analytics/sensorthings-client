@@ -7,6 +7,7 @@ import {UnitOfMeasurement} from "./utils/UnitOfMeasurement";
 import {DatastreamDao} from "../dao/DatastreamDao";
 import {DatastreamThingsList} from "./list/DatastreamThingsList";
 import {DatastreamObservedPropertiesList} from "./list/DatastreamObservedPropertiesList";
+import { TimeChecks } from "./utils/TimeChecks";
 
 /**
  * Representation of a SensorThings Datastream entity.
@@ -44,25 +45,14 @@ export class Datastream extends Entity<Datastream> {
         this.things = new DatastreamThingsList(this, this._service);
         this.observedProperties = new DatastreamObservedPropertiesList(this, this._service);
 
-        Datastream._checkTimeRange(phenomenonTime, 'phenomenonTime');
+        const checker = new TimeChecks();
+        checker.checkTimeRange(phenomenonTime, 'phenomenonTime');
         this.phenomenonTime = phenomenonTime;
-        Datastream._checkTimeRange(resultTime, 'resultTime');
+        checker.checkTimeRange(resultTime, 'resultTime');
         this.resultTime = resultTime;
     }
 
     get dao(): BaseDao<Datastream> {
         return new DatastreamDao(this._service);
-    }
-
-    private static _checkTimeRange(range: string, attributeName: string): void {
-        const dates = range.split('/');
-        if (dates.length !== 2)
-            throw new RangeError(`"${range}" is not a valid ${attributeName} value.`);
-        try {
-            new Date(dates[0]).toISOString();
-            new Date(dates[1]).toISOString();
-        } catch (err) {
-            throw new RangeError(`"${range}" is not a valid ${attributeName} value.`);
-        }
     }
 }
