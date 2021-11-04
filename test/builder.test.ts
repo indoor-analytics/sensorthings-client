@@ -132,5 +132,14 @@ describe('Model builders', () => {
                 .build();
             expect(build).toThrowError(new MissingArgumentError('"name" argument is required to build a FeatureOfInterest.'));
         });
+
+        it ('should not build instance without description', () => {
+            const builder = new FeatureOfInterestBuilder(service);
+            const build = () => builder
+                .setName('name')
+                .setFeatureFromCoordinates([-75.343, 39.984])
+                .build();
+            expect(build).toThrowError(new MissingArgumentError('"description" argument is required to build a FeatureOfInterest.'));
+        });
     });
 });
