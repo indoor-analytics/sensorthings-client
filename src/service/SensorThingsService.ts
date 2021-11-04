@@ -19,7 +19,7 @@ export class SensorThingsService {
 
     constructor(
         endpoint: URL | string,
-        options: CompatibilityOptions = { locationEncodingType: "application/geo+json" }
+        options: CompatibilityOptions = { encodingType: "application/geo+json" }
     ) {
         this._url =
             typeof endpoint === 'string' ? new URL(endpoint) : endpoint;

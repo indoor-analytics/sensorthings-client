@@ -23,7 +23,7 @@ export class Location extends Entity<Location> {
         super(service);
         this.name = name;
         this.description = description;
-        this.encodingType = this._service.compatibility.locationEncodingType;
+        this.encodingType = this._service.compatibility.encodingType;
         this.location = location;
         this.things = new LocationThingsList(this, this._service);
         this.historicalLocations = new LocationHistoricalLocationsList(this, this._service);
