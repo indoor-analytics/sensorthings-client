@@ -1,4 +1,4 @@
-import { LineString, MultiLineString, MultiPoint, MultiPolygon, Point, Polygon } from "@turf/helpers";
+import { Feature, Geometry } from "@turf/helpers";
 import { SensorThingsService } from "..";
 import { BaseDao } from "../dao/BaseDao";
 import { Entity } from "./Entity";
@@ -11,19 +11,19 @@ export class FeatureOfInterest extends Entity<FeatureOfInterest> {
     public name: string;
     public description: string;
     public readonly encodingType: string;
-    public feature: Point | LineString | Polygon | MultiPoint | MultiLineString | MultiPolygon;
+    public feature: Geometry;
 
     constructor(
         service: SensorThingsService, 
         name: string, 
         description: string, 
-        feature: Point | LineString | Polygon | MultiPoint | MultiLineString | MultiPolygon
+        feature: Feature<Geometry>
     ) {
         super(service);
         this.name = name;
         this.description = description;
         this.encodingType = this._service.compatibility.locationEncodingType;
-        this.feature = feature;
+        this.feature = feature.geometry;
     }
 
     get dao(): BaseDao<FeatureOfInterest> {
