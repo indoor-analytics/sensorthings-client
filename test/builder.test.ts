@@ -186,7 +186,22 @@ describe('Model builders', () => {
             expect(foi.description).toEqual(desc);
             expect((foi.feature.geometry as Geometry).type).toEqual('Polygon');
             expect((foi.feature.geometry as Geometry).coordinates).toEqual([coordinates]);
-        
+        });
+
+        it ('should build instance with feature properties', () => {
+            const builder = new FeatureOfInterestBuilder(service);
+            const name = 'name';
+            const desc = 'description';
+            const coordinates = [[-75.343, 39.984], [-78.515, 39.981], [-77.611, 39.983], [-75.343, 39.984]];
+            const properties = {"hello": "there"};
+
+            const foi = builder
+                .setName(name)
+                .setDescription(desc)
+                .setFeatureFromCoordinates(coordinates, properties)
+                .build();
+
+            expect(foi.feature.properties).toEqual(properties);
         });
     });
 });

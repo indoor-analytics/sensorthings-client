@@ -16,13 +16,13 @@ export class FeatureOfInterestBuilder extends AbstractBuilder<FeatureOfInterest>
         this._attributes.feature = feature;
         return this;
     }
-    public setFeatureFromCoordinates(coordinates: Position[]): FeatureOfInterestBuilder {
+    public setFeatureFromCoordinates(coordinates: Position[], properties: {} = {}): FeatureOfInterestBuilder {
         switch(coordinates.length) {
         case 1:
-            this._attributes.feature = point(coordinates[0]);
+            this._attributes.feature = point(coordinates[0], properties);
             break;
         default:
-            this._attributes.feature = polygon([coordinates]);
+            this._attributes.feature = polygon([coordinates], properties);
             break;
         }
         return this;
