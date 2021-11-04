@@ -1,6 +1,7 @@
 import { SensorThingsService } from "..";
 import { BaseDao } from "../dao/BaseDao";
 import { Entity } from "./Entity";
+import { TimeChecks } from "./utils/TimeChecks";
 
 export class Observation extends Entity<Observation> {
     public phenomenonTime: string;
@@ -20,12 +21,19 @@ export class Observation extends Entity<Observation> {
         parameters: Record<string, unknown>
     ) {
         super(service);
-        this.phenomenonTime = phenomenonTime;
-        this.result = result;
-        this.resultTime = resultTime;
-        this.resultQuality = resultQuality;
-        this.validTime = validTime;
+
         this.parameters = parameters;
+        this.resultQuality = resultQuality;
+        this.result = result;
+
+        const checker = new TimeChecks();
+        checker.checkTimeRange(phenomenonTime, 'phenomenonTime');   // TODO phenomenonTime can be simple date as well as time range
+        this.phenomenonTime = phenomenonTime;
+
+        this.resultTime = resultTime;
+        
+        checker.checkTimeRange(validTime, 'validTime');
+        this.validTime = validTime;
     }
 
     get dao(): BaseDao<Observation> {
