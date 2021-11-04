@@ -10,11 +10,12 @@ import {LocationDao} from "../src/dao/LocationDao";
 import {LocationAPIResponses} from "./responses/LocationAPIResponses";
 import { FeatureOfInterestDao } from '../src/dao/FeatureOfInterestDao';
 
-const service = new SensorThingsService('https://example.org');
+let service = new SensorThingsService('https://example.org');
 let mockInjector: HttpClientMock;
 let builder = new DumbEntityBuilder(service);
 beforeEach(() => {
     mockInjector = new HttpClientMock();
+    service = new SensorThingsService('https://example.org');
 });
 
 describe('DAO', () => {
@@ -33,7 +34,6 @@ describe('DAO', () => {
     describe('Operations', () => {
         it('should get newly-created entity', async () => {
             const randomMockId = Math.ceil(Math.random() * 3000000);
-            const service = new SensorThingsService('https://example.org');
             const mockName = 'name',
                 mockDescription = 'description';
             const mock = builder.setName(mockName).setDescription(mockDescription).build();
@@ -69,7 +69,6 @@ describe('DAO', () => {
         });
 
         it('should throw when getting non-existent entity', async () => {
-            const service = new SensorThingsService('https://example.org');
             mockInjector.injectMockCalls( service, [{
                 targetUrl: 'https://example.org/DumbEntities(42)',
                 method: 'get',
@@ -100,7 +99,6 @@ describe('DAO', () => {
         });
 
         it('should throw when updating non-existent entity', async () => {
-            const service = new SensorThingsService('https://example.org');
             const dao = new DumbEntityDao(service);
             mockInjector.injectMockCalls( service, [{
                 targetUrl: 'https://example.org/DumbEntities(42)',
@@ -134,7 +132,6 @@ describe('DAO', () => {
         });
 
         it('should update an entity', async () => {
-            const service = new SensorThingsService('https://example.org');
             const randomMockId = Math.ceil(Math.random() * 3000000);
             mockInjector.injectMockCalls( service, [{
                 targetUrl: `https://example.org/DumbEntities(${randomMockId})`,
@@ -181,7 +178,6 @@ describe('DAO', () => {
         });
 
         it('should delete an entity', async () => {
-            const service = new SensorThingsService('https://example.org');
             const dao = new DumbEntityDao(service);
             const randomMockId = Math.ceil(Math.random() * 3000000);
             const targetUrl = `https://example.org/DumbEntities(${randomMockId})`;
@@ -240,7 +236,6 @@ describe('DAO', () => {
         });
 
         it('should throw when deleting non-existent entity', async () => {
-            const service = new SensorThingsService('https://example.org');
             mockInjector.injectMockCalls(
                 service,
                 [{
@@ -276,7 +271,6 @@ describe('DAO', () => {
         });
 
         it('should return entities count', async () => {
-            const service = new SensorThingsService('https://example.org');
             const dao = new DumbEntityDao(service);
             mockInjector.injectMockCalls(service, [{
                 targetUrl: 'https://example.org/DumbEntities?$count=true',
@@ -292,7 +286,6 @@ describe('DAO', () => {
         });
 
         it('should return entity locations', async () => {
-            const service = new SensorThingsService('https://example.org');
             const dao = new LocationDao(service);
             const mock = builder.setName('mockName').setDescription('mockDescription').build();
             mock.id = 42;
@@ -312,7 +305,6 @@ describe('DAO', () => {
     });
 
     it("should return all DumbEntity's attributes", () => {
-        const service = new SensorThingsService('https://example.org');
         const dao = new DumbEntityDao(service);
         expect(dao.entityPublicAttributes).toEqual(['name', 'description']);
     });
