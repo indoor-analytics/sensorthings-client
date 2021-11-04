@@ -96,44 +96,4 @@ describe('Datastream', () => {
         );
         expect(create).toThrowError(new RangeError('"2014-03-01T13:00:00Z" is not a valid resultTime value.'));
     });
-
-    it('should throw when created with random string as first phenomenon time range member', () => {
-        const create = () => new Datastream(
-            service, 'name', 'description',
-            unitOfMeasurement, ObservationType.OM_CategoryObservation, area,
-            "azerty/2015-05-11T15:30:00Z",
-            "2014-03-01T13:00:00Z/2015-05-11T15:30:00Z"
-        );
-        expect(create).toThrowError(new RangeError('"azerty/2015-05-11T15:30:00Z" is not a valid phenomenonTime value.'));
-    });
-
-    it('should throw when created with random string as second phenomenon time range member', () => {
-        const create = () => new Datastream(
-            service, 'name', 'description',
-            unitOfMeasurement, ObservationType.OM_CategoryObservation, area,
-            "2014-03-01T13:00:00Z/azerty",
-            "2014-03-01T13:00:00Z/2015-05-11T15:30:00Z"
-        );
-        expect(create).toThrowError(new RangeError('"2014-03-01T13:00:00Z/azerty" is not a valid phenomenonTime value.'));
-    });
-
-    it('should throw when created with random strings as both phenomenon time range members', () => {
-        const create = () => new Datastream(
-            service, 'name', 'description',
-            unitOfMeasurement, ObservationType.OM_CategoryObservation, area,
-            "azerty/azerty",
-            "2014-03-01T13:00:00Z/2015-05-11T15:30:00Z"
-        );
-        expect(create).toThrowError(new RangeError('"azerty/azerty" is not a valid phenomenonTime value.'));
-    });
-
-    it('should throw when created with too many phenomenon time range members', () => {
-        const create = () => new Datastream(
-            service, 'name', 'description',
-            unitOfMeasurement, ObservationType.OM_CategoryObservation, area,
-            "azerty/azerty/azerty",
-            "2014-03-01T13:00:00Z/2015-05-11T15:30:00Z"
-        );
-        expect(create).toThrowError(new RangeError('"azerty/azerty/azerty" is not a valid phenomenonTime value.'));
-    });
 });
