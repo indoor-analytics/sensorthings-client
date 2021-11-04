@@ -3,6 +3,7 @@ import { SensorThingsService } from '../service/SensorThingsService';
 import { AxiosError, AxiosResponse } from 'axios';
 import { NotFoundError } from '../error/NotFoundError';
 import {Query} from "../query/Query";
+import {EntityIterator} from "./iterator/EntityIterator";
 
 /**
  * Entity independent implementation of a data access object.
@@ -10,9 +11,11 @@ import {Query} from "../query/Query";
  */
 export abstract class BaseDao<T extends Entity<T>> {
     protected _service: SensorThingsService;
+    public iterator: EntityIterator<T>;
 
     constructor(service: SensorThingsService) {
         this._service = service;
+        this.iterator = new EntityIterator<T>(this, service);
     }
 
     /**

@@ -1,9 +1,15 @@
 export class ThingAPIResponses {
+    static getEmptyResponse(): Record<string, unknown> {
+        return {
+            "@iot.count":0,
+            "value":[]
+        };
+    }
+
     static get top5things(): Object {
         let things = this.things.value as Object[];
         return {
             "@iot.count":27590,
-            "@iot.nextLink":"https://scratchpad.sensorup.com/OGCSensorThings/v1.0/Things?$top=5&$skip=5",
             "value": things.filter((_value, index) => index < 5)
         };
     }
@@ -61,6 +67,21 @@ export class ThingAPIResponses {
             })
         };
     }
+
+    static getThingsFirstPage(): Object {
+        const things = ThingAPIResponses.things;
+        things['@iot.count'] = 200;
+        things['@iot.nextLink'] = `https://example.org/Things?$top=100&$skip=100`;
+        return things;
+    }
+
+    static getThingsSecondPage(): Object {
+        const things = ThingAPIResponses.things;
+        things['@iot.count'] = 200;
+        delete things['@iot.nextLink'];
+        return things;
+    }
+
 
     static get things(): Record<string, unknown> {
         return {

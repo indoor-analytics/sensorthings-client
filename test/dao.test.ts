@@ -8,6 +8,7 @@ import {ThingAPIResponses} from "./responses/ThingAPIResponses";
 import {DumbEntityBuilder} from "./utils/DumbEntityBuilder";
 import {LocationDao} from "../src/dao/LocationDao";
 import {LocationAPIResponses} from "./responses/LocationAPIResponses";
+import {InitialisationError} from "../src/error/InitialisationError";
 
 const service = new SensorThingsService('https://example.org');
 let mockInjector: HttpClientMock;
@@ -314,5 +315,105 @@ describe('DAO', () => {
         const service = new SensorThingsService('https://example.org');
         const dao = new DumbEntityDao(service);
         expect(dao.entityPublicAttributes).toEqual(['name', 'description']);
+    });
+
+    describe('Iterator', () => {
+        it('should return false when querying empty collection', async () => {
+            const dao = new DumbEntityDao(service);
+            const iterator = dao.iterator;
+            mockInjector.injectMockCalls(service, [{
+                targetUrl: 'https://example.org/DumbEntities',
+                method: 'get',
+                callback: () => {
+                    return {
+                        data: ThingAPIResponses.getEmptyResponse()
+                    }
+                }
+            }]);
+
+            const result = await iterator.hasNext();
+            expect(result).toBeFalsy();
+        });
+
+        it('should return true when querying not-empty collection', async () => {
+            const dao = new DumbEntityDao(service);
+            const iterator = dao.iterator;
+            mockInjector.injectMockCalls(service, [{
+                targetUrl: 'https://example.org/DumbEntities',
+                method: 'get',
+                callback: () => {
+                    return {
+                        data: ThingAPIResponses.things
+                    }
+                }
+            }]);
+
+            const result = await iterator.hasNext();
+            expect(result).toBeTruthy();
+        });
+
+        it('should return 5 things one after one', async () => {
+            const dao = new DumbEntityDao(service);
+            const iterator = dao.iterator;
+            mockInjector.injectMockCalls(service, [{
+                targetUrl: 'https://example.org/DumbEntities',
+                method: 'get',
+                callback: () => {
+                    return {
+                        data: ThingAPIResponses.top5things
+                    }
+                }
+            }]);
+
+            let counter = 0;
+            while (counter < 5) {
+                const hasItems = await iterator.hasNext();
+                if (!hasItems) {
+                    fail('Iterator.failed returned false while collection still have items');
+                    return;
+                }
+
+                await iterator.next();
+                counter += 1;
+            }
+            expect(await iterator.hasNext()).toBeFalsy();
+        });
+
+        it('should not allow next() call before hasNext() call', async () => {
+            const dao = new DumbEntityDao(service);
+            const iterator = dao.iterator;
+            const getNextEntity = async () => await iterator.next();
+            await expect(getNextEntity()).rejects.toThrow(
+                new InitialisationError('hasNext() must be called before next() calls.')
+            );
+        });
+
+        it('should parse entities over several pages', async () => {
+            mockInjector.injectMockCalls(service, [{
+                targetUrl: 'https://example.org/DumbEntities',
+                method: 'get',
+                callback: () => {
+                    return {
+                        data: ThingAPIResponses.getThingsFirstPage()
+                    }
+                }
+            }, {
+                targetUrl: 'https://example.org/Things?$top=100&$skip=100',
+                method: 'get',
+                callback: () => {
+                    return {
+                        data: ThingAPIResponses.getThingsSecondPage()
+                    }
+                }
+            }]);
+            const dao = new DumbEntityDao(service);
+            const iterator = dao.iterator;
+
+            let things = [];
+            while (await iterator.hasNext()) {
+                things.push(iterator.next());
+            }
+            expect(things.length).toEqual(200);
+        });
     });
 });
