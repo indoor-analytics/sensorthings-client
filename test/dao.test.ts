@@ -8,6 +8,7 @@ import {ThingAPIResponses} from "./responses/ThingAPIResponses";
 import {DumbEntityBuilder} from "./utils/DumbEntityBuilder";
 import {LocationDao} from "../src/dao/LocationDao";
 import {LocationAPIResponses} from "./responses/LocationAPIResponses";
+import { FeatureOfInterestDao } from '../src/dao/FeatureOfInterestDao';
 
 const service = new SensorThingsService('https://example.org');
 let mockInjector: HttpClientMock;
@@ -314,5 +315,16 @@ describe('DAO', () => {
         const service = new SensorThingsService('https://example.org');
         const dao = new DumbEntityDao(service);
         expect(dao.entityPublicAttributes).toEqual(['name', 'description']);
+    });
+
+    describe ('Implementations', () => {
+        describe ('FeaturesOfInterest', () => {
+            it ('should return public attributes', () => {
+                const dao = new FeatureOfInterestDao(service);
+                const publicAttributes = dao.entityPublicAttributes;
+                const expectedAttributes = ['name', 'description', 'encodingType', 'feature'];
+                expect(publicAttributes).toStrictEqual(expectedAttributes);
+            });
+        });
     });
 });
