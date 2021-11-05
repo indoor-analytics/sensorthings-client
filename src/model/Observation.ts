@@ -32,11 +32,11 @@ export class Observation extends Entity<Observation> {
             throw new RangeError(`"${phenomenonTime}" is not a valid phenomenonTime value.`);
         this.phenomenonTime = phenomenonTime;
 
-        if (!checker.checkISODate(resultTime))
+        if (resultTime.length > 0 && !checker.checkISODate(resultTime))
             throw new RangeError(`"${resultTime}" is not a valid resultTime value.`);
         this.resultTime = resultTime;
         
-        if (!checker.checkTimeRange(validTime))
+        if (validTime.length > 0 && !checker.checkTimeRange(validTime))
             throw new RangeError(`"${validTime}" is not a valid validTime value.`);
         this.validTime = validTime;
     }

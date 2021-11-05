@@ -354,7 +354,7 @@ describe('DAO', () => {
                 const dao = new ObservationDao(service);
                 const rawData = (ObservationAPIResponses.observations.value as Record<string, unknown>[])[0];
                 const create = () => dao.buildEntity(rawData);
-                expect(create()).not.toThrow();
+                expect(create).not.toThrow();
             });
         });
     });
