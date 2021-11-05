@@ -346,6 +346,15 @@ describe('DAO', () => {
     });
 
     describe ('Implementations', () => {
+        describe ('Datastreams', () => {
+            it ('should return public attributes', () => {
+                const dao = new DatastreamDao(service);
+                const publicAttributes = dao.entityPublicAttributes;
+                const expectedAttributes = ['name', 'description', 'unitOfMeasurement', 'observationType', 'observedArea', 'phenomenonTime', 'resultTime'];
+                expect(publicAttributes).toStrictEqual(expectedAttributes);
+            });
+        });
+
         describe ('FeaturesOfInterest', () => {
             it ('should return public attributes', () => {
                 const dao = new FeatureOfInterestDao(service);
