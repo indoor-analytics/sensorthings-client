@@ -1,5 +1,6 @@
 import { SensorThingsService } from "..";
 import { BaseDao } from "../dao/BaseDao";
+import { ObservationDao } from "../dao/ObservationDao";
 import { Entity } from "./Entity";
 import { TimeChecker } from "./utils/TimeChecker";
 
@@ -41,6 +42,6 @@ export class Observation extends Entity<Observation> {
     }
 
     get dao(): BaseDao<Observation> {
-        throw new Error("Method not implemented.");
+        return new ObservationDao(this._service);
     }
 }
