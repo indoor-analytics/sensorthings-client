@@ -46,10 +46,10 @@ export class Datastream extends Entity<Datastream> {
         this.observedProperties = new DatastreamObservedPropertiesList(this, this._service);
 
         const checker = new TimeChecker();
-        if (phenomenonTime && !checker.checkTimeRange(phenomenonTime))
+        if (phenomenonTime !== undefined && !checker.checkTimeRange(phenomenonTime))
             throw new RangeError(`"${phenomenonTime}" is not a valid phenomenonTime value.`);
         this.phenomenonTime = phenomenonTime;
-        if (resultTime && !checker.checkTimeRange(resultTime))
+        if (resultTime !== undefined && !checker.checkTimeRange(resultTime))
             throw new RangeError(`"${resultTime}" is not a valid resultTime value.`);
         this.resultTime = resultTime;
     }
