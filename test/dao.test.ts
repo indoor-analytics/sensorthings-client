@@ -29,6 +29,11 @@ describe('DAO', () => {
             expect(urlPrefix).toEqual('Datastreams');
         });
 
+        it ('FeatureOfInterestDao should return correct path name', () => {
+            const urlPrefix = new FeatureOfInterestDao(service).entityPathname;
+            expect(urlPrefix).toEqual('FeaturesOfInterest');
+        });
+
         it('ThingDao should return correct path name', () => {
             const urlPrefix = new ThingDao(service).entityPathname;
             expect(urlPrefix).toEqual('Things');
