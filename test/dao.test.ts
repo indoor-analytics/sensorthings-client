@@ -40,6 +40,11 @@ describe('DAO', () => {
             expect(urlPrefix).toEqual('HistoricalLocations');
         });
 
+        it ('LocationDao should return correct path name', () => {
+            const urlPrefix = new LocationDao(service).entityPathname;
+            expect(urlPrefix).toEqual('Locations');
+        });
+
         it('ThingDao should return correct path name', () => {
             const urlPrefix = new ThingDao(service).entityPathname;
             expect(urlPrefix).toEqual('Things');
