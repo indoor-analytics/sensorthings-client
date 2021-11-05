@@ -27,12 +27,14 @@ export class Observation extends Entity<Observation> {
         this.result = result;
 
         const checker = new TimeChecker();
-        checker.checkTimeRange(phenomenonTime, 'phenomenonTime');   // TODO phenomenonTime can be simple date as well as time range
+        if (!checker.checkTimeRange(phenomenonTime))   // TODO phenomenonTime can be simple date as well as time range
+            throw new RangeError(`"${phenomenonTime}" is not a valid phenomenonTime value.`);
         this.phenomenonTime = phenomenonTime;
 
         this.resultTime = resultTime;
         
-        checker.checkTimeRange(validTime, 'validTime');
+        if (!checker.checkTimeRange(validTime))
+            throw new RangeError(`"${validTime}" is not a valid validTime value.`);
         this.validTime = validTime;
     }
 
