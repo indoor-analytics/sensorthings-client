@@ -17,9 +17,9 @@ export class Observation extends Entity<Observation> {
         phenomenonTime: string,
         result: unknown,
         resultTime: string,
-        resultQuality: unknown,
-        validTime: string,
-        parameters: Record<string, unknown>
+        resultQuality: unknown = undefined,
+        validTime: string = '',
+        parameters: Record<string, unknown> = {}
     ) {
         super(service);
 
