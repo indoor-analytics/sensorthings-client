@@ -151,4 +151,16 @@ describe ('Observation', () => {
         );
         expect(create).toThrowError(new RangeError('"hello there" is not a valid resultTime value.'));
     });
+
+    it ('should create an instance without resultQuality, validTime and parameters attributes', () => {
+        const obs = new Observation(
+            service, 
+            '2010-12-23T10:20:00.00-07:00/2010-12-23T12:20:00.00-07:00',
+            '1.42', 
+            '2014-03-01T13:00:00Z'
+        );
+        expect(obs.resultQuality).toBeUndefined();
+        expect(obs.validTime).toEqual('');
+        expect(obs.parameters).toEqual({});
+    });
 });
