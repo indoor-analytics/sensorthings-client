@@ -10,6 +10,7 @@ import {LocationDao} from "../src/dao/LocationDao";
 import {LocationAPIResponses} from "./responses/LocationAPIResponses";
 import { FeatureOfInterestDao } from '../src/dao/FeatureOfInterestDao';
 import { FeatureOfInterestAPIResponses } from './responses/FeatureOfInterestAPIResponses';
+import { ObservationDao } from '../src/dao/ObservationDao';
 
 let service = new SensorThingsService('https://example.org');
 let mockInjector: HttpClientMock;
@@ -337,6 +338,15 @@ describe('DAO', () => {
                 expect(entity.name).toEqual('TFI');
                 expect(entity.description).toEqual('TFI');
                 expect(entity.feature.type).toEqual('FeatureCollection');
+            });
+        });
+
+        describe ('Observations', () => {
+            it ('should return public attributes', () => {
+                const dao = new ObservationDao(service);
+                const publicAttributes = dao.entityPublicAttributes;
+                const expectedAttributes = ['phenomenonTime', 'result', 'resultTime', 'resultQuality', 'validTime', 'parameters'];
+                expect(publicAttributes).toStrictEqual(expectedAttributes);
             });
         });
     });
