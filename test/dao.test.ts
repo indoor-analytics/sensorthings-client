@@ -15,6 +15,7 @@ import { ObservationAPIResponses } from './responses/ObservationAPIResponses';
 import { DatastreamDao } from '../src/dao/DatastreamDao';
 import { HistoricalLocationDao } from '../src/dao/HistoricalLocationDao';
 import { ObservedPropertyDao } from '../src/dao/ObservedPropertyDao';
+import { DatastreamAPIResponses } from './responses/DatastreamAPIResponses';
 
 let service = new SensorThingsService('https://example.org');
 let mockInjector: HttpClientMock;
@@ -352,6 +353,15 @@ describe('DAO', () => {
                 const publicAttributes = dao.entityPublicAttributes;
                 const expectedAttributes = ['name', 'description', 'unitOfMeasurement', 'observationType', 'observedArea', 'phenomenonTime', 'resultTime'];
                 expect(publicAttributes).toStrictEqual(expectedAttributes);
+            });
+
+            it ('should build instance from API response', () => {
+                const dao = new DatastreamDao(service);
+                const rawData = (DatastreamAPIResponses.datastreams.value as Record<string, unknown>[])[0];
+                const entity = dao.buildEntity(rawData);
+                expect(entity.name).toEqual('7061:Bloor St / Brunswick Ave:available_docks');
+                expect(entity.description).toEqual('The datastream of available docks count for the Toronto bike share station Bloor St / Brunswick Ave');
+                expect(entity.unitOfMeasurement.symbol).toEqual('{TOT}');
             });
         });
 
