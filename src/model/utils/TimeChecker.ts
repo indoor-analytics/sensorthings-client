@@ -1,4 +1,4 @@
-export class TimeChecks {
+export class TimeChecker {
     public checkTimeRange(range: string, attributeName: string): void {
         const dates = range.split('/');
         if (dates.length !== 2)

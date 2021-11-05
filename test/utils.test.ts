@@ -1,10 +1,10 @@
-import { TimeChecks } from "../src/model/utils/TimeChecks";
+import { TimeChecker } from "../src/model/utils/TimeChecker";
 
 describe('Utils', () => {
 
-    let checker: TimeChecks;
+    let checker: TimeChecker;
     beforeEach(() => {
-        checker = new TimeChecks();
+        checker = new TimeChecker();
     });
 
     describe ('Time checks', () => {

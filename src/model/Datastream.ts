@@ -7,7 +7,7 @@ import {UnitOfMeasurement} from "./utils/UnitOfMeasurement";
 import {DatastreamDao} from "../dao/DatastreamDao";
 import {DatastreamThingsList} from "./list/DatastreamThingsList";
 import {DatastreamObservedPropertiesList} from "./list/DatastreamObservedPropertiesList";
-import { TimeChecks } from "./utils/TimeChecks";
+import { TimeChecker } from "./utils/TimeChecker";
 
 /**
  * Representation of a SensorThings Datastream entity.
@@ -45,7 +45,7 @@ export class Datastream extends Entity<Datastream> {
         this.things = new DatastreamThingsList(this, this._service);
         this.observedProperties = new DatastreamObservedPropertiesList(this, this._service);
 
-        const checker = new TimeChecks();
+        const checker = new TimeChecker();
         checker.checkTimeRange(phenomenonTime, 'phenomenonTime');
         this.phenomenonTime = phenomenonTime;
         checker.checkTimeRange(resultTime, 'resultTime');
