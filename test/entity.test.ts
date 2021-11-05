@@ -103,11 +103,24 @@ describe ('Observation', () => {
     it ('should create an instance with a date as phenomenonTime', () => {
         const create = () => new Observation(
             service, 
-            new Date().toISOString(), 
+            new Date().toISOString(), // this is the tested field
             '', 
             '2014-03-01T13:00:00Z', 
             42, 
             '2010-12-23T10:20:00.00-07:00/2010-12-23T12:20:00.00-07:00', 
+            {}
+        );
+        expect(create).not.toThrow();
+    });
+
+    it ('should create an instance with a time interval as phenomenonTime', () => {
+        const create = () => new Observation(
+            service, 
+            '2010-12-23T10:20:00.00-07:00/2010-12-23T12:20:00.00-07:00', // this is the tested field
+            '', 
+            '2014-03-01T13:00:00Z', 
+            42, 
+            '2010-12-23T10:20:00.00-07:00/2010-12-23T12:20:00.00-07:00',
             {}
         );
         expect(create).not.toThrow();
