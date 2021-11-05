@@ -138,4 +138,17 @@ describe ('Observation', () => {
         );
         expect(create).not.toThrow();
     });
+
+    it ('should throw with a random string as resultTime', () => {
+        const create = () => new Observation(
+            service, 
+            '2010-12-23T10:20:00.00-07:00/2010-12-23T12:20:00.00-07:00',
+            '', 
+            'hello there', // this is the tested field
+            42, 
+            '2010-12-23T10:20:00.00-07:00/2010-12-23T12:20:00.00-07:00',
+            {}
+        );
+        expect(create).toThrowError(new RangeError('"hello there" is not a valid resultTime value.'));
+    });
 });
