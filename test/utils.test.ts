@@ -8,6 +8,13 @@ describe('Utils', () => {
     });
 
     describe ('Time checks', () => {
+        describe ('Date', () => {
+            it ('should return true with YYYY-MM-DD calendar date', () => {
+                const dateString = "2021-10-25";
+                expect(checker.checkISODate(dateString)).toBeTruthy();
+            });
+        });
+
         describe ('Time range', () => {
             it('should return false when created with wrong phenomenon time', () => {
                 const create = () => checker.checkTimeRange("2014-03-01T13:00:00Z");
