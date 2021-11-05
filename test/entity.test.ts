@@ -5,6 +5,7 @@ import {HistoricalLocation} from "../src/model/HistoricalLocation";
 import {Datastream} from "../src/model/Datastream";
 import {ObservationType} from "../src/model/utils/ObservationType";
 import {polygon} from "@turf/helpers";
+import {Observation} from "../src/model/Observation";
 
 const service = new SensorThingsService('https://example.org');
 
@@ -95,5 +96,20 @@ describe('Datastream', () => {
             "2014-03-01T13:00:00Z"
         );
         expect(create).toThrowError(new RangeError('"2014-03-01T13:00:00Z" is not a valid resultTime value.'));
+    });
+});
+
+describe ('Observation', () => {
+    it ('should create an instance with a date as phenomenonTime', () => {
+        const create = () => new Observation(
+            service, 
+            new Date().toISOString(), 
+            '', 
+            '2014-03-01T13:00:00Z', 
+            42, 
+            '2010-12-23T10:20:00.00-07:00/2010-12-23T12:20:00.00-07:00', 
+            {}
+        );
+        expect(create).not.toThrow();
     });
 });
