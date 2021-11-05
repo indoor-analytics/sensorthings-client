@@ -98,6 +98,16 @@ describe('Datastream', () => {
         expect(create).toThrowError(new RangeError('"" is not a valid phenomenonTime value.'));
     });
 
+    it ('should throw when created with empty result time', () => {
+        const create = () => new Datastream(
+            service, 'name', 'description',
+            unitOfMeasurement, ObservationType.OM_CategoryObservation, area,
+            "2014-03-01T13:00:00Z/2015-05-11T15:30:00Z",
+            ""
+        );
+        expect(create).toThrowError(new RangeError('"" is not a valid resultTime value.'));
+    });
+
     it('should throw when created with wrong result time', () => {
         const create = () => new Datastream(
             service, 'name', 'description',
