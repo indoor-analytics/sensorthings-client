@@ -1,3 +1,5 @@
+import { isValidISODateString } from 'iso-datestring-validator';
+
 export class TimeChecker {
     public checkTimeRange(range: string): boolean {
         const dates = range.split('/');
@@ -10,5 +12,9 @@ export class TimeChecker {
             return false;
         }
         return true;
+    }
+
+    public checkISODate(date: string): boolean {
+        return isValidISODateString(date);
     }
 }

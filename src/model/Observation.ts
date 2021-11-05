@@ -27,7 +27,7 @@ export class Observation extends Entity<Observation> {
         this.result = result;
 
         const checker = new TimeChecker();
-        if (!checker.checkTimeRange(phenomenonTime))   // TODO phenomenonTime can be simple date as well as time range
+        if (!checker.checkISODate(phenomenonTime) && !checker.checkTimeRange(phenomenonTime))
             throw new RangeError(`"${phenomenonTime}" is not a valid phenomenonTime value.`);
         this.phenomenonTime = phenomenonTime;
 
