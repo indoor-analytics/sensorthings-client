@@ -180,7 +180,7 @@ describe ('Observation', () => {
             '2014-03-01T13:00:00Z'
         );
         expect(obs.resultQuality).toBeUndefined();
-        expect(obs.validTime).toEqual('');
-        expect(obs.parameters).toEqual({});
+        expect(obs.validTime).toBeUndefined();
+        expect(obs.parameters).toBeUndefined();
     });
 });

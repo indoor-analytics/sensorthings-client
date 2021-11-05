@@ -18,8 +18,8 @@ export class Observation extends Entity<Observation> {
         result: unknown,
         resultTime: string,
         resultQuality: unknown = undefined,
-        validTime = '',
-        parameters: Record<string, unknown> = {}
+        validTime: string = undefined as unknown as string,
+        parameters: Record<string, unknown> = undefined as unknown as Record<string, unknown>
     ) {
         super(service);
 
@@ -32,11 +32,11 @@ export class Observation extends Entity<Observation> {
             throw new RangeError(`"${phenomenonTime}" is not a valid phenomenonTime value.`);
         this.phenomenonTime = phenomenonTime;
 
-        if (resultTime.length > 0 && !checker.checkISODate(resultTime))
+        if (resultTime !== undefined && !checker.checkISODate(resultTime))
             throw new RangeError(`"${resultTime}" is not a valid resultTime value.`);
         this.resultTime = resultTime;
         
-        if (validTime.length > 0 && !checker.checkTimeRange(validTime))
+        if (validTime !== undefined && !checker.checkTimeRange(validTime))
             throw new RangeError(`"${validTime}" is not a valid validTime value.`);
         this.validTime = validTime;
     }

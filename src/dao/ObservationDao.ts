@@ -14,9 +14,9 @@ export class ObservationDao extends BaseDao<Observation> {
             data.phenomenonTime as string,
             data.result as unknown,
             data.resultTime as string,
-            data.resultQuality ? data.resultQuality as unknown : '',
-            data.validTime ? data.validTime as string : '',
-            data.parameters ? data.parameters as Record<string, unknown> : {}
+            data.resultQuality as unknown,
+            data.validTime as string,
+            data.parameters as Record<string, unknown>
         );
     }
 }
