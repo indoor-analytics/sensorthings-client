@@ -32,9 +32,9 @@ export class Datastream extends Entity<Datastream> {
         service: SensorThingsService, name: string, description: string,
         unitOfMeasurement: UnitOfMeasurement,
         observationType: ObservationType,
-        observedArea: Polygon,
-        phenomenonTime: string,
-        resultTime: string
+        observedArea: Polygon = undefined as unknown as Polygon,
+        phenomenonTime: string = undefined as unknown as string,
+        resultTime: string = undefined as unknown as string
     ) {
         super(service);
         this.name = name;
@@ -46,10 +46,10 @@ export class Datastream extends Entity<Datastream> {
         this.observedProperties = new DatastreamObservedPropertiesList(this, this._service);
 
         const checker = new TimeChecker();
-        if (!checker.checkTimeRange(phenomenonTime))
+        if (phenomenonTime && !checker.checkTimeRange(phenomenonTime))
             throw new RangeError(`"${phenomenonTime}" is not a valid phenomenonTime value.`);
         this.phenomenonTime = phenomenonTime;
-        if (!checker.checkTimeRange(resultTime))
+        if (resultTime && !checker.checkTimeRange(resultTime))
             throw new RangeError(`"${resultTime}" is not a valid resultTime value.`);
         this.resultTime = resultTime;
     }
