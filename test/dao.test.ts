@@ -14,6 +14,7 @@ import { ObservationDao } from '../src/dao/ObservationDao';
 import { ObservationAPIResponses } from './responses/ObservationAPIResponses';
 import { DatastreamDao } from '../src/dao/DatastreamDao';
 import { HistoricalLocationDao } from '../src/dao/HistoricalLocationDao';
+import { ObservedPropertyDao } from '../src/dao/ObservedPropertyDao';
 
 let service = new SensorThingsService('https://example.org');
 let mockInjector: HttpClientMock;
@@ -48,6 +49,11 @@ describe('DAO', () => {
         it ('ObservationDao should return correct path name', () => {
             const urlPrefix = new ObservationDao(service).entityPathname;
             expect(urlPrefix).toEqual('Observations');
+        });
+
+        it ('ObservedPropertyDao should return correct path name', () => {
+            const urlPrefix = new ObservedPropertyDao(service).entityPathname;
+            expect(urlPrefix).toEqual('ObservedProperties');
         });
         
         it('ThingDao should return correct path name', () => {
