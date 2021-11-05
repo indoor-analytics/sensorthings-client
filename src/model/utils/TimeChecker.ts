@@ -1,4 +1,4 @@
-import { isValidYearMonth, isValidISODateString } from 'iso-datestring-validator';
+import { isValidDate, isValidYearMonth, isValidISODateString } from 'iso-datestring-validator';
 
 /**
  * SensorThings API allows entities to hold time representations as strings.
@@ -6,7 +6,7 @@ import { isValidYearMonth, isValidISODateString } from 'iso-datestring-validator
  */
 export class TimeChecker {
     public checkISODate(date: string): boolean {
-        return isValidYearMonth(date) || isValidISODateString(date);
+        return isValidDate(date) || isValidYearMonth(date) || isValidISODateString(date);
     }
 
     /**
