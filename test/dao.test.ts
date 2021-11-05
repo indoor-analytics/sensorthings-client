@@ -11,6 +11,7 @@ import {LocationAPIResponses} from "./responses/LocationAPIResponses";
 import { FeatureOfInterestDao } from '../src/dao/FeatureOfInterestDao';
 import { FeatureOfInterestAPIResponses } from './responses/FeatureOfInterestAPIResponses';
 import { ObservationDao } from '../src/dao/ObservationDao';
+import { ObservationAPIResponses } from './responses/ObservationAPIResponses';
 
 let service = new SensorThingsService('https://example.org');
 let mockInjector: HttpClientMock;
@@ -347,6 +348,13 @@ describe('DAO', () => {
                 const publicAttributes = dao.entityPublicAttributes;
                 const expectedAttributes = ['phenomenonTime', 'result', 'resultTime', 'resultQuality', 'validTime', 'parameters'];
                 expect(publicAttributes).toStrictEqual(expectedAttributes);
+            });
+
+            it ('should build instance from API response', () => {
+                const dao = new ObservationDao(service);
+                const rawData = (ObservationAPIResponses.observations.value as Record<string, unknown>[])[0];
+                const create = () => dao.buildEntity(rawData);
+                expect(create()).not.toThrow();
             });
         });
     });
