@@ -6,7 +6,7 @@ import { isValidDate, isValidYearMonth, isValidISODateString } from 'iso-datestr
  */
 export class TimeChecker {
     public checkISODate(date: string): boolean {
-        return isValidDate(date) || isValidYearMonth(date) || isValidISODateString(date);
+        return isValidDate(date) || isValidYearMonth(date) || isValidISODateString(date);
     }
 
     /**
