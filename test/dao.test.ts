@@ -13,6 +13,7 @@ import { FeatureOfInterestAPIResponses } from './responses/FeatureOfInterestAPIR
 import { ObservationDao } from '../src/dao/ObservationDao';
 import { ObservationAPIResponses } from './responses/ObservationAPIResponses';
 import { DatastreamDao } from '../src/dao/DatastreamDao';
+import { HistoricalLocationDao } from '../src/dao/HistoricalLocationDao';
 
 let service = new SensorThingsService('https://example.org');
 let mockInjector: HttpClientMock;
@@ -32,6 +33,11 @@ describe('DAO', () => {
         it ('FeatureOfInterestDao should return correct path name', () => {
             const urlPrefix = new FeatureOfInterestDao(service).entityPathname;
             expect(urlPrefix).toEqual('FeaturesOfInterest');
+        });
+
+        it ('HistoricalLocationDao should return correct path name', () => {
+            const urlPrefix = new HistoricalLocationDao(service).entityPathname;
+            expect(urlPrefix).toEqual('HistoricalLocations');
         });
 
         it('ThingDao should return correct path name', () => {
