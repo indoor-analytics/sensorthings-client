@@ -4,6 +4,7 @@ import { SensorThingsService } from "../service/SensorThingsService";
 import { Entity } from "./Entity";
 import { HistoricalLocationLocationsList } from "./list/HistoricalLocationLocationsList";
 import { HistoricalLocationThingsList } from "./list/HistoricalLocationThingsList";
+import { TimeChecker } from "./utils/TimeChecker";
 
 /**
  * Representation of a SensorThings HistoricalLocation entity.
@@ -17,11 +18,10 @@ export class HistoricalLocation extends Entity<HistoricalLocation> {
 
     constructor(service: SensorThingsService, time: string) {
         super(service);
-        try {
-            this.time = new Date(time).toISOString();
-        } catch (err) {
+        if (!new TimeChecker().checkISODate(time))
             throw new RangeError(`"${time}" is not a valid time value.`);
-        }
+        this.time = time;
+        
         this.things = new HistoricalLocationThingsList(this, this._service);
         this.locations = new HistoricalLocationLocationsList(this, this._service);
     }
