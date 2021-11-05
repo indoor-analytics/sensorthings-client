@@ -125,4 +125,17 @@ describe ('Observation', () => {
         );
         expect(create).not.toThrow();
     });
+
+    it ('should create an instance with a resultTime', () => {
+        const create = () => new Observation(
+            service, 
+            '2010-12-23T10:20:00.00-07:00/2010-12-23T12:20:00.00-07:00',
+            '', 
+            new Date().toISOString(), // this is the tested field
+            42, 
+            '2010-12-23T10:20:00.00-07:00/2010-12-23T12:20:00.00-07:00',
+            {}
+        );
+        expect(create).not.toThrow();
+    });
 });
