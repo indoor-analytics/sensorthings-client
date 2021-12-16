@@ -8,9 +8,9 @@ export class Observation extends Entity<Observation> {
     public phenomenonTime: string;
     public result: unknown;
     public resultTime: string;
-    public resultQuality: unknown;
-    public validTime: string;
-    public parameters: Record<string, unknown>;
+    public resultQuality: unknown | undefined;
+    public validTime: string | undefined;
+    public parameters: Record<string, unknown> | undefined;
 
     public constructor(
         service: SensorThingsService,
@@ -18,8 +18,8 @@ export class Observation extends Entity<Observation> {
         result: unknown,
         resultTime: string,
         resultQuality: unknown = undefined,
-        validTime: string = undefined as unknown as string,
-        parameters: Record<string, unknown> = undefined as unknown as Record<string, unknown>
+        validTime: string | undefined = undefined,
+        parameters: Record<string, unknown> | undefined = undefined
     ) {
         super(service);
 
@@ -35,7 +35,7 @@ export class Observation extends Entity<Observation> {
         if (resultTime !== undefined && !checker.checkISODate(resultTime))
             throw new RangeError(`"${resultTime}" is not a valid resultTime value.`);
         this.resultTime = resultTime;
-        
+
         if (validTime !== undefined && !checker.checkTimeRange(validTime))
             throw new RangeError(`"${validTime}" is not a valid validTime value.`);
         this.validTime = validTime;
