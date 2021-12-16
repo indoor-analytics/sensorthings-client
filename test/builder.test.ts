@@ -5,6 +5,7 @@ import {HistoricalLocationBuilder} from "../src/model/builder/HistoricalLocation
 import {ObservedPropertyBuilder} from "../src/model/builder/ObservedPropertyBuilder";
 import {FeatureOfInterestBuilder} from "../src/model/builder/FeatureOfInterestBuilder";
 import { Geometry } from "@turf/helpers";
+import {ObservationBuilder} from "../src/model/builder/ObservationBuilder";
 
 describe('Model builders', () => {
     it('should build a Thing entity', () => {
@@ -124,7 +125,7 @@ describe('Model builders', () => {
 
     describe ('FeaturesOfInterest', () => {
         const service = new SensorThingsService('https://example.org');
-        
+
         it ('should not build instance without name', () => {
             const builder = new FeatureOfInterestBuilder(service);
             const build = () => builder
@@ -202,6 +203,35 @@ describe('Model builders', () => {
                 .build();
 
             expect(foi.feature.properties).toEqual(properties);
+        });
+    });
+
+    describe('ObservationBuilder', () => {
+        const phenomenonTime = '2010-12-23T10:20:00.00-07:00/2010-12-23T12:20:00.00-07:00';
+        const result = {test: 42};
+        const resultTime = '2010-12-23T10:20:00.00-07:00';
+        const resultQuality = 42;
+        const validTime = '2010-12-23T10:20:00.00-07:00/2010-12-23T12:20:00.00-07:00';
+        const parameters = { key1: 12, key2: 42};
+        const service = new SensorThingsService('https://example.org');
+
+        it ('should build an instance with all parameters', () => {
+            const builder = new ObservationBuilder(service);
+            const observation = builder
+                .setPhenomenonTime(phenomenonTime)
+                .setResult(result)
+                .setResultTime(resultTime)
+                .setResultQuality(resultQuality)
+                .setValidTime(validTime)
+                .setParameters(parameters)
+                .build();
+
+            expect(observation.phenomenonTime).toEqual(phenomenonTime);
+            expect(observation.result).toEqual(result);
+            expect(observation.resultTime).toEqual(resultTime);
+            expect(observation.resultQuality).toEqual(resultQuality);
+            expect(observation.validTime).toEqual(validTime);
+            expect(observation.parameters).toEqual(parameters);
         });
     });
 });
