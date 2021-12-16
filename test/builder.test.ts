@@ -234,6 +234,19 @@ describe('Model builders', () => {
             expect(observation.parameters).toEqual(parameters);
         });
 
+        it ('should build an instance with mandatory parameters only', () => {
+            const builder = new ObservationBuilder(service);
+            const observation = builder
+                .setPhenomenonTime(phenomenonTime)
+                .setResult(result)
+                .setResultTime(resultTime)
+                .build();
+
+            expect(observation.phenomenonTime).toEqual(phenomenonTime);
+            expect(observation.result).toEqual(result);
+            expect(observation.resultTime).toEqual(resultTime);
+        });
+
         it ('should not build an instance without phenomenon time', () => {
             const builder = new ObservationBuilder(service);
             const build = () => builder
