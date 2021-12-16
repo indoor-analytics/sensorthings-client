@@ -28,6 +28,14 @@ export class ObservationBuilder extends AbstractBuilder<Observation> {
     }
 
     protected buildEntity(): Observation {
-        throw new Error('not implemented');
+        return new Observation(
+            this._service,
+            this._attributes.phenomenonTime as string,
+            this._attributes.result,
+            this._attributes.resultTime as string,
+            this._attributes.resultQuality,
+            this._attributes.validTime as string,
+            this._attributes.parameters as Record<string, unknown>
+        )
     }
 }
