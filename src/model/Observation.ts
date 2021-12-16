@@ -2,6 +2,7 @@ import { SensorThingsService } from "..";
 import { BaseDao } from "../dao/BaseDao";
 import { ObservationDao } from "../dao/ObservationDao";
 import { Entity } from "./Entity";
+import { ObservationsDatastreamsList } from "./list/ObservationDatastreamsList";
 import { TimeChecker } from "./utils/TimeChecker";
 
 export class Observation extends Entity<Observation> {
@@ -11,6 +12,8 @@ export class Observation extends Entity<Observation> {
     public resultQuality: unknown | undefined;
     public validTime: string | undefined;
     public parameters: Record<string, unknown> | undefined;
+
+    public datastreams: ObservationsDatastreamsList;
 
     public constructor(
         service: SensorThingsService,
@@ -26,6 +29,7 @@ export class Observation extends Entity<Observation> {
         this.parameters = parameters;
         this.resultQuality = resultQuality;
         this.result = result;
+        this.datastreams = new ObservationsDatastreamsList(this, this._service);
 
         const checker = new TimeChecker();
         if (!checker.checkISODate(phenomenonTime) && !checker.checkTimeRange(phenomenonTime))
