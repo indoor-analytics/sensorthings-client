@@ -1,5 +1,6 @@
 import {AbstractBuilder} from "./AbstractBuilder";
 import {Observation} from "../Observation";
+import {MissingArgumentError} from "../../error/MissingArgumentError";
 
 export class ObservationBuilder extends AbstractBuilder<Observation> {
     public setPhenomenonTime (time: string): ObservationBuilder {
@@ -28,6 +29,13 @@ export class ObservationBuilder extends AbstractBuilder<Observation> {
     }
 
     protected buildEntity(): Observation {
+        if (!this._attributes.phenomenonTime)
+            throw new MissingArgumentError('"phenomenonTime" argument is required to build an Observation.');
+        if (!this._attributes.result)
+            throw new MissingArgumentError('"result" argument is required to build an Observation.');
+        if (!this._attributes.resultTime)
+            throw new MissingArgumentError('"resultTime" argument is required to build an Observation.');
+
         return new Observation(
             this._service,
             this._attributes.phenomenonTime as string,
