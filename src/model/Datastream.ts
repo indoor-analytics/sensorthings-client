@@ -18,9 +18,9 @@ export class Datastream extends Entity<Datastream> {
     public description: string;
     public unitOfMeasurement: UnitOfMeasurement;
     public observationType: ObservationType;
-    public observedArea: Polygon;
-    public phenomenonTime: string;
-    public resultTime: string;
+    public observedArea: Polygon | undefined;
+    public phenomenonTime: string | undefined;
+    public resultTime: string | undefined;
 
     // TODO add all entities collections
     public things: DatastreamThingsList;
@@ -32,9 +32,9 @@ export class Datastream extends Entity<Datastream> {
         service: SensorThingsService, name: string, description: string,
         unitOfMeasurement: UnitOfMeasurement,
         observationType: ObservationType,
-        observedArea: Polygon = undefined as unknown as Polygon,
-        phenomenonTime: string = undefined as unknown as string,
-        resultTime: string = undefined as unknown as string
+        observedArea: Polygon | undefined = undefined,
+        phenomenonTime: string | undefined = undefined,
+        resultTime: string | undefined = undefined
     ) {
         super(service);
         this.name = name;
