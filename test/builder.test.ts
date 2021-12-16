@@ -233,5 +233,18 @@ describe('Model builders', () => {
             expect(observation.validTime).toEqual(validTime);
             expect(observation.parameters).toEqual(parameters);
         });
+
+        it ('should not build an instance without phenomenon time', () => {
+            const builder = new ObservationBuilder(service);
+            const build = () => builder
+                .setResult(result)
+                .setResultTime(resultTime)
+                .setResultQuality(resultQuality)
+                .setValidTime(validTime)
+                .setParameters(parameters)
+                .build();
+
+            expect(build).toThrowError(new MissingArgumentError('"phenomenonTime" argument is required to build an Observation.'));
+        });
     });
 });
