@@ -33,8 +33,6 @@ export class ObservationBuilder extends AbstractBuilder<Observation> {
             throw new MissingArgumentError('"phenomenonTime" argument is required to build an Observation.');
         if (!this._attributes.result)
             throw new MissingArgumentError('"result" argument is required to build an Observation.');
-        if (!this._attributes.resultTime)
-            throw new MissingArgumentError('"resultTime" argument is required to build an Observation.');
 
         return new Observation(
             this._service,

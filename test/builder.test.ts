@@ -239,12 +239,10 @@ describe('Model builders', () => {
             const observation = builder
                 .setPhenomenonTime(phenomenonTime)
                 .setResult(result)
-                .setResultTime(resultTime)
                 .build();
 
             expect(observation.phenomenonTime).toEqual(phenomenonTime);
             expect(observation.result).toEqual(result);
-            expect(observation.resultTime).toEqual(resultTime);
         });
 
         it ('should not build an instance without phenomenon time', () => {
@@ -271,19 +269,6 @@ describe('Model builders', () => {
                 .build();
 
             expect(build).toThrowError(new MissingArgumentError('"result" argument is required to build an Observation.'));
-        });
-
-        it ('should not build an instance without result time', () => {
-            const builder = new ObservationBuilder(service);
-            const build = () => builder
-                .setPhenomenonTime(phenomenonTime)
-                .setResult(result)
-                .setResultQuality(resultQuality)
-                .setValidTime(validTime)
-                .setParameters(parameters)
-                .build();
-
-            expect(build).toThrowError(new MissingArgumentError('"resultTime" argument is required to build an Observation.'));
         });
     });
 });

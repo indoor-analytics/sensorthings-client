@@ -33,7 +33,7 @@ export class Observation extends Entity<Observation> {
      * resultTime when POST new Observations, even though resultTime is a mandatory property. When a SensorThings 
      * service receives a POST Observations without resultTime, the service SHALL assign a null value to the resultTime.
      */
-    public resultTime: string;
+    public resultTime: string | undefined;
 
     /**
      * Describes the quality of the result.
