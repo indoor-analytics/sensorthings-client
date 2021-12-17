@@ -7,7 +7,8 @@ import { ObservationFeaturesOfInterestList } from "./list/ObservationFeaturesOfI
 import { TimeChecker } from "./utils/TimeChecker";
 
 /**
- * Representation of an Observation SensorThings entity.
+ * An Observation is the act of measuring or otherwise determining the value of a property [OGC 10-004r3 and ISO 19156:2011].
+ * 
  * http://docs.opengeospatial.org/is/15-078r6/15-078r6.html#31
  */
 export class Observation extends Entity<Observation> {
