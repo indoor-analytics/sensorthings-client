@@ -8,6 +8,7 @@ import { HistoricalLocationDao } from '../dao/HistoricalLocationDao';
 import {DatastreamDao} from "../dao/DatastreamDao";
 import {ObservedPropertyDao} from "../dao/ObservedPropertyDao";
 import { FeatureOfInterestDao } from '../dao/FeatureOfInterestDao';
+import { ObservationDao } from '../dao/ObservationDao';
 
 /**
  * A SensorThingsService represents the service endpoint of a server.
@@ -82,5 +83,9 @@ export class SensorThingsService {
 
     public get featuresOfInterest(): FeatureOfInterestDao {
         return new FeatureOfInterestDao(this);
+    }
+
+    public get observations(): ObservationDao {
+        return new ObservationDao(this);
     }
 }
