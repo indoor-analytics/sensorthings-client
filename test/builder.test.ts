@@ -237,25 +237,10 @@ describe('Model builders', () => {
         it ('should build an instance with mandatory parameters only', () => {
             const builder = new ObservationBuilder(service);
             const observation = builder
-                .setPhenomenonTime(phenomenonTime)
                 .setResult(result)
                 .build();
 
-            expect(observation.phenomenonTime).toEqual(phenomenonTime);
             expect(observation.result).toEqual(result);
-        });
-
-        it ('should not build an instance without phenomenon time', () => {
-            const builder = new ObservationBuilder(service);
-            const build = () => builder
-                .setResult(result)
-                .setResultTime(resultTime)
-                .setResultQuality(resultQuality)
-                .setValidTime(validTime)
-                .setParameters(parameters)
-                .build();
-
-            expect(build).toThrowError(new MissingArgumentError('"phenomenonTime" argument is required to build an Observation.'));
         });
 
         it ('should not build an instance without result', () => {

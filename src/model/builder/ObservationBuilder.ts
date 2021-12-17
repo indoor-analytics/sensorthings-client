@@ -29,8 +29,6 @@ export class ObservationBuilder extends AbstractBuilder<Observation> {
     }
 
     protected buildEntity(): Observation {
-        if (!this._attributes.phenomenonTime)
-            throw new MissingArgumentError('"phenomenonTime" argument is required to build an Observation.');
         if (!this._attributes.result)
             throw new MissingArgumentError('"result" argument is required to build an Observation.');
 

@@ -19,7 +19,7 @@ export class Observation extends Entity<Observation> {
      * When a SensorThings service receives a POST Observations without phenonmenonTime, the service SHALL 
      * assign the current server time to the value of the phenomenonTime.
      */
-    public phenomenonTime: string;
+    public phenomenonTime: string | undefined;
 
     /**
      * The estimated value of an ObservedProperty from the Observation.
@@ -80,7 +80,7 @@ export class Observation extends Entity<Observation> {
         this.featuresOfInterest = new ObservationFeaturesOfInterestList(this, this._service);
 
         const checker = new TimeChecker();
-        if (!checker.checkISODate(phenomenonTime) && !checker.checkTimeRange(phenomenonTime))
+        if (phenomenonTime !== undefined && !checker.checkISODate(phenomenonTime) && !checker.checkTimeRange(phenomenonTime))
             throw new RangeError(`"${phenomenonTime}" is not a valid phenomenonTime value.`);
         this.phenomenonTime = phenomenonTime;
 
