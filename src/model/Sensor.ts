@@ -1,12 +1,13 @@
-import { SensorThingsService } from ".";
-import { BaseDao } from "./dao/BaseDao";
-import { Entity } from "./model/Entity";
-
 /**
  * A Sensor is an instrument that observes a property or phenomenon with the goal of producing an estimate of the value of the property.
- * 
+ *
  * http://docs.opengeospatial.org/is/15-078r6/15-078r6.html#29
  */
+import {Entity} from "./Entity";
+import {SensorThingsService} from "../service/SensorThingsService";
+import {BaseDao} from "../dao/BaseDao";
+
+
 export class Sensor extends Entity<Sensor> {
     /**
      * A property provides a label for Sensor entity, commonly a descriptive name.
