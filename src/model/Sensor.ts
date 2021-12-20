@@ -6,6 +6,7 @@
 import {Entity} from "./Entity";
 import {SensorThingsService} from "../service/SensorThingsService";
 import {BaseDao} from "../dao/BaseDao";
+import {SensorDatastreamsList} from "./list/SensorDatastreamsList";
 
 
 export class Sensor extends Entity<Sensor> {
@@ -33,7 +34,7 @@ export class Sensor extends Entity<Sensor> {
     /**
      * The Observations of a Datastream are measured with the same Sensor. One Sensor MAY produce zero-to-many Observations in different Datastreams.
      */
-    // datastreams
+    datastreams: SensorDatastreamsList;
 
 
     constructor(
@@ -42,6 +43,7 @@ export class Sensor extends Entity<Sensor> {
         super(service);
         this.name = name;
         this.description = description;
+        this.datastreams = new SensorDatastreamsList(this, this._service);
     }
 
     get dao(): BaseDao<Sensor> {
