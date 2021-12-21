@@ -17,6 +17,7 @@ import { DatastreamDao } from '../src/dao/DatastreamDao';
 import { HistoricalLocationDao } from '../src/dao/HistoricalLocationDao';
 import { ObservedPropertyDao } from '../src/dao/ObservedPropertyDao';
 import { DatastreamAPIResponses } from './responses/DatastreamAPIResponses';
+import { SensorAPIResponses } from './responses/SensorAPIResponses';
 
 let service = new SensorThingsService('https://example.org');
 let mockInjector: HttpClientMock;
@@ -422,6 +423,13 @@ describe('DAO', () => {
                 const publicAttributes = dao.entityPublicAttributes;
                 const expectedAttributes = ['name', 'description', 'encodingType', 'metadata'];
                 expect(publicAttributes).toStrictEqual(expectedAttributes);
+            });
+
+            it ('should build instance from API response', () => {
+                const dao = new SensorDao(service);
+                const rawData = (SensorAPIResponses.sensors.value as Record<string, unknown>[][0]);
+                const create = () => dao.buildEntity(rawData);
+                expect(create).not.toThrow();
             });
         });
     });
