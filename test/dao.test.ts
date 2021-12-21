@@ -11,6 +11,7 @@ import {LocationAPIResponses} from "./responses/LocationAPIResponses";
 import { FeatureOfInterestDao } from '../src/dao/FeatureOfInterestDao';
 import { FeatureOfInterestAPIResponses } from './responses/FeatureOfInterestAPIResponses';
 import { ObservationDao } from '../src/dao/ObservationDao';
+import { SensorDao } from '../src/dao/SensorDao';
 import { ObservationAPIResponses } from './responses/ObservationAPIResponses';
 import { DatastreamDao } from '../src/dao/DatastreamDao';
 import { HistoricalLocationDao } from '../src/dao/HistoricalLocationDao';
@@ -60,6 +61,11 @@ describe('DAO', () => {
         it('ThingDao should return correct path name', () => {
             const urlPrefix = new ThingDao(service).entityPathname;
             expect(urlPrefix).toEqual('Things');
+        });
+
+        it('SensorDao should return correct path name', () => {
+            const urlPrefix = new SensorDao(service).entityPathname;
+            expect(urlPrefix).toEqual('Sensors');
         });
 
         it('MockDao should return correct path name', () => {
