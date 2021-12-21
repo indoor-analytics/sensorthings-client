@@ -415,5 +415,14 @@ describe('DAO', () => {
                 expect(create).not.toThrow();
             });
         });
+
+        describe ('Sensors', () => {
+            it ('should return public attributes', () => {
+                const dao = new SensorDao(service);
+                const publicAttributes = dao.entityPublicAttributes;
+                const expectedAttributes = ['name', 'description', 'encodingType', 'metadata'];
+                expect(publicAttributes).toStrictEqual(expectedAttributes);
+            });
+        });
     });
 });
