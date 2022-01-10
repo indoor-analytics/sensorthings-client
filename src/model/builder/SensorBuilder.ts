@@ -2,20 +2,30 @@ import {AbstractBuilder} from "./AbstractBuilder";
 import {Sensor} from "../Sensor";
 
 export class SensorBuilder extends AbstractBuilder<Sensor> {
-    public setName(_: string): SensorBuilder {
-        throw new Error('not implemented');
+    public setName(name: string): SensorBuilder {
+        this._attributes.name = name;
+        return this;
     }
-    public setDescription(_: string): SensorBuilder {
-        throw new Error('not implemented');
+    public setDescription(description: string): SensorBuilder {
+        this._attributes.description = description;
+        return this;
     }
-    public setEncodingType(_: string): SensorBuilder {
-        throw new Error('not implemented');
+    public setEncodingType(encodingType: string): SensorBuilder {
+        this._attributes.encodingType = encodingType;
+        return this;
     }
-    public setMetaData(_: string): SensorBuilder {
-        throw new Error('not implemented');
+    public setMetaData(metadata: string): SensorBuilder {
+        this._attributes.metadata = metadata;
+        return this;
     }
 
     protected buildEntity(): Sensor {
-        throw new Error('not implemented');
+        return new Sensor(
+            this._service,
+            this._attributes.name as string,
+            this._attributes.description as string,
+            this._attributes.encodingType as string,
+            this._attributes.metadata as string
+        );
     }
 }
