@@ -117,17 +117,30 @@ describe('Datastream', () => {
         );
         expect(create).toThrowError(new RangeError('"2014-03-01T13:00:00Z" is not a valid resultTime value.'));
     });
+
+    it('should create an instance with no unit of measurement', () => {
+        const datastream = new Datastream(
+            service, 'name', 'description',
+            null, // unitOfMeasurement
+            ObservationType.OM_CategoryObservation, area,
+            "2014-03-01T13:00:00Z/2015-05-11T15:30:00Z",
+            "2014-03-01T13:00:00Z/2015-05-11T15:30:00Z"
+        );
+        expect(datastream.unitOfMeasurement.name).toEqual(null);
+        expect(datastream.unitOfMeasurement.definition).toEqual(null);
+        expect(datastream.unitOfMeasurement.symbol).toEqual(null);
+    });
 });
 
 describe ('Observation', () => {
     it ('should create an instance with a date as phenomenonTime', () => {
         const create = () => new Observation(
-            service, 
+            service,
             new Date().toISOString(), // this is the tested field
-            '', 
-            '2014-03-01T13:00:00Z', 
-            42, 
-            '2010-12-23T10:20:00.00-07:00/2010-12-23T12:20:00.00-07:00', 
+            '',
+            '2014-03-01T13:00:00Z',
+            42,
+            '2010-12-23T10:20:00.00-07:00/2010-12-23T12:20:00.00-07:00',
             {}
         );
         expect(create).not.toThrow();
@@ -135,11 +148,11 @@ describe ('Observation', () => {
 
     it ('should create an instance with a time interval as phenomenonTime', () => {
         const create = () => new Observation(
-            service, 
+            service,
             '2010-12-23T10:20:00.00-07:00/2010-12-23T12:20:00.00-07:00', // this is the tested field
-            '', 
-            '2014-03-01T13:00:00Z', 
-            42, 
+            '',
+            '2014-03-01T13:00:00Z',
+            42,
             '2010-12-23T10:20:00.00-07:00/2010-12-23T12:20:00.00-07:00',
             {}
         );
@@ -148,11 +161,11 @@ describe ('Observation', () => {
 
     it ('should create an instance with a resultTime', () => {
         const create = () => new Observation(
-            service, 
+            service,
             '2010-12-23T10:20:00.00-07:00/2010-12-23T12:20:00.00-07:00',
-            '', 
+            '',
             new Date().toISOString(), // this is the tested field
-            42, 
+            42,
             '2010-12-23T10:20:00.00-07:00/2010-12-23T12:20:00.00-07:00',
             {}
         );
@@ -161,11 +174,11 @@ describe ('Observation', () => {
 
     it ('should throw with a random string as resultTime', () => {
         const create = () => new Observation(
-            service, 
+            service,
             '2010-12-23T10:20:00.00-07:00/2010-12-23T12:20:00.00-07:00',
-            '', 
+            '',
             'hello there', // this is the tested field
-            42, 
+            42,
             '2010-12-23T10:20:00.00-07:00/2010-12-23T12:20:00.00-07:00',
             {}
         );
@@ -174,9 +187,9 @@ describe ('Observation', () => {
 
     it ('should create an instance without resultQuality, validTime and parameters attributes', () => {
         const obs = new Observation(
-            service, 
+            service,
             '2010-12-23T10:20:00.00-07:00/2010-12-23T12:20:00.00-07:00',
-            '1.42', 
+            '1.42',
             '2014-03-01T13:00:00Z'
         );
         expect(obs.resultQuality).toBeUndefined();
