@@ -152,6 +152,17 @@ describe('Datastream', () => {
         );
         expect(create).toThrowError(new RangeError('unitOfMeasurement must have all of its properties either defined or null.'));
     });
+
+    it('should not create an instance with unit.symbol null only', () => {
+        const create = () => new Datastream(
+            service, 'name', 'description',
+            {name: 'name', definition: 'def', symbol: null}, // unitOfMeasurement
+            ObservationType.OM_CategoryObservation, area,
+            "2014-03-01T13:00:00Z/2015-05-11T15:30:00Z",
+            "2014-03-01T13:00:00Z/2015-05-11T15:30:00Z"
+        );
+        expect(create).toThrowError(new RangeError('unitOfMeasurement must have all of its properties either defined or null.'));
+    });
 });
 
 describe ('Observation', () => {
