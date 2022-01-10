@@ -6,6 +6,7 @@ import {ObservedPropertyBuilder} from "../src/model/builder/ObservedPropertyBuil
 import {FeatureOfInterestBuilder} from "../src/model/builder/FeatureOfInterestBuilder";
 import { Geometry } from "@turf/helpers";
 import {ObservationBuilder} from "../src/model/builder/ObservationBuilder";
+import {SensorBuilder} from "../src/model/builder/SensorBuilder";
 
 describe('Model builders', () => {
     it('should build a Thing entity', () => {
@@ -254,6 +255,28 @@ describe('Model builders', () => {
                 .build();
 
             expect(build).toThrowError(new MissingArgumentError('"result" argument is required to build an Observation.'));
+        });
+    });
+
+    describe('SensorBuilder', () => {
+        const name = 'DHT22';
+        const description = 'DHT22 temperature sensor';
+        const encodingType = 'application/pdf';
+        const metadata = 'https://cdn-shop.adafruit.com/datasheets/DHT22.pdf';
+        const service = new SensorThingsService('https://example.org');
+
+        it('should build an instance with all parameters', () => {
+            const builder = new SensorBuilder(service);
+            const sensor = builder
+                .setName(name)
+                .setDescription(description)
+                .setEncodingType(encodingType)
+                .setMetaData(metadata)
+                .build();
+            expect(sensor.name).toEqual(name);
+            expect(sensor.description).toEqual(description);
+            expect(sensor.encodingType).toEqual(encodingType);
+            expect(sensor.metadata).toEqual(metadata);
         });
     });
 });
