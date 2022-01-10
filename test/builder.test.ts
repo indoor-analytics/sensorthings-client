@@ -278,5 +278,16 @@ describe('Model builders', () => {
             expect(sensor.encodingType).toEqual(encodingType);
             expect(sensor.metadata).toEqual(metadata);
         });
+
+        it('should not build instance without name', () => {
+            const builder = new SensorBuilder(service);
+            const build = () => builder
+                .setDescription(description)
+                .setEncodingType(encodingType)
+                .setMetaData(metadata)
+                .build();
+
+            expect(build).toThrowError(new MissingArgumentError('"name" argument is required to build a Sensor.'));
+        });
     });
 });
