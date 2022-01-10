@@ -9,6 +9,7 @@ import {DatastreamThingsList} from "./list/DatastreamThingsList";
 import {DatastreamObservedPropertiesList} from "./list/DatastreamObservedPropertiesList";
 import { TimeChecker } from "./utils/TimeChecker";
 import {DatastreamObservationsList} from "./list/DatastreamObservationsList";
+import {DatastreamSensorsList} from "./list/DatastreamSensorsList";
 
 /**
  * A Datastream groups a collection of Observations measuring the same ObservedProperty and produced by the same Sensor.
@@ -56,8 +57,6 @@ export class Datastream extends Entity<Datastream> {
     public resultTime: string | undefined;
 
 
-    // TODO add all entities collections
-
     /**
      * A Thing has zero-to-many Datastreams. A Datastream entity SHALL only link to a Thing as a collection of Observations.
      */
@@ -67,7 +66,7 @@ export class Datastream extends Entity<Datastream> {
      * The Observations in a Datastream are performed by one-and-only-one Sensor. One Sensor MAY produce zero-to-many
      * Observations in different Datastreams.
      */
-    // public sensors;
+    public sensors: DatastreamSensorsList;
 
     /**
      * The Observations of a Datastream SHALL observe the same ObservedProperty. The Observations of different Datastreams
@@ -95,6 +94,7 @@ export class Datastream extends Entity<Datastream> {
         this.observationType = observationType;
         this.observedArea = observedArea;
         this.things = new DatastreamThingsList(this, this._service);
+        this.sensors = new DatastreamSensorsList(this, this._service);
         this.observedProperties = new DatastreamObservedPropertiesList(this, this._service);
         this.observations = new DatastreamObservationsList(this, this._service);
 
