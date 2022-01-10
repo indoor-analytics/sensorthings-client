@@ -311,5 +311,16 @@ describe('Model builders', () => {
 
             expect(build).toThrowError(new MissingArgumentError('"encodingType" argument is required to build a Sensor.'));
         });
+
+        it('should not build instance without metadata', () => {
+            const builder = new SensorBuilder(service);
+            const build = () => builder
+                .setName(name)
+                .setDescription(description)
+                .setEncodingType(encodingType)
+                .build();
+
+            expect(build).toThrowError(new MissingArgumentError('"metadata" argument is required to build a Sensor.'));
+        });
     });
 });
