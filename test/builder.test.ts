@@ -289,5 +289,16 @@ describe('Model builders', () => {
 
             expect(build).toThrowError(new MissingArgumentError('"name" argument is required to build a Sensor.'));
         });
+
+        it('should not build instance without description', () => {
+            const builder = new SensorBuilder(service);
+            const build = () => builder
+                .setName(name)
+                .setEncodingType(encodingType)
+                .setMetaData(metadata)
+                .build();
+
+            expect(build).toThrowError(new MissingArgumentError('"description" argument is required to build a Sensor.'));
+        });
     });
 });
