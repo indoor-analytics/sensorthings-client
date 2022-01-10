@@ -23,12 +23,12 @@ export class Sensor extends Entity<Sensor> {
     /**
      * The encoding type of the metadata property.
      */
-    // encodingType
+    public encodingType: string;
 
     /**
      * The detailed description of the Sensor or system. The metadata type is defined by encodingType.
      */
-    // metadata
+    public metadata: string;
 
 
     /**
@@ -38,11 +38,14 @@ export class Sensor extends Entity<Sensor> {
 
 
     constructor(
-        service: SensorThingsService, name: string, description: string
+        service: SensorThingsService,
+        name: string, description: string, encodingType: string, metadata: string
     ) {
         super(service);
         this.name = name;
         this.description = description;
+        this.encodingType = encodingType;
+        this.metadata = metadata;
         this.datastreams = new SensorDatastreamsList(this, this._service);
     }
 
