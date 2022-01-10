@@ -90,11 +90,15 @@ export class Datastream extends Entity<Datastream> {
         super(service);
         this.name = name;
         this.description = description;
+
         this.unitOfMeasurement = unitOfMeasurement ?? {
             name: null,
             symbol: null,
             definition: null
         };
+        if (![0, 3].includes(Object.values(this.unitOfMeasurement).filter(v => v === null).length))
+            throw new RangeError('unitOfMeasurement must have all of its properties either defined or null.');
+
         this.observationType = observationType;
         this.observedArea = observedArea;
         this.things = new DatastreamThingsList(this, this._service);
