@@ -8,10 +8,11 @@ import {DatastreamDao} from "../dao/DatastreamDao";
 import {DatastreamThingsList} from "./list/DatastreamThingsList";
 import {DatastreamObservedPropertiesList} from "./list/DatastreamObservedPropertiesList";
 import { TimeChecker } from "./utils/TimeChecker";
+import {DatastreamObservationsList} from "./list/DatastreamObservationsList";
 
 /**
  * A Datastream groups a collection of Observations measuring the same ObservedProperty and produced by the same Sensor.
- * 
+ *
  * http://docs.opengeospatial.org/is/15-078r6/15-078r6.html#28
  */
 export class Datastream extends Entity<Datastream> {
@@ -26,8 +27,8 @@ export class Datastream extends Entity<Datastream> {
     public description: string;
 
     /**
-     * A JSON Object containing three key-value pairs. The name property presents the full name of the unitOfMeasurement; 
-     * the symbol property shows the textual form of the unit symbol; and the definition contains the URI defining the 
+     * A JSON Object containing three key-value pairs. The name property presents the full name of the unitOfMeasurement;
+     * the symbol property shows the textual form of the unit symbol; and the definition contains the URI defining the
      * unitOfMeasurement.
      * The values of these properties SHOULD follow the Unified Code for Unit of Measure (UCUM).
      */
@@ -39,7 +40,7 @@ export class Datastream extends Entity<Datastream> {
     public observationType: ObservationType;
 
     /**
-     * The spatial bounding box of the spatial extent of all FeaturesOfInterest that belong to the Observations 
+     * The spatial bounding box of the spatial extent of all FeaturesOfInterest that belong to the Observations
      * associated with this Datastream.
      */
     public observedArea: Polygon | undefined;
@@ -63,13 +64,13 @@ export class Datastream extends Entity<Datastream> {
     public things: DatastreamThingsList;
 
     /**
-     * The Observations in a Datastream are performed by one-and-only-one Sensor. One Sensor MAY produce zero-to-many 
+     * The Observations in a Datastream are performed by one-and-only-one Sensor. One Sensor MAY produce zero-to-many
      * Observations in different Datastreams.
      */
     // public sensors;
 
     /**
-     * The Observations of a Datastream SHALL observe the same ObservedProperty. The Observations of different Datastreams 
+     * The Observations of a Datastream SHALL observe the same ObservedProperty. The Observations of different Datastreams
      * MAY observe the same ObservedProperty.
      */
     public observedProperties: DatastreamObservedPropertiesList;
@@ -77,7 +78,7 @@ export class Datastream extends Entity<Datastream> {
     /**
      * A Datastream has zero-to-many Observations. One Observation SHALL occur in one-and-only-one Datastream.
      */
-    // public observations;
+    public observations: DatastreamObservationsList;
 
     constructor(
         service: SensorThingsService, name: string, description: string,
@@ -95,6 +96,7 @@ export class Datastream extends Entity<Datastream> {
         this.observedArea = observedArea;
         this.things = new DatastreamThingsList(this, this._service);
         this.observedProperties = new DatastreamObservedPropertiesList(this, this._service);
+        this.observations = new DatastreamObservationsList(this, this._service);
 
         const checker = new TimeChecker();
         if (phenomenonTime !== undefined && !checker.checkTimeRange(phenomenonTime))
