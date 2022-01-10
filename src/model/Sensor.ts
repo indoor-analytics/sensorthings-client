@@ -7,6 +7,7 @@ import {Entity} from "./Entity";
 import {SensorThingsService} from "../service/SensorThingsService";
 import {BaseDao} from "../dao/BaseDao";
 import {SensorDatastreamsList} from "./list/SensorDatastreamsList";
+import {SensorDao} from "../dao/SensorDao";
 
 
 export class Sensor extends Entity<Sensor> {
@@ -50,6 +51,6 @@ export class Sensor extends Entity<Sensor> {
     }
 
     get dao(): BaseDao<Sensor> {
-        throw new Error("Method not implemented.");
+        return new SensorDao(this._service);
     }
 }
