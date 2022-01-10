@@ -9,7 +9,7 @@
  * Unit of Measure (UCUM).
  */
 export interface UnitOfMeasurement {
-    name: string;
-    symbol: string;
-    definition: string;
+    name: string | null;
+    symbol: string | null;
+    definition: string | null;
 }

@@ -81,7 +81,7 @@ export class Datastream extends Entity<Datastream> {
 
     constructor(
         service: SensorThingsService, name: string, description: string,
-        unitOfMeasurement: UnitOfMeasurement,
+        unitOfMeasurement: UnitOfMeasurement | null,
         observationType: ObservationType,
         observedArea: Polygon | undefined = undefined,
         phenomenonTime: string | undefined = undefined,
@@ -90,7 +90,11 @@ export class Datastream extends Entity<Datastream> {
         super(service);
         this.name = name;
         this.description = description;
-        this.unitOfMeasurement = unitOfMeasurement;
+        this.unitOfMeasurement = unitOfMeasurement ?? {
+            name: null,
+            symbol: null,
+            definition: null
+        };
         this.observationType = observationType;
         this.observedArea = observedArea;
         this.things = new DatastreamThingsList(this, this._service);
