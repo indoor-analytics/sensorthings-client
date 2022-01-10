@@ -5,6 +5,11 @@ import {LocationDao} from "../dao/LocationDao";
 import {CompatibilityUtils} from "./compatibility/CompatibilityUtils";
 import {CompatibilityOptions} from "./compatibility/CompatibilityOptions";
 import { HistoricalLocationDao } from '../dao/HistoricalLocationDao';
+import {DatastreamDao} from "../dao/DatastreamDao";
+import {ObservedPropertyDao} from "../dao/ObservedPropertyDao";
+import { FeatureOfInterestDao } from '../dao/FeatureOfInterestDao';
+import { ObservationDao } from '../dao/ObservationDao';
+import {SensorDao} from "../dao/SensorDao";
 
 /**
  * A SensorThingsService represents the service endpoint of a server.
@@ -16,7 +21,7 @@ export class SensorThingsService {
 
     constructor(
         endpoint: URL | string,
-        options: CompatibilityOptions = { locationEncodingType: "application/geo+json" }
+        options: CompatibilityOptions = { encodingType: "application/geo+json" }
     ) {
         this._url =
             typeof endpoint === 'string' ? new URL(endpoint) : endpoint;
@@ -67,5 +72,25 @@ export class SensorThingsService {
 
     public get historicalLocations(): HistoricalLocationDao {
         return new HistoricalLocationDao(this);
+    }
+
+    public get datastreams(): DatastreamDao {
+        return new DatastreamDao(this);
+    }
+
+    public get observedProperties(): ObservedPropertyDao {
+        return new ObservedPropertyDao(this);
+    }
+
+    public get featuresOfInterest(): FeatureOfInterestDao {
+        return new FeatureOfInterestDao(this);
+    }
+
+    public get observations(): ObservationDao {
+        return new ObservationDao(this);
+    }
+
+    public get sensors(): SensorDao {
+        return new SensorDao(this);
     }
 }

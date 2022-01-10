@@ -1,6 +1,6 @@
 export interface CompatibilityOptions {
     /**
-     * Encoding type used in Location entities.
+     * Encoding type used in FeatureOfInterest and Location entities.
      */
-    locationEncodingType: 'application/geo+json' | 'application/vnd.geo+json'
+    encodingType: 'application/geo+json' | 'application/vnd.geo+json'
 }

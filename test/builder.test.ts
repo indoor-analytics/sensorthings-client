@@ -2,6 +2,11 @@ import {SensorThingsService} from "../src";
 import {ThingBuilder} from "../src/model/builder/ThingBuilder";
 import {MissingArgumentError} from "../src/error/MissingArgumentError";
 import {HistoricalLocationBuilder} from "../src/model/builder/HistoricalLocationBuilder";
+import {ObservedPropertyBuilder} from "../src/model/builder/ObservedPropertyBuilder";
+import {FeatureOfInterestBuilder} from "../src/model/builder/FeatureOfInterestBuilder";
+import { Geometry } from "@turf/helpers";
+import {ObservationBuilder} from "../src/model/builder/ObservationBuilder";
+import {SensorBuilder} from "../src/model/builder/SensorBuilder";
 
 describe('Model builders', () => {
     it('should build a Thing entity', () => {
@@ -90,5 +95,232 @@ describe('Model builders', () => {
             .build();
 
         expect(build).toThrowError(new RangeError('"hello there" is not a valid time value.'));
+    });
+
+    it('should not build ObservedProperty without name', () => {
+        const builder = new ObservedPropertyBuilder( new SensorThingsService('https://example.org') );
+        const build = () => builder
+            .setDescription('desc')
+            .setDefinition('def')
+            .build();
+        expect(build).toThrowError(new MissingArgumentError('"name" argument is required to build an ObservedProperty.'));
+    });
+
+    it('should not build ObservedProperty without description', () => {
+        const builder = new ObservedPropertyBuilder( new SensorThingsService('https://example.org') );
+        const build = () => builder
+            .setName('name')
+            .setDefinition('def')
+            .build();
+        expect(build).toThrowError(new MissingArgumentError('"description" argument is required to build an ObservedProperty.'));
+    });
+
+    it('should not build ObservedProperty without definition', () => {
+        const builder = new ObservedPropertyBuilder( new SensorThingsService('https://example.org') );
+        const build = () => builder
+            .setName('name')
+            .setDescription('desc')
+            .build();
+        expect(build).toThrowError(new MissingArgumentError('"definition" argument is required to build an ObservedProperty.'));
+    });
+
+    describe ('FeaturesOfInterest', () => {
+        const service = new SensorThingsService('https://example.org');
+
+        it ('should not build instance without name', () => {
+            const builder = new FeatureOfInterestBuilder(service);
+            const build = () => builder
+                .setDescription('description')
+                .setFeatureFromCoordinates([[-75.343, 39.984]])
+                .build();
+            expect(build).toThrowError(new MissingArgumentError('"name" argument is required to build a FeatureOfInterest.'));
+        });
+
+        it ('should not build instance without description', () => {
+            const builder = new FeatureOfInterestBuilder(service);
+            const build = () => builder
+                .setName('name')
+                .setFeatureFromCoordinates([[-75.343, 39.984]])
+                .build();
+            expect(build).toThrowError(new MissingArgumentError('"description" argument is required to build a FeatureOfInterest.'));
+        });
+
+        it ('should not build instance without feature', () => {
+            const builder = new FeatureOfInterestBuilder(service);
+            const build = () => builder
+                .setName('name')
+                .setDescription('description')
+                .build();
+            expect(build).toThrowError(new MissingArgumentError('"feature" argument is required to build a FeatureOfInterest.'));
+        });
+
+        it ('should build instance with point feature', () => {
+            const builder = new FeatureOfInterestBuilder(service);
+            const name = 'name';
+            const desc = 'description';
+            const position = [-75.343, 39.984];
+
+            const foi = builder
+                .setName(name)
+                .setDescription(desc)
+                .setFeatureFromCoordinates([position])
+                .build();
+
+            expect(foi.name).toEqual(name);
+            expect(foi.description).toEqual(desc);
+            expect((foi.feature.geometry as Geometry).type).toEqual('Point');
+            expect((foi.feature.geometry as Geometry).coordinates).toEqual(position);
+        });
+
+        it ('should build instance with polygon feature', () => {
+            const builder = new FeatureOfInterestBuilder(service);
+            const name = 'name';
+            const desc = 'description';
+            const coordinates = [[-75.343, 39.984], [-78.515, 39.981], [-77.611, 39.983], [-75.343, 39.984]];
+
+            const foi = builder
+                .setName(name)
+                .setDescription(desc)
+                .setFeatureFromCoordinates(coordinates)
+                .build();
+
+            expect(foi.name).toEqual(name);
+            expect(foi.description).toEqual(desc);
+            expect((foi.feature.geometry as Geometry).type).toEqual('Polygon');
+            expect((foi.feature.geometry as Geometry).coordinates).toEqual([coordinates]);
+        });
+
+        it ('should build instance with feature properties', () => {
+            const builder = new FeatureOfInterestBuilder(service);
+            const name = 'name';
+            const desc = 'description';
+            const coordinates = [[-75.343, 39.984], [-78.515, 39.981], [-77.611, 39.983], [-75.343, 39.984]];
+            const properties = {"hello": "there"};
+
+            const foi = builder
+                .setName(name)
+                .setDescription(desc)
+                .setFeatureFromCoordinates(coordinates, properties)
+                .build();
+
+            expect(foi.feature.properties).toEqual(properties);
+        });
+    });
+
+    describe('ObservationBuilder', () => {
+        const phenomenonTime = '2010-12-23T10:20:00.00-07:00/2010-12-23T12:20:00.00-07:00';
+        const result = {test: 42};
+        const resultTime = '2010-12-23T10:20:00.00-07:00';
+        const resultQuality = 42;
+        const validTime = '2010-12-23T10:20:00.00-07:00/2010-12-23T12:20:00.00-07:00';
+        const parameters = { key1: 12, key2: 42};
+        const service = new SensorThingsService('https://example.org');
+
+        it ('should build an instance with all parameters', () => {
+            const builder = new ObservationBuilder(service);
+            const observation = builder
+                .setPhenomenonTime(phenomenonTime)
+                .setResult(result)
+                .setResultTime(resultTime)
+                .setResultQuality(resultQuality)
+                .setValidTime(validTime)
+                .setParameters(parameters)
+                .build();
+
+            expect(observation.phenomenonTime).toEqual(phenomenonTime);
+            expect(observation.result).toEqual(result);
+            expect(observation.resultTime).toEqual(resultTime);
+            expect(observation.resultQuality).toEqual(resultQuality);
+            expect(observation.validTime).toEqual(validTime);
+            expect(observation.parameters).toEqual(parameters);
+        });
+
+        it ('should build an instance with mandatory parameters only', () => {
+            const builder = new ObservationBuilder(service);
+            const observation = builder
+                .setResult(result)
+                .build();
+
+            expect(observation.result).toEqual(result);
+        });
+
+        it ('should not build an instance without result', () => {
+            const builder = new ObservationBuilder(service);
+            const build = () => builder
+                .setPhenomenonTime(phenomenonTime)
+                .setResultTime(resultTime)
+                .setResultQuality(resultQuality)
+                .setValidTime(validTime)
+                .setParameters(parameters)
+                .build();
+
+            expect(build).toThrowError(new MissingArgumentError('"result" argument is required to build an Observation.'));
+        });
+    });
+
+    describe('SensorBuilder', () => {
+        const name = 'DHT22';
+        const description = 'DHT22 temperature sensor';
+        const encodingType = 'application/pdf';
+        const metadata = 'https://cdn-shop.adafruit.com/datasheets/DHT22.pdf';
+        const service = new SensorThingsService('https://example.org');
+
+        it('should build an instance with all parameters', () => {
+            const builder = new SensorBuilder(service);
+            const sensor = builder
+                .setName(name)
+                .setDescription(description)
+                .setEncodingType(encodingType)
+                .setMetaData(metadata)
+                .build();
+            expect(sensor.name).toEqual(name);
+            expect(sensor.description).toEqual(description);
+            expect(sensor.encodingType).toEqual(encodingType);
+            expect(sensor.metadata).toEqual(metadata);
+        });
+
+        it('should not build instance without name', () => {
+            const builder = new SensorBuilder(service);
+            const build = () => builder
+                .setDescription(description)
+                .setEncodingType(encodingType)
+                .setMetaData(metadata)
+                .build();
+
+            expect(build).toThrowError(new MissingArgumentError('"name" argument is required to build a Sensor.'));
+        });
+
+        it('should not build instance without description', () => {
+            const builder = new SensorBuilder(service);
+            const build = () => builder
+                .setName(name)
+                .setEncodingType(encodingType)
+                .setMetaData(metadata)
+                .build();
+
+            expect(build).toThrowError(new MissingArgumentError('"description" argument is required to build a Sensor.'));
+        });
+
+        it('should not build instance without encodingType', () => {
+            const builder = new SensorBuilder(service);
+            const build = () => builder
+                .setName(name)
+                .setDescription(description)
+                .setMetaData(metadata)
+                .build();
+
+            expect(build).toThrowError(new MissingArgumentError('"encodingType" argument is required to build a Sensor.'));
+        });
+
+        it('should not build instance without metadata', () => {
+            const builder = new SensorBuilder(service);
+            const build = () => builder
+                .setName(name)
+                .setDescription(description)
+                .setEncodingType(encodingType)
+                .build();
+
+            expect(build).toThrowError(new MissingArgumentError('"metadata" argument is required to build a Sensor.'));
+        });
     });
 });

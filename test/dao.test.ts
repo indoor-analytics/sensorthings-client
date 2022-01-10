@@ -8,19 +8,65 @@ import {ThingAPIResponses} from "./responses/ThingAPIResponses";
 import {DumbEntityBuilder} from "./utils/DumbEntityBuilder";
 import {LocationDao} from "../src/dao/LocationDao";
 import {LocationAPIResponses} from "./responses/LocationAPIResponses";
+import { FeatureOfInterestDao } from '../src/dao/FeatureOfInterestDao';
+import { FeatureOfInterestAPIResponses } from './responses/FeatureOfInterestAPIResponses';
+import { ObservationDao } from '../src/dao/ObservationDao';
+import { SensorDao } from '../src/dao/SensorDao';
+import { ObservationAPIResponses } from './responses/ObservationAPIResponses';
+import { DatastreamDao } from '../src/dao/DatastreamDao';
+import { HistoricalLocationDao } from '../src/dao/HistoricalLocationDao';
+import { ObservedPropertyDao } from '../src/dao/ObservedPropertyDao';
+import { DatastreamAPIResponses } from './responses/DatastreamAPIResponses';
+import { SensorAPIResponses } from './responses/SensorAPIResponses';
 
-const service = new SensorThingsService('https://example.org');
+let service = new SensorThingsService('https://example.org');
 let mockInjector: HttpClientMock;
 let builder = new DumbEntityBuilder(service);
 beforeEach(() => {
     mockInjector = new HttpClientMock();
+    service = new SensorThingsService('https://example.org');
 });
 
 describe('DAO', () => {
     describe('Entity path names', () => {
+        it ('DatastreamDao should return correct path name', () => {
+            const urlPrefix = new DatastreamDao(service).entityPathname;
+            expect(urlPrefix).toEqual('Datastreams');
+        });
+
+        it ('FeatureOfInterestDao should return correct path name', () => {
+            const urlPrefix = new FeatureOfInterestDao(service).entityPathname;
+            expect(urlPrefix).toEqual('FeaturesOfInterest');
+        });
+
+        it ('HistoricalLocationDao should return correct path name', () => {
+            const urlPrefix = new HistoricalLocationDao(service).entityPathname;
+            expect(urlPrefix).toEqual('HistoricalLocations');
+        });
+
+        it ('LocationDao should return correct path name', () => {
+            const urlPrefix = new LocationDao(service).entityPathname;
+            expect(urlPrefix).toEqual('Locations');
+        });
+
+        it ('ObservationDao should return correct path name', () => {
+            const urlPrefix = new ObservationDao(service).entityPathname;
+            expect(urlPrefix).toEqual('Observations');
+        });
+
+        it ('ObservedPropertyDao should return correct path name', () => {
+            const urlPrefix = new ObservedPropertyDao(service).entityPathname;
+            expect(urlPrefix).toEqual('ObservedProperties');
+        });
+        
         it('ThingDao should return correct path name', () => {
             const urlPrefix = new ThingDao(service).entityPathname;
             expect(urlPrefix).toEqual('Things');
+        });
+
+        it('SensorDao should return correct path name', () => {
+            const urlPrefix = new SensorDao(service).entityPathname;
+            expect(urlPrefix).toEqual('Sensors');
         });
 
         it('MockDao should return correct path name', () => {
@@ -32,7 +78,6 @@ describe('DAO', () => {
     describe('Operations', () => {
         it('should get newly-created entity', async () => {
             const randomMockId = Math.ceil(Math.random() * 3000000);
-            const service = new SensorThingsService('https://example.org');
             const mockName = 'name',
                 mockDescription = 'description';
             const mock = builder.setName(mockName).setDescription(mockDescription).build();
@@ -68,7 +113,6 @@ describe('DAO', () => {
         });
 
         it('should throw when getting non-existent entity', async () => {
-            const service = new SensorThingsService('https://example.org');
             mockInjector.injectMockCalls( service, [{
                 targetUrl: 'https://example.org/DumbEntities(42)',
                 method: 'get',
@@ -99,7 +143,6 @@ describe('DAO', () => {
         });
 
         it('should throw when updating non-existent entity', async () => {
-            const service = new SensorThingsService('https://example.org');
             const dao = new DumbEntityDao(service);
             mockInjector.injectMockCalls( service, [{
                 targetUrl: 'https://example.org/DumbEntities(42)',
@@ -133,7 +176,6 @@ describe('DAO', () => {
         });
 
         it('should update an entity', async () => {
-            const service = new SensorThingsService('https://example.org');
             const randomMockId = Math.ceil(Math.random() * 3000000);
             mockInjector.injectMockCalls( service, [{
                 targetUrl: `https://example.org/DumbEntities(${randomMockId})`,
@@ -180,7 +222,6 @@ describe('DAO', () => {
         });
 
         it('should delete an entity', async () => {
-            const service = new SensorThingsService('https://example.org');
             const dao = new DumbEntityDao(service);
             const randomMockId = Math.ceil(Math.random() * 3000000);
             const targetUrl = `https://example.org/DumbEntities(${randomMockId})`;
@@ -239,7 +280,6 @@ describe('DAO', () => {
         });
 
         it('should throw when deleting non-existent entity', async () => {
-            const service = new SensorThingsService('https://example.org');
             mockInjector.injectMockCalls(
                 service,
                 [{
@@ -275,7 +315,6 @@ describe('DAO', () => {
         });
 
         it('should return entities count', async () => {
-            const service = new SensorThingsService('https://example.org');
             const dao = new DumbEntityDao(service);
             mockInjector.injectMockCalls(service, [{
                 targetUrl: 'https://example.org/DumbEntities?$count=true',
@@ -291,7 +330,6 @@ describe('DAO', () => {
         });
 
         it('should return entity locations', async () => {
-            const service = new SensorThingsService('https://example.org');
             const dao = new LocationDao(service);
             const mock = builder.setName('mockName').setDescription('mockDescription').build();
             mock.id = 42;
@@ -311,8 +349,88 @@ describe('DAO', () => {
     });
 
     it("should return all DumbEntity's attributes", () => {
-        const service = new SensorThingsService('https://example.org');
         const dao = new DumbEntityDao(service);
         expect(dao.entityPublicAttributes).toEqual(['name', 'description']);
+    });
+
+    describe ('Implementations', () => {
+        describe ('Datastreams', () => {
+            it ('should return public attributes', () => {
+                const dao = new DatastreamDao(service);
+                const publicAttributes = dao.entityPublicAttributes;
+                const expectedAttributes = ['name', 'description', 'unitOfMeasurement', 'observationType', 'observedArea', 'phenomenonTime', 'resultTime'];
+                expect(publicAttributes).toStrictEqual(expectedAttributes);
+            });
+
+            it ('should build instance from API response', () => {
+                const dao = new DatastreamDao(service);
+                const rawData = (DatastreamAPIResponses.datastreams.value as Record<string, unknown>[])[0];
+                const entity = dao.buildEntity(rawData);
+                expect(entity.name).toEqual('7061:Bloor St / Brunswick Ave:available_docks');
+                expect(entity.description).toEqual('The datastream of available docks count for the Toronto bike share station Bloor St / Brunswick Ave');
+                expect(entity.unitOfMeasurement.symbol).toEqual('{TOT}');
+            });
+        });
+
+        describe ('FeaturesOfInterest', () => {
+            it ('should return public attributes', () => {
+                const dao = new FeatureOfInterestDao(service);
+                const publicAttributes = dao.entityPublicAttributes;
+                const expectedAttributes = ['name', 'description', 'encodingType', 'feature'];
+                expect(publicAttributes).toStrictEqual(expectedAttributes);
+            });
+
+            it ('should build feature of interest (point) from API response', async () => {
+                const dao = new FeatureOfInterestDao(service);
+                const rawData = (FeatureOfInterestAPIResponses.featuresOfInterest.value as Record<string, unknown>[])[0];
+                
+                const entity = dao.buildEntity(rawData);
+                expect(entity.name).toEqual('UofC CCIT');
+                expect(entity.description).toEqual('University of Calgary, CCIT building');
+                expect(entity.feature.type).toEqual('Point');
+            });
+
+            it ('should build feature of interest (with feature collection) from API response', () => {
+                const dao = new FeatureOfInterestDao(service);
+                const rawData = (FeatureOfInterestAPIResponses.featuresOfInterest.value as Record<string, unknown>[])[22];
+
+                const entity = dao.buildEntity(rawData);
+                expect(entity.name).toEqual('TFI');
+                expect(entity.description).toEqual('TFI');
+                expect(entity.feature.type).toEqual('FeatureCollection');
+            });
+        });
+
+        describe ('Observations', () => {
+            it ('should return public attributes', () => {
+                const dao = new ObservationDao(service);
+                const publicAttributes = dao.entityPublicAttributes;
+                const expectedAttributes = ['phenomenonTime', 'result', 'resultTime', 'resultQuality', 'validTime', 'parameters'];
+                expect(publicAttributes).toStrictEqual(expectedAttributes);
+            });
+
+            it ('should build instance from API response', () => {
+                const dao = new ObservationDao(service);
+                const rawData = (ObservationAPIResponses.observations.value as Record<string, unknown>[])[0];
+                const create = () => dao.buildEntity(rawData);
+                expect(create).not.toThrow();
+            });
+        });
+
+        describe ('Sensors', () => {
+            it ('should return public attributes', () => {
+                const dao = new SensorDao(service);
+                const publicAttributes = dao.entityPublicAttributes;
+                const expectedAttributes = ['name', 'description', 'encodingType', 'metadata'];
+                expect(publicAttributes).toStrictEqual(expectedAttributes);
+            });
+
+            it ('should build instance from API response', () => {
+                const dao = new SensorDao(service);
+                const rawData = (SensorAPIResponses.sensors.value as Record<string, unknown>[][0]);
+                const create = () => dao.buildEntity(rawData);
+                expect(create).not.toThrow();
+            });
+        });
     });
 });

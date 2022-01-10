@@ -13,7 +13,7 @@ const service = new SensorThingsService(
 const service = new SensorThingsService(
     'http://localhost:8080/v1.0',
     {
-        locationEncodingType: 'application/vnd.geo+json'
+        encodingType: 'application/vnd.geo+json'
     }
 );
  */
