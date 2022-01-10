@@ -300,5 +300,16 @@ describe('Model builders', () => {
 
             expect(build).toThrowError(new MissingArgumentError('"description" argument is required to build a Sensor.'));
         });
+
+        it('should not build instance without encodingType', () => {
+            const builder = new SensorBuilder(service);
+            const build = () => builder
+                .setName(name)
+                .setDescription(description)
+                .setMetaData(metadata)
+                .build();
+
+            expect(build).toThrowError(new MissingArgumentError('"encodingType" argument is required to build a Sensor.'));
+        });
     });
 });
